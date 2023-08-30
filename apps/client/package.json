@@ -36,8 +36,7 @@
     "start": "serve ./build",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
-    "format": "prettier --write './src/**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
-    "prepare": "husky install"
+    "format": "prettier --write './src/**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
   },
   "eslintConfig": {
     "extends": [
@@ -74,7 +73,6 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "husky": "^8.0.0",
     "prettier": "^2.8.8",
     "typescript": "^4.9.5"
   }
