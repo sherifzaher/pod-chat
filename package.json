@@ -1,0 +1,24 @@
+{
+  "name": "chua-chat-app",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "-------- DEV ------": "",
+    "dev:start": "pnpm dev:docker && pnpm dev",
+    "-------- PROD -----": "",
+    "prod:start": "pnpm build && pnpm start",
+    "----- DOCKER -----": "",
+    "dev:docker": "docker-compose up -d --no-recreate --remove-orphans"
+  },
+  "devDependencies": {
+    "@turbo/gen": "^1.9.7",
+    "turbo": "latest"
+  },
+  "packageManager": "pnpm@7.15.0",
+  "dependencies": {
+    "prettier": "^3.0.0"
+  }
+}
