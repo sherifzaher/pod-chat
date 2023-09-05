@@ -9,6 +9,7 @@ import MessagePanel from '../../components/messages/message-panel';
 
 import { ConversationChannelPageStyle } from '../../utils/styles';
 import { useSocketContext } from '../../context/socket-context';
+import GroupRecipientsSidebar from '../../components/sidebars/group-recipients-sidebar';
 
 function GroupChannelPage() {
   const [isRecipientTyping, setIsRecipientTyping] = useState(false);
@@ -37,9 +38,12 @@ function GroupChannelPage() {
   }, [id, socket]);
 
   return (
-    <ConversationChannelPageStyle>
-      <MessagePanel isRecipientTyping={isRecipientTyping} />
-    </ConversationChannelPageStyle>
+    <>
+      <ConversationChannelPageStyle>
+        <MessagePanel isRecipientTyping={isRecipientTyping} />
+      </ConversationChannelPageStyle>
+      <GroupRecipientsSidebar />
+    </>
   );
 }
 
