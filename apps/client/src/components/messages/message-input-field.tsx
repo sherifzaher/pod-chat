@@ -8,6 +8,7 @@ import { MessageInput, MessageInputContainer } from '../../utils/styles';
 import { useSocketContext } from '../../context/socket-context';
 import { useAuthContext } from '../../context/auth-context';
 import { RootState } from '../../store';
+import { getRecipientFromConversation } from '../../utils/helpers';
 
 type Props = {
   content: string;
@@ -20,12 +21,17 @@ export default function MessageInputField() {
   const [typing, setTyping] = useState(false);
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
 
-  const conversationType = useSelector((state: RootState) => state.selectedConversationType.type);
-
   const { id: routeId } = useParams();
+  const { user } = useAuthContext();
+  const conversationType = useSelector((state: RootState) => state.selectedConversationType.type);
+  const recipient = useSelector((state: RootState) => state.conversations.conversations).find(
+    (conv) => conv.id === parseInt(routeId!, 10)
+  )?.recipient;
+  const group = useSelector((state: RootState) => state.groups.groups).find(
+    (groupItem) => groupItem.id === parseInt(routeId!, 10)
+  );
 
   const socket = useSocketContext();
-  const { user } = useAuthContext();
 
   const handleSendMessage = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -86,6 +92,9 @@ export default function MessageInputField() {
           onKeyDown={handleSendTypingStatus}
           value={content}
           onChange={(e) => setContent(e.target.value)}
+          placeholder={`Send a message to ${
+            conversationType === 'group' ? group?.title || 'Group' : recipient?.firstName || 'user'
+          }`}
         />
       </form>
     </MessageInputContainer>

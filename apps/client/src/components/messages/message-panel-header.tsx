@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useCallback } from 'react';
+import { PersonAdd } from 'akar-icons';
 import { MessagePanelHeaderStyle } from '../../utils/styles';
 import { useAuthContext } from '../../context/auth-context';
 import { RootState } from '../../store';
@@ -37,5 +38,12 @@ export default function MessagePanelHeader() {
     [getDisplayName, group?.title, selectedType]
   );
 
-  return <MessagePanelHeaderStyle>{headerTitle()}</MessagePanelHeaderStyle>;
+  return (
+    <MessagePanelHeaderStyle>
+      <div>
+        <span>{headerTitle()}</span>
+      </div>
+      {selectedType === 'group' && <PersonAdd size={30} />}
+    </MessagePanelHeaderStyle>
+  );
 }
