@@ -16,6 +16,7 @@ import { AuthUser } from '../utils/decorators';
 import { User } from '../utils/typeorm';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { EditMessageDto } from './dtos/EditMessage.dto';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller(Routes.MESSAGES)
 export class MessagesController {
@@ -24,6 +25,7 @@ export class MessagesController {
     private eventEmitter: EventEmitter2,
   ) {}
 
+  @Throttle({ default: { ttl: 60, limit: 10 } })
   @Post()
   async createMessage(
     @AuthUser() user: User,
