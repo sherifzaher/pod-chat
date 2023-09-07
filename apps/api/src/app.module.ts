@@ -12,7 +12,6 @@ import { MessagesModule } from './messages/messages.module';
 import { GatewayModule } from './gateway/gateway.module';
 import entities from './utils/typeorm';
 import { GroupModule } from './groups/group.module';
-import { GroupMessageModule } from './group-messages/group-message.module';
 
 @Module({
   imports: [
@@ -23,7 +22,6 @@ import { GroupMessageModule } from './group-messages/group-message.module';
     GatewayModule,
     EventEmitterModule.forRoot(),
     GroupModule,
-    GroupMessageModule,
     ConfigModule.forRoot({ envFilePath: '.env.development' }),
     PassportModule.register({ session: true }),
     TypeOrmModule.forRoot({

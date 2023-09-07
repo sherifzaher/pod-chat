@@ -9,13 +9,13 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { IGroupMessageService } from './group-message';
-import { AuthUser } from '../utils/decorators';
-import { User } from '../utils/typeorm';
-import { Routes, Services } from '../utils/constants';
-import { CreateMessageDto } from '../messages/dtos/CreateMessage.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { EditMessageDto } from '../messages/dtos/EditMessage.dto';
+import { Routes, Services } from '../../utils/constants';
+import { IGroupMessageService } from '../interfaces/group-message';
+import { AuthUser } from '../../utils/decorators';
+import { CreateMessageDto } from '../../messages/dtos/CreateMessage.dto';
+import { EditMessageDto } from '../../messages/dtos/EditMessage.dto';
+import { User } from 'src/utils/typeorm';
 
 @Controller(Routes.GROUP_MESSAGES)
 export class GroupMessageController {

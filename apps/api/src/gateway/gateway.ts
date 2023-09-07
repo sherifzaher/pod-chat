@@ -20,7 +20,7 @@ import {
   DeleteMessageParams,
 } from '../utils/types';
 import { IConversationsService } from '../conversations/conversations';
-import { IGroupService } from '../groups/group';
+import { IGroupService } from '../groups/interfaces/group';
 
 @WebSocketGateway({
   cors: {

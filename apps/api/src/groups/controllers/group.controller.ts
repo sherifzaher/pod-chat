@@ -7,13 +7,12 @@ import {
   ParseIntPipe,
   Post,
 } from '@nestjs/common';
-import { Routes, Services } from '../utils/constants';
-import { IGroupService } from './group';
-import { AuthUser } from '../utils/decorators';
-import { User } from '../utils/typeorm';
-import { CreateGroupDto } from './dtos/CreateGroup.dto';
-import { CreateMessageDto } from '../messages/dtos/CreateMessage.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { Routes, Services } from '../../utils/constants';
+import { IGroupService } from '../interfaces/group';
+import { AuthUser } from '../../utils/decorators';
+import { CreateGroupDto } from '../dtos/CreateGroup.dto';
+import { User } from 'src/utils/typeorm/entities/User';
 
 @Controller(Routes.GROUPS)
 export class GroupController {
