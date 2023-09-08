@@ -66,3 +66,6 @@ export const editGroupMessageAPI = ({ groupId, messageId, content }: EditGroupMe
     { content },
     config
   );
+
+export const addGroupRecipient = ({ id, email }: AddGroupRecipientParams) =>
+  axiosClient.post(`/groups/${id}/recipients`, { email }, config);

@@ -132,3 +132,8 @@ type CreateGroupParams = {
   users: string[];
   title: string;
 };
+
+type AddGroupRecipientParams = {
+  id: number;
+  email: string;
+};
