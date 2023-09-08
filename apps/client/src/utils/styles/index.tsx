@@ -521,8 +521,9 @@ export const ConversationSidebarStyle = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 400px;
+  width: 300px;
   background-color: #111;
+  flex: 0 0 auto;
 `;
 
 export const ConversationSidebarHeader = styled.div`
@@ -568,9 +569,10 @@ export const UserSidebarItem = styled.div<SidebarItemProps>`
 
 export const GroupRecipientsSidebarStyle = styled.aside`
   display: flex;
+  flex: 0 0 auto;
   flex-direction: column;
   height: 100%;
-  width: 500px;
+  width: 300px;
   background-color: #121212;
   border-left: 1px solid #49494954;
   animation: ${slideRightToLeft} 300ms ease;
