@@ -8,11 +8,12 @@ import {
   PageProps,
   SidebarItemProps
 } from '../../types/style-types';
+import { fadeInUpwards } from './keyframes';
 
 export const SIDEBAR_WIDTH = 400;
 
 export const InputField = styled.input`
-  border-sizing: border-box;
+  box-sizing: border-box;
   font-family: 'Inter';
   outline: none;
   border: none;
@@ -103,18 +104,25 @@ export const OverlayStyle = styled.div`
   height: 100%;
   width: 100%;
   position: fixed;
-  background-color: #000000c4;
+  top: 0;
+  left: 0;
+  background-color: #000000e3;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
 `;
 
-export const ModalContainerStyle = styled.header`
+type ModalProps = Partial<{
+  showModal: boolean;
+}>;
+
+export const ModalContainerStyle = styled.header<ModalProps>`
   position: relative;
   background-color: #121212;
   width: 650px;
   border-radius: 10px;
+  animation: ${fadeInUpwards} 450ms ease;
 `;
 
 export const ModalHeaderStyle = styled.header`
@@ -170,7 +178,7 @@ export const MessageContainerStyle = styled.div`
   display: flex;
   flex-direction: column-reverse;
   overflow-y: scroll;
-  & ::-webkit-scrollbar {
+  &::-webkit-scrollbar {
     display: none;
   }
 `;
