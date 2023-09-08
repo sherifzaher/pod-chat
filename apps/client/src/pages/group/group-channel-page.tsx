@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { AppDispatch } from '../../store';
+import { AppDispatch, RootState } from '../../store';
 import { editGroupMessage, fetchGroupMessagesThunk } from '../../store/slices/group-message-slice';
 
 import MessagePanel from '../../components/messages/message-panel';
@@ -16,6 +16,7 @@ function GroupChannelPage() {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch<AppDispatch>();
   const socket = useSocketContext();
+  const showSidebar = useSelector((state: RootState) => state.groupSidebar.showSidebar);
 
   useEffect(() => {
     if (!id) return;
@@ -42,7 +43,7 @@ function GroupChannelPage() {
       <ConversationChannelPageStyle>
         <MessagePanel isRecipientTyping={isRecipientTyping} />
       </ConversationChannelPageStyle>
-      <GroupRecipientsSidebar />
+      {showSidebar && <GroupRecipientsSidebar />}
     </>
   );
 }

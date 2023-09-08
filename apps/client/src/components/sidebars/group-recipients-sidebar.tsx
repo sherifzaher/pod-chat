@@ -44,7 +44,6 @@ export default function GroupRecipientsSidebar() {
     <GroupRecipientsSidebarStyle>
       <GroupRecipientsSidebarHeader>
         <span>Participants</span>
-        <PeopleGroup />
       </GroupRecipientsSidebarHeader>
       <GroupRecipientSidebarItemContainer>
         <span>Online Users</span>

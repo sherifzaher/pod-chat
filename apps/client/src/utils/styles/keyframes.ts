@@ -10,3 +10,11 @@ export const fadeInUpwards = keyframes`
     opacity: 1;
   }
 `;
+
+export const slideRightToLeft = keyframes`
+  from {
+    transform: translateX(20%)
+  } to {
+  transform: translateX(0%);
+    }
+`;

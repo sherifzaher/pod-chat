@@ -1,16 +1,18 @@
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useCallback, useState } from 'react';
-import { PersonAdd } from 'akar-icons';
-import { MessagePanelHeaderStyle } from '../../utils/styles';
+import { PeopleGroup, PersonAdd } from 'akar-icons';
+import { GroupHeaderIcons, MessagePanelHeaderStyle } from '../../utils/styles';
 import { useAuthContext } from '../../context/auth-context';
-import { RootState } from '../../store';
+import { AppDispatch, RootState } from '../../store';
 import AddGroupRecipientModal from '../modals/add-group-recipient-modal';
+import { toggleSidebar } from '../../store/slices/group-sidebar-slice';
 
 export default function MessagePanelHeader() {
   const { id } = useParams();
   const { user } = useAuthContext();
   const [showModal, setShowModal] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
 
   const selectedType = useSelector((state: RootState) => state.selectedConversationType.type);
   const conversation = useSelector((state: RootState) => state.conversations.conversations).find(
@@ -49,9 +51,14 @@ export default function MessagePanelHeader() {
         <div>
           <span>{headerTitle()}</span>
         </div>
-        {selectedType === 'group' && user?.id === group?.creator?.id && (
-          <PersonAdd onClick={() => setShowModal(true)} size={30} />
-        )}
+        <GroupHeaderIcons>
+          {selectedType === 'group' && user?.id === group?.creator?.id && (
+            <PersonAdd cursor="pointer" onClick={() => setShowModal(true)} size={30} />
+          )}
+          {selectedType === 'group' && (
+            <PeopleGroup cursor="pointer" size={30} onClick={() => dispatch(toggleSidebar())} />
+          )}
+        </GroupHeaderIcons>
       </MessagePanelHeaderStyle>
     </>
   );
