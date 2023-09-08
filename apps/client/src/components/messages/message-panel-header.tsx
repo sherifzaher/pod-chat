@@ -49,7 +49,9 @@ export default function MessagePanelHeader() {
         <div>
           <span>{headerTitle()}</span>
         </div>
-        {selectedType === 'group' && <PersonAdd onClick={() => setShowModal(true)} size={30} />}
+        {selectedType === 'group' && user?.id === group?.creator?.id && (
+          <PersonAdd onClick={() => setShowModal(true)} size={30} />
+        )}
       </MessagePanelHeaderStyle>
     </>
   );
