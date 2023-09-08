@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Inject,
   Param,
   ParseIntPipe,
@@ -11,6 +12,7 @@ import { AuthUser } from '../../utils/decorators';
 import { User } from '../../utils/typeorm';
 import { AddGroupRecipientDto } from '../dtos/add-group-recipient.dto';
 import { IGroupRecipientService } from '../interfaces/group-recipient';
+import { RemoveGroupRecipientParams } from '../../utils/types';
 
 @Controller(Routes.GROUP_RECIPIENTS)
 export class GroupRecipientsController {
@@ -30,5 +32,19 @@ export class GroupRecipientsController {
       id,
     };
     return this.groupRecipientService.addGroupRecipient(params);
+  }
+
+  @Delete(':userId')
+  removeGroupRecipient(
+    @AuthUser() { id: issuerId }: User,
+    @Param('id', ParseIntPipe) id: number,
+    @Param('userId', ParseIntPipe) removeUserId: number,
+  ) {
+    const params: RemoveGroupRecipientParams = {
+      issuerId,
+      id,
+      removeUserId,
+    };
+    return this.groupRecipientService.removeGroupRecipient(params);
   }
 }
