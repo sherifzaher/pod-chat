@@ -54,12 +54,20 @@ export default function GroupRecipientsSidebar() {
           </GroupRecipientSidebarItem>
         ))}
         <span>Offline Users</span>
-        {offlineUsers.map((user) => (
-          <GroupRecipientSidebarItem key={user.id}>
-            <MessageItemAvatar />
-            <span>{user.firstName}</span>
-          </GroupRecipientSidebarItem>
-        ))}
+        {group?.users
+          .filter((user) => !onlineUsers.find((onlineUser) => onlineUser.id === user.id))
+          .map((user) => (
+            <GroupRecipientSidebarItem key={user.id}>
+              <MessageItemAvatar />
+              <span>{user.firstName}</span>
+            </GroupRecipientSidebarItem>
+          ))}
+        {/* {offlineUsers.map((user) => ( */}
+        {/*  <GroupRecipientSidebarItem key={user.id}> */}
+        {/*    <MessageItemAvatar /> */}
+        {/*    <span>{user.firstName}</span> */}
+        {/*  </GroupRecipientSidebarItem> */}
+        {/* ))} */}
       </GroupRecipientSidebarItemContainer>
     </GroupRecipientsSidebarStyle>
   );
