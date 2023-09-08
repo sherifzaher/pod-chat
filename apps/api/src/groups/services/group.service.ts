@@ -30,9 +30,10 @@ export class GroupService implements IGroupService {
   getGroups(params: FetchGroupParams): Promise<Group[]> {
     return this.groupRepository
       .createQueryBuilder('group')
-      .innerJoinAndSelect('group.users', 'user')
+      .leftJoinAndSelect('group.users', 'user')
       .where('user.id  IN (:users)', { users: [params.userId] })
-      .innerJoinAndSelect('group.users', 'users')
+      .leftJoinAndSelect('group.users', 'users')
+      .leftJoinAndSelect('group.creator', 'creator')
       .getMany();
   }
 
