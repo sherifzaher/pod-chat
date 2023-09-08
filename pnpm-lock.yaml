@@ -43,8 +43,8 @@ importers:
         specifier: ^10.0.4
         version: 10.0.4(@nestjs/common@9.0.5)(@nestjs/websockets@9.0.11)(rxjs@7.8.1)
       '@nestjs/throttler':
-        specifier: ^5.0.0
-        version: 5.0.0(@nestjs/common@9.0.5)(@nestjs/core@9.0.5)(reflect-metadata@0.1.13)
+        specifier: ^3.0.0
+        version: 3.1.0(@nestjs/common@9.0.5)(@nestjs/core@9.0.5)(reflect-metadata@0.1.13)
       '@nestjs/typeorm':
         specifier: ^10.0.0
         version: 10.0.0(@nestjs/common@9.0.5)(@nestjs/core@9.0.5)(reflect-metadata@0.1.13)(rxjs@7.8.1)(typeorm@0.2.37)
@@ -2805,11 +2805,11 @@ packages:
       tslib: 2.4.0
     dev: true
 
-  /@nestjs/throttler@5.0.0(@nestjs/common@9.0.5)(@nestjs/core@9.0.5)(reflect-metadata@0.1.13):
-    resolution: {integrity: sha512-TKf+bpjYpRnSOu8dqi0TmQAPxyvLoO6jFldTq3ToevYDfLtAxBXDTJs8qRRfmHv3wORaJhIbVDtW1dDQuP5wCQ==}
+  /@nestjs/throttler@3.1.0(@nestjs/common@9.0.5)(@nestjs/core@9.0.5)(reflect-metadata@0.1.13):
+    resolution: {integrity: sha512-u9a5+rci6ybYtJ2is6gZWxE2dMZEpnK0qJ0C1OnchuNCvM21Bg6qym1TB6Uihhci+JfTv6E15WuASLXcIclsbA==}
     peerDependencies:
-      '@nestjs/common': ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
-      '@nestjs/core': ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
+      '@nestjs/common': ^7.0.0 || ^8.0.0 || ^9.0.0
+      '@nestjs/core': ^7.0.0 || ^8.0.0 || ^9.0.0
       reflect-metadata: ^0.1.13
     dependencies:
       '@nestjs/common': 9.0.5(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)

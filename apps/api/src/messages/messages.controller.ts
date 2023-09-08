@@ -25,7 +25,7 @@ export class MessagesController {
     private eventEmitter: EventEmitter2,
   ) {}
 
-  @Throttle({ default: { ttl: 60, limit: 10 } })
+  @Throttle(10, 60)
   @Post()
   async createMessage(
     @AuthUser() user: User,
