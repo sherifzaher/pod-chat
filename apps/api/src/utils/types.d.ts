@@ -104,3 +104,8 @@ export type AddGroupUserResponse = {
   group: Group;
   user: User;
 };
+
+export type RemoveGroupUserResponse = {
+  group: Group;
+  user: User;
+};
