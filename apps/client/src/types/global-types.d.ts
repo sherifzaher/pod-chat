@@ -143,9 +143,10 @@ type Points = {
   y: number;
 };
 
-type UserContextMenuActionType = 'kick' | 'transfer_owner';
+type UserContextMenuActionType = 'kick' | 'transfer_owner' | 'profile';
 type ContextMenuItemType = {
   label: string;
   action: UserContextMenuActionType;
   color: string;
+  ownerOnly: boolean;
 };

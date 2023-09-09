@@ -1,6 +1,10 @@
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { ContextMenu, ContextMenuItem } from '../../utils/styles';
 import { userContextMenuItems } from '../../utils/constants';
-import { getUserContextMenuIcon } from '../../utils/helpers';
+import { getUserContextMenuActions, getUserContextMenuIcon } from '../../utils/helpers';
+import { RootState } from '../../store';
+import { useAuthContext } from '../../context/auth-context';
 
 type Props = {
   points: { x: number; y: number };
@@ -15,9 +19,17 @@ export const CustomIcon = ({ type }: CustomIconProps) => {
 };
 
 export default function SelectedParticipantContextMenu({ points }: Props) {
+  const { id: groupId } = useParams();
+  const { user } = useAuthContext();
+  const group = useSelector((state: RootState) => state.groups.groups).find(
+    (groupItem) => groupItem.id === parseInt(groupId!, 10)
+  );
+  const contextMenuActions = getUserContextMenuActions(user!, group!);
+
+  if (!contextMenuActions) return null;
   return (
     <ContextMenu top={points.y} left={points.x}>
-      {userContextMenuItems.map((item) => (
+      {contextMenuActions.map((item) => (
         <ContextMenuItem key={item.label}>
           <CustomIcon type={item.action} />
           <span style={{ color: item.color }}>{item.label}</span>

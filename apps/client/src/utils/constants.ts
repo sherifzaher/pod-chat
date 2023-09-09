@@ -15,11 +15,19 @@ export const userContextMenuItems: ContextMenuItemType[] = [
   {
     label: 'Kick User',
     action: 'kick',
-    color: '#ff0000'
+    color: '#ff0000',
+    ownerOnly: true
   },
   {
     label: 'Transfer Owner',
     action: 'transfer_owner',
-    color: '#ffb800'
+    color: '#ffb800',
+    ownerOnly: true
+  },
+  {
+    label: 'Profile',
+    action: 'profile',
+    color: '#7c7c7c',
+    ownerOnly: false
   }
 ];
