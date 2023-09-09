@@ -223,6 +223,9 @@ export class MessagingGateway
   @OnEvent('group.user.add')
   handleGroupUserAdd(payload: AddGroupUserResponse) {
     const userSocket = this.sessions.getSocketId(payload.user.id);
+    this.server
+      .to(`group-${payload.group.id}`)
+      .emit('onGroupReceivedUser', payload);
     userSocket && userSocket.emit('onGroupUserAdd', payload);
   }
 }
