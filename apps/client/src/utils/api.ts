@@ -69,3 +69,6 @@ export const editGroupMessageAPI = ({ groupId, messageId, content }: EditGroupMe
 
 export const addGroupRecipient = ({ id, email }: AddGroupRecipientParams) =>
   axiosClient.post(`/groups/${id}/recipients`, { email }, config);
+
+export const removeGroupRecipient = ({ id, userId }: RemoveGroupRecipientParams) =>
+  axiosClient.delete<Group>(`/groups/${id}/recipients/${userId}`, config);

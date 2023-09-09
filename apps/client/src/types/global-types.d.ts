@@ -138,6 +138,11 @@ type AddGroupRecipientParams = {
   email: string;
 };
 
+type RemoveGroupRecipientParams = {
+  id: number;
+  userId: number;
+};
+
 type Points = {
   x: number;
   y: number;

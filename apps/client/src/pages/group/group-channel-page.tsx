@@ -36,7 +36,7 @@ function GroupChannelPage() {
       socket.emit('onGroupLeave', { groupId: id });
       socket.off('onGroupMessageUpdate');
     };
-  }, [id, socket]);
+  }, [dispatch, id, socket]);
 
   return (
     <>
