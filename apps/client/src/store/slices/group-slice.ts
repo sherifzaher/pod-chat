@@ -26,6 +26,13 @@ export const GroupSlice = createSlice({
     addGroup: (state, action: PayloadAction<Group>) => {
       console.log(`addGroup reducer: Adding ${action.payload.id} to statesc`);
       state.groups.unshift(action.payload);
+    },
+    updateGroup: (state, action: PayloadAction<Group>) => {
+      const updatedGroup = action.payload;
+      const existingGroup = state.groups.findIndex((group) => group.id === updatedGroup.id);
+      if (existingGroup > -1) {
+        state.groups[existingGroup] = updatedGroup;
+      }
     }
   },
   extraReducers: (builder) => {
@@ -36,5 +43,5 @@ export const GroupSlice = createSlice({
   }
 });
 
-export const { addGroup } = GroupSlice.actions;
+export const { addGroup, updateGroup } = GroupSlice.actions;
 export default GroupSlice.reducer;

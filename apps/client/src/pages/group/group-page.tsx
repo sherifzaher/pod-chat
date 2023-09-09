@@ -6,7 +6,7 @@ import ConversationPanel from '../../components/conversations/conversation-panel
 import ConversationSidebar from '../../components/conversations/conversation-sidebar';
 
 import { AppDispatch } from '../../store';
-import { addGroup, fetchGroupThunk } from '../../store/slices/group-slice';
+import { addGroup, fetchGroupThunk, updateGroup } from '../../store/slices/group-slice';
 import { updateType } from '../../store/slices/selected-slice';
 import { addGroupMessage } from '../../store/slices/group-message-slice';
 
@@ -42,10 +42,16 @@ function GroupPage() {
       dispatch(addGroup(payload.group));
     });
 
+    socket.on('onGroupReceivedUser', (payload: AddGroupUserMessagePayload) => {
+      console.log('AddGroupUserMessagePayload');
+      dispatch(updateGroup(payload.group));
+    });
+
     return () => {
       socket.off('onGroupMessage');
       socket.off('onGroupCreate');
       socket.off('onGroupUserAdd');
+      socket.off('AddGroupUserMessagePayload');
     };
   }, [dispatch, id, socket]);
 
