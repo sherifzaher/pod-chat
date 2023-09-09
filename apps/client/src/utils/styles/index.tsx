@@ -266,26 +266,29 @@ export const MessagePanelHeaderStyle = styled.header`
   flex-shrink: 0;
 `;
 
-export const ContextMenuStyles = styled.div<ContextMenuProps>`
+export const ContextMenu = styled.ul<ContextMenuProps>`
   border-radius: 8px;
   position: fixed;
-  width: 200px;
-  background-color: #252525;
+  width: 220px;
+  background-color: #0e0e0e;
   top: ${(props) => props.top}px;
   left: ${(props) => props.left}px;
+  right: 0;
+  list-style-type: none;
+  margin: 0;
+  padding: 10px;
+`;
 
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 10px;
-  }
-
-  ul li {
-    padding: 14px 16px;
-    border-radius: 8px;
-  }
-
-  ul li:hover {
+export const ContextMenuItem = styled.li`
+  padding: 14px 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  margin: 6px 0;
+  &:hover {
     cursor: pointer;
     background-color: #1f1f1f;
   }
@@ -615,4 +618,14 @@ export const GroupHeaderIcons = styled.div`
   display: flex;
   gap: 20px;
   align-items: center;
+`;
+
+export const TestContextMenu = styled.div<ContextMenuProps>`
+  ${({ top, left }) => css`
+    top: ${top}px;
+    left: ${left}px;
+  `}
+
+  width: 200px;
+  background-color: #000;
 `;

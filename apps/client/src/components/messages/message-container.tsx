@@ -15,7 +15,6 @@ import { selectConversationMessage } from '../../store/slices/messages-slice';
 import { selectGroupMessage } from '../../store/slices/group-message-slice';
 import {
   setIsEditingMessage,
-  setMessageBeingEditing,
   editMessageContent,
   resetMessageContainer,
   setSelectedMessage

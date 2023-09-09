@@ -137,3 +137,15 @@ type AddGroupRecipientParams = {
   id: number;
   email: string;
 };
+
+type Points = {
+  x: number;
+  y: number;
+};
+
+type UserContextMenuActionType = 'kick' | 'transfer_owner';
+type ContextMenuItemType = {
+  label: string;
+  action: UserContextMenuActionType;
+  color: string;
+};

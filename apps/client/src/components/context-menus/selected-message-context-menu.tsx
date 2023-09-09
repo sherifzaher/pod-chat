@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { ContextMenuStyles } from '../../utils/styles';
+import { ContextMenu, ContextMenuItem } from '../../utils/styles';
 
 import { AppDispatch, RootState } from '../../store';
 import { deleteMessageThunk } from '../../store/slices/messages-slice';
@@ -42,11 +42,13 @@ export default function SelectedMessageContextMenu({ points }: Props) {
   };
 
   return (
-    <ContextMenuStyles top={points.y} left={points.x}>
-      <ul>
-        {message?.author.id === user?.id && <li onClick={handleDeleteMessage}>Delete</li>}
-        {message?.author.id === user?.id && <li onClick={editMessage}>Edit</li>}
-      </ul>
-    </ContextMenuStyles>
+    <ContextMenu top={points.y} left={points.x}>
+      {message?.author.id === user?.id && (
+        <ContextMenuItem onClick={handleDeleteMessage}>Delete</ContextMenuItem>
+      )}
+      {message?.author.id === user?.id && (
+        <ContextMenuItem onClick={editMessage}>Edit</ContextMenuItem>
+      )}
+    </ContextMenu>
   );
 }
