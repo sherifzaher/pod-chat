@@ -150,3 +150,8 @@ type ContextMenuItemType = {
   color: string;
   ownerOnly: boolean;
 };
+
+type AddGroupUserMessagePayload = {
+  group: Group;
+  user: User;
+};
