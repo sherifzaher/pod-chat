@@ -160,3 +160,8 @@ type AddGroupUserMessagePayload = {
   group: Group;
   user: User;
 };
+
+type RemoveGroupUserPayload = {
+  group: Group;
+  user: User;
+};
