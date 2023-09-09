@@ -99,3 +99,8 @@ export type RemoveGroupRecipientParams = {
   removeUserId: number;
   issuerId: number;
 };
+
+export type AddGroupUserResponse = {
+  group: Group;
+  user: User;
+};
