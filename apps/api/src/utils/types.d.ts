@@ -1,4 +1,5 @@
 import { Conversation, Group, GroupMessage, Message, User } from './typeorm';
+import { Request } from "express";
 
 export type CreateUserDetails = {
   email: string;

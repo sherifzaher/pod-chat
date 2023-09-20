@@ -8,4 +8,5 @@ export interface IConversationsService {
   ): Promise<Conversation>;
   getConversations(id: number): Promise<Conversation[]>;
   findConversationById(id: number): Promise<Conversation>;
+  hasAccess(conversationId: number, userId: number): Promise<boolean>;
 }

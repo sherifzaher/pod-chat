@@ -6,6 +6,7 @@ import { Conversation, User } from '../utils/typeorm';
 import { Services } from '../utils/constants';
 import { CreateConversationParams } from '../utils/types';
 import { IUserService } from '../users/user';
+import { ConversationNotFound } from './exceptions/conversation-not-found';
 
 @Injectable()
 export class ConversationsService implements IConversationsService {
@@ -69,5 +70,19 @@ export class ConversationsService implements IConversationsService {
     });
 
     return this.conversationRepository.save(conversation);
+  }
+
+  async hasAccess(conversationId: number, userId: number) {
+    const conversation = await this.conversationRepository.findOne(
+      conversationId,
+      {
+        relations: ['creator', 'recipient'],
+      },
+    );
+    if (!conversation) throw new ConversationNotFound();
+
+    return (
+      conversation.creator.id === userId || conversation.recipient.id === userId
+    );
   }
 }
