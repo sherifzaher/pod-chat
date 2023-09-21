@@ -12,6 +12,7 @@ import GroupPage from './pages/group/group-page';
 import GroupChannelPage from './pages/group/group-channel-page';
 import AppPage from './pages/app-page';
 import ConversationPageGuard from './guards/conversation-page-guard';
+import GroupPageGuard from './guards/group-page-guard';
 
 enableMapSet();
 
@@ -38,7 +39,14 @@ function App() {
             />
           </Route>
           <Route path="groups" element={<GroupPage />}>
-            <Route path=":id" element={<GroupChannelPage />} />
+            <Route
+              path=":id"
+              element={
+                <GroupPageGuard>
+                  <GroupChannelPage />
+                </GroupPageGuard>
+              }
+            />
           </Route>
         </Route>
       </Routes>
