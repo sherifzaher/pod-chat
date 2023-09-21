@@ -232,8 +232,14 @@ export class MessagingGateway
 
   @OnEvent('group.user.remove')
   handleGroupUserRemove(payload: RemoveGroupUserResponse) {
-    this.server
-      .to(`group-${payload.group.id}`)
-      .emit('onGroupRemovedUser', payload);
+    const ROOM_NAME = `group-${payload.group.id}`;
+    const removedUserSocket = this.sessions.getSocketId(payload.user.id);
+    this.server.to(ROOM_NAME).emit('onGroupRemovedUser', payload);
+    if (removedUserSocket) removedUserSocket.leave(ROOM_NAME);
+    const onlineUsers = payload.group.users
+      .map((user) => this.sessions.getSocketId(user.id) && user)
+      .filter((user) => user);
+    console.log(onlineUsers);
+    // this.server.to(ROOM_NAME).emit('onlineGroupUsersReceived', { onlineUsers });
   }
 }
