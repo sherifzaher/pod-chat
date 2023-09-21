@@ -32,7 +32,7 @@ export default function GroupRecipientsSidebar() {
     const interval = setInterval(() => {
       console.log(`Pinging Group ${groupId}`);
       socket.emit('getOnlineGroupUsers', { groupId });
-    }, 10000);
+    }, 3000);
     socket.on('onlineGroupUsersReceived', (payload) => {
       console.log('received payload for online users');
       setOnlineUsers(payload.onlineUsers);

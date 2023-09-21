@@ -2,11 +2,17 @@ import { useEffect } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
+import { toast } from 'react-toastify';
 import ConversationPanel from '../../components/conversations/conversation-panel';
 import ConversationSidebar from '../../components/conversations/conversation-sidebar';
 
 import { AppDispatch } from '../../store';
-import { addGroup, fetchGroupThunk, updateGroup } from '../../store/slices/group-slice';
+import {
+  addGroup,
+  fetchGroupThunk,
+  removeGroup,
+  updateGroup
+} from '../../store/slices/group-slice';
 import { updateType } from '../../store/slices/selected-slice';
 import { addGroupMessage } from '../../store/slices/group-message-slice';
 
@@ -50,14 +56,16 @@ function GroupPage() {
       dispatch(updateGroup(payload.group));
     });
 
-    socket.on('onGroupRemovedUser', (payload: RemoveGroupUserPayload) => {
+    socket.on('onGroupRemovedUser', ({ group, user: groupUser }: RemoveGroupUserPayload) => {
       console.log('onGroupRemovedUser');
-      console.log(payload);
-      dispatch(updateGroup(payload.group));
-      if (payload.user.id === user?.id) {
+      console.log(group);
+      dispatch(updateGroup(group));
+      if (user?.id === groupUser?.id) {
         console.log('user is logged in has been removed from the group.');
         console.log('navigating');
         navigate('/groups');
+        toast.warning(`${group.creator.firstName} removed you from ${group.title || 'the group'}`);
+        dispatch(removeGroup(group));
       }
     });
 
