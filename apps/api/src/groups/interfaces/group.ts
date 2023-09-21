@@ -1,4 +1,4 @@
-import { Group } from '../../utils/typeorm';
+import { Group, User } from '../../utils/typeorm';
 import { CreateGroupParams, FetchGroupParams } from '../../utils/types';
 
 export interface IGroupService {
@@ -6,4 +6,5 @@ export interface IGroupService {
   getGroups(params: FetchGroupParams): Promise<Group[]>;
   findGroupById(id: number): Promise<Group>;
   saveGroup(params: Group): Promise<Group>;
+  hasAccess(groupId: number, userId: number): Promise<User | undefined>;
 }
