@@ -52,7 +52,7 @@ export default function MessagePanelHeader() {
           <span>{headerTitle()}</span>
         </div>
         <GroupHeaderIcons>
-          {selectedType === 'group' && user?.id === group?.creator?.id && (
+          {selectedType === 'group' && user?.id === group?.owner?.id && (
             <PersonAdd cursor="pointer" onClick={() => setShowModal(true)} size={30} />
           )}
           {selectedType === 'group' && (

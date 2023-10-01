@@ -99,6 +99,7 @@ type Group = {
   title?: string;
   users: User[];
   creator: User;
+  owner: User;
   messages: Message[];
   createdAt: number;
   lastMessageSent: Message;
