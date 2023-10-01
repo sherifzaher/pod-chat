@@ -53,12 +53,14 @@ export class GroupController {
    * Route: /api/groups/:id/owner
    */
   @Patch(':id/owner')
-  updateGroupOwner(
+  async updateGroupOwner(
     @AuthUser() { id: userId }: User,
     @Param('id', ParseIntPipe) groupId: number,
     @Body() { newOwnerId }: TransferOwnerDto,
   ) {
     const params = { newOwnerId, userId, groupId };
-    return this.groupService.transferGroupOwner(params);
+    const group = await this.groupService.transferGroupOwner(params);
+    this.eventEmitter.emit('group.owner.update', group);
+    return group;
   }
 }

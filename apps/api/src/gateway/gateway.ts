@@ -242,4 +242,11 @@ export class MessagingGateway
     console.log(onlineUsers);
     // this.server.to(ROOM_NAME).emit('onlineGroupUsersReceived', { onlineUsers });
   }
+
+  @OnEvent('group.owner.update')
+  handleGroupOwnerUpdate(payload: Group) {
+    console.log('Inside group.owner.update');
+    const ROOM_NAME = `group-${payload.id}`;
+    this.server.to(ROOM_NAME).emit('onGroupOwnerUpdate', payload);
+  }
 }
