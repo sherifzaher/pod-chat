@@ -236,10 +236,10 @@ export class MessagingGateway
     const removedUserSocket = this.sessions.getSocketId(payload.user.id);
     this.server.to(ROOM_NAME).emit('onGroupRemovedUser', payload);
     if (removedUserSocket) removedUserSocket.leave(ROOM_NAME);
-    const onlineUsers = payload.group.users
-      .map((user) => this.sessions.getSocketId(user.id) && user)
-      .filter((user) => user);
-    console.log(onlineUsers);
+    // const onlineUsers = payload.group.users
+    //   .map((user) => this.sessions.getSocketId(user.id) && user)
+    //   .filter((user) => user);
+    // console.log(onlineUsers);
     // this.server.to(ROOM_NAME).emit('onlineGroupUsersReceived', { onlineUsers });
   }
 
@@ -247,6 +247,12 @@ export class MessagingGateway
   handleGroupOwnerUpdate(payload: Group) {
     console.log('Inside group.owner.update');
     const ROOM_NAME = `group-${payload.id}`;
+    const newOwnerSocket = this.sessions.getSocketId(payload.owner.id);
+    const { rooms } = this.server.sockets.adapter;
+    const socketsInRoom = rooms.get(ROOM_NAME);
     this.server.to(ROOM_NAME).emit('onGroupOwnerUpdate', payload);
+    if (newOwnerSocket && !socketsInRoom.has(newOwnerSocket.id)) {
+      newOwnerSocket.emit('onGroupOwnerUpdate', payload);
+    }
   }
 }
