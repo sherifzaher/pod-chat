@@ -69,14 +69,22 @@ function GroupPage() {
       }
     });
 
+    socket.on('onGroupOwnerUpdate', (payload: Group) => {
+      if (payload?.title && payload.owner.id === user?.id) {
+        toast.success(`You're the owner of ${payload.title} group.`);
+      }
+      dispatch(updateGroup(payload));
+    });
+
     return () => {
       socket.off('onGroupMessage');
       socket.off('onGroupCreate');
       socket.off('onGroupUserAdd');
       socket.off('AddGroupUserMessagePayload');
       socket.off('onGroupRemovedUser');
+      socket.off('onGroupOwnerUpdate');
     };
-  }, [dispatch, id, socket]);
+  }, [dispatch, id, navigate, socket, user?.id]);
 
   return (
     <>
