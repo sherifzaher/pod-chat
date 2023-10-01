@@ -166,3 +166,8 @@ type RemoveGroupUserPayload = {
   group: Group;
   user: User;
 };
+
+type UpdateGroupOwnerParams = {
+  id: number;
+  newOwnerId: number;
+};

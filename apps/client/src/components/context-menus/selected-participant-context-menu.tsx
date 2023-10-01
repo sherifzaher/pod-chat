@@ -6,7 +6,7 @@ import { userContextMenuItems } from '../../utils/constants';
 import { getUserContextMenuIcon, isGroupOwner } from '../../utils/helpers';
 import { AppDispatch, RootState } from '../../store';
 import { useAuthContext } from '../../context/auth-context';
-import { removeGroupRecipientThunk } from '../../store/slices/group-slice';
+import { removeGroupRecipientThunk, updateGroupOwnerThunk } from '../../store/slices/group-slice';
 
 type Props = {
   points: { x: number; y: number };
@@ -42,6 +42,14 @@ export default function SelectedParticipantContextMenu({ points }: Props) {
     dispatch(removeGroupRecipientThunk(params));
   };
 
+  const transferOwner = () => {
+    console.log(`Transfering Group Owner to ${selectedUser?.id}`);
+    if (!selectedUser) return;
+    dispatch(
+      updateGroupOwnerThunk({ id: parseInt(groupId!, 19), newOwnerId: Number(selectedUser.id) })
+    );
+  };
+
   if (!user || !group) return null;
   return (
     <ContextMenu top={points.y} left={points.x}>
@@ -55,7 +63,7 @@ export default function SelectedParticipantContextMenu({ points }: Props) {
             <PersonCross size={20} color="#ff0000" />
             <span style={{ color: '#ff0000' }}>Kick User</span>
           </ContextMenuItem>
-          <ContextMenuItem>
+          <ContextMenuItem onClick={transferOwner}>
             <Crown size={20} color="#FFB800" />
             <span style={{ color: '#FFB800' }}>Transfer Owner</span>
           </ContextMenuItem>

@@ -3,7 +3,8 @@ import {
   createGroupAPI,
   fetchGroups as FetchGroupsAPI,
   postNewConversation,
-  removeGroupRecipient as removeGroupRecipientAPI
+  removeGroupRecipient as removeGroupRecipientAPI,
+  updateGroupOwner
 } from '../../utils/api';
 
 export interface GroupState {
@@ -23,6 +24,11 @@ export const createGroupThunk = createAsyncThunk('group/create', (data: CreateGr
 export const removeGroupRecipientThunk = createAsyncThunk(
   'groups/recipients/delete',
   (params: RemoveGroupRecipientParams) => removeGroupRecipientAPI(params)
+);
+
+export const updateGroupOwnerThunk = createAsyncThunk(
+  'groups/owner/update',
+  (params: UpdateGroupOwnerParams) => updateGroupOwner(params)
 );
 
 export const GroupSlice = createSlice({
@@ -59,6 +65,9 @@ export const GroupSlice = createSlice({
         if (existingGroup > -1) {
           state.groups[existingGroup] = updatedGroup;
         }
+      })
+      .addCase(updateGroupOwnerThunk.fulfilled, () => {
+        console.log('updateGroupOwnerThunk.fulfilled');
       });
   }
 });

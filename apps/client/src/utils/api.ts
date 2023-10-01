@@ -77,3 +77,6 @@ export const addGroupRecipient = ({ id, email }: AddGroupRecipientParams) =>
 
 export const removeGroupRecipient = ({ id, userId }: RemoveGroupRecipientParams) =>
   axiosClient.delete<Group>(`/groups/${id}/recipients/${userId}`, config);
+
+export const updateGroupOwner = ({ id, newOwnerId }: UpdateGroupOwnerParams) =>
+  axiosClient.patch(`groups/${id}/owner`, { newOwnerId }, config);
