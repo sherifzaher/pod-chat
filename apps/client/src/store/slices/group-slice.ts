@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   createGroupAPI,
   fetchGroups as FetchGroupsAPI,
+  leaveGroup as leaveGroupAPI,
   postNewConversation,
   removeGroupRecipient as removeGroupRecipientAPI,
   updateGroupOwner
@@ -35,6 +36,8 @@ export const updateGroupOwnerThunk = createAsyncThunk(
   'groups/owner/update',
   (params: UpdateGroupOwnerParams) => updateGroupOwner(params)
 );
+
+export const leaveGroupThunk = createAsyncThunk('groups/leave', (id: number) => leaveGroupAPI(id));
 
 export const GroupSlice = createSlice({
   name: 'groups',
@@ -82,6 +85,9 @@ export const GroupSlice = createSlice({
       })
       .addCase(updateGroupOwnerThunk.fulfilled, () => {
         console.log('updateGroupOwnerThunk.fulfilled');
+      })
+      .addCase(leaveGroupThunk.fulfilled, (state, action) => {
+        console.log('leaveGroupThunk.fulfilled');
       });
   }
 });

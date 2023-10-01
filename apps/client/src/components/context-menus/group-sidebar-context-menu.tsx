@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { IoMdExit, IoIosArchive } from 'react-icons/io';
@@ -8,7 +8,7 @@ import { getUserContextMenuIcon } from '../../utils/helpers';
 
 import { AppDispatch, RootState } from '../../store';
 import { useAuthContext } from '../../context/auth-context';
-import { toggleContextMenu } from '../../store/slices/group-slice';
+import { leaveGroupThunk, toggleContextMenu } from '../../store/slices/group-slice';
 
 type Props = {
   points: { x: number; y: number };
@@ -24,8 +24,9 @@ export const CustomIcon = ({ type }: CustomIconProps) => {
 
 export default function GroupSidebarContextMenu() {
   const { id: groupId } = useParams();
-  const dispatch = useDispatch<AppDispatch>();
   const { user } = useAuthContext();
+  const menuRef = useRef<HTMLUListElement | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
   const points = useSelector((state: RootState) => state.groups.points);
   const group = useSelector((state: RootState) => state.groups.groups).find(
     (groupItem) => groupItem.id === parseInt(groupId!, 10)
@@ -33,16 +34,30 @@ export default function GroupSidebarContextMenu() {
 
   useEffect(() => {
     const handleResize = (e: UIEvent) => dispatch(toggleContextMenu(false));
-    window.addEventListener('resize', handleResize);
+    const handleCloseMenu = (e: MouseEvent) => {
+      if (e.target !== menuRef.current) {
+        dispatch(toggleContextMenu(false));
+      }
+    };
 
-    return () => window.removeEventListener('resize', handleResize);
-  }, [dispatch]);
+    window.addEventListener('resize', handleResize);
+    // window.addEventListener('mousedown', handleCloseMenu);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      // window.removeEventListener('mousedown', handleCloseMenu);
+    };
+  }, [dispatch, menuRef]);
+
+  const handleLeaveGroup = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+    dispatch(leaveGroupThunk(parseInt(groupId!, 10)));
+  };
 
   if (!user) return null;
 
   return (
-    <ContextMenu top={points.y} left={points.x}>
-      <ContextMenuItem>
+    <ContextMenu top={points.y} left={points.x} ref={menuRef}>
+      <ContextMenuItem onClick={handleLeaveGroup}>
         <IoMdExit size={20} color="#ff0000" />
         <span style={{ color: '#ff0000' }}>Leave Group</span>
       </ContextMenuItem>
