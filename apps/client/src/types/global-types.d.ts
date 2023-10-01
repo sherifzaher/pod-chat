@@ -171,3 +171,5 @@ type UpdateGroupOwnerParams = {
   id: number;
   newOwnerId: number;
 };
+
+type ContextMenuEvent = React.MouseEvent<HTMLDivElement, MouseEvent>;

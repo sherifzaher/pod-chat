@@ -5,9 +5,10 @@ import styles from './index.module.scss';
 
 type Props = {
   group: Group;
+  onContextMenu: (e: ContextMenuEvent, group: Group) => void;
 };
 
-export default function GroupSidebarItem({ group }: Props) {
+export default function GroupSidebarItem({ group, onContextMenu }: Props) {
   const MAX_TITLE_LENGTH = 20;
   const MAX_MESSAGE_LENGTH = 50;
   const navigate = useNavigate();
@@ -25,7 +26,9 @@ export default function GroupSidebarItem({ group }: Props) {
   };
 
   return (
-    <ConversationSidebarItemStyle onClick={() => navigate(`/groups/${group.id}`)}>
+    <ConversationSidebarItemStyle
+      onContextMenu={(e) => onContextMenu(e, group)}
+      onClick={() => navigate(`/groups/${group.id}`)}>
       <div className={styles.groupAvatar} />
       <div>
         <span className={styles.groupName}>{getTransformedTitle()}</span>

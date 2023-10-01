@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import { toast } from 'react-toastify';
 import ConversationPanel from '../../components/conversations/conversation-panel';
-import ConversationSidebar from '../../components/conversations/conversation-sidebar';
+import ConversationSidebar from '../../components/sidebars/conversation-sidebar';
 
 import { AppDispatch } from '../../store';
 import {

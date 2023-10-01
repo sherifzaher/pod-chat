@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import ConversationSidebar from '../../components/conversations/conversation-sidebar';
+import ConversationSidebar from '../../components/sidebars/conversation-sidebar';
 import ConversationPanel from '../../components/conversations/conversation-panel';
 
 import { AppDispatch } from '../../store';

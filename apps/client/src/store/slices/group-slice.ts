@@ -9,10 +9,15 @@ import {
 
 export interface GroupState {
   groups: Group[];
+  selectedGroup?: Group;
+  showContextMenu: boolean;
+  points: Points;
 }
 
 const initialState: GroupState = {
-  groups: []
+  groups: [],
+  showContextMenu: false,
+  points: { x: 0, y: 0 }
 };
 
 export const fetchGroupThunk = createAsyncThunk('group/fetch', () => FetchGroupsAPI());
@@ -51,6 +56,15 @@ export const GroupSlice = createSlice({
       if (existingGroup > -1) {
         state.groups.splice(existingGroup, 1);
       }
+    },
+    toggleContextMenu: (state, action: PayloadAction<boolean>) => {
+      state.showContextMenu = action.payload;
+    },
+    setSelectedGroup: (state, action: PayloadAction<Group>) => {
+      state.selectedGroup = action.payload;
+    },
+    setContextMenuPoints: (state, action: PayloadAction<Points>) => {
+      state.points = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -72,5 +86,12 @@ export const GroupSlice = createSlice({
   }
 });
 
-export const { addGroup, updateGroup, removeGroup } = GroupSlice.actions;
+export const {
+  addGroup,
+  updateGroup,
+  removeGroup,
+  setSelectedGroup,
+  toggleContextMenu,
+  setContextMenuPoints
+} = GroupSlice.actions;
 export default GroupSlice.reducer;
