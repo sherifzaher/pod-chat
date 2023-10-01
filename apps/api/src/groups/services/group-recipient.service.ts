@@ -5,6 +5,8 @@ import { IUserService } from '../../users/user';
 import { IGroupService } from '../interfaces/group';
 import {
   AddGroupRecipientParams,
+  CheckUserGroupParams,
+  LeaveGroupParams,
   RemoveGroupRecipientParams,
 } from '../../utils/types';
 import { GroupNotFoundException } from '../exceptions/group-not-found-exception';
@@ -12,6 +14,7 @@ import { NotGroupOwnerException } from '../exceptions/not-group-owner-exception'
 import { InjectRepository } from '@nestjs/typeorm';
 import { Group } from '../../utils/typeorm';
 import { Repository } from 'typeorm';
+import { GroupParticipantNotFound } from '../exceptions/group-participant-not-found';
 
 @Injectable()
 export class GroupRecipientService implements IGroupRecipientService {
@@ -24,8 +27,7 @@ export class GroupRecipientService implements IGroupRecipientService {
   ) {}
   async addGroupRecipient(params: AddGroupRecipientParams) {
     const group = await this.groupService.findGroupById(params.id);
-    if (!group)
-      throw new HttpException('Group not found', HttpStatus.BAD_REQUEST);
+    if (!group) throw new GroupNotFoundException();
 
     if (group.owner.id !== params.userId)
       throw new HttpException('Insufficient Permissions', HttpStatus.FORBIDDEN);
@@ -72,5 +74,26 @@ export class GroupRecipientService implements IGroupRecipientService {
     group.users = group.users.filter((user) => user.id !== params.removeUserId);
     const savedGroup = await this.groupService.saveGroup(group);
     return { group: savedGroup, user: userToBeRemoved };
+  }
+
+  async isUserInGroup(params: CheckUserGroupParams) {
+    const group = await this.groupService.findGroupById(params.id);
+    if (!group) throw new GroupNotFoundException();
+    const user = group.users.find((user) => user.id === params.userId);
+    if (!user) throw new GroupParticipantNotFound();
+    return group;
+  }
+
+  async leaveGroup({ id: groupId, userId }: LeaveGroupParams) {
+    const group = await this.isUserInGroup({ id: groupId, userId });
+    const updatedUsers = group.users.filter((user) => user.id !== userId);
+    if (group.owner.id === userId)
+      throw new HttpException(
+        'Cannot leave group as owner',
+        HttpStatus.BAD_REQUEST,
+      );
+
+    group.users = updatedUsers;
+    return this.groupRepository.save(group);
   }
 }
