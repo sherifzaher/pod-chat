@@ -5,14 +5,16 @@ import {
   Inject,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Routes, Services } from '../../utils/constants';
 import { IGroupService } from '../interfaces/group';
 import { AuthUser } from '../../utils/decorators';
-import { CreateGroupDto } from '../dtos/CreateGroup.dto';
+import { CreateGroupDto } from '../dtos/create-group.dto';
 import { User } from 'src/utils/typeorm/entities/User';
+import { TransferOwnerDto } from '../dtos/transfer-owner.dto';
 
 @Controller(Routes.GROUPS)
 export class GroupController {
@@ -45,5 +47,18 @@ export class GroupController {
   @Get(':id')
   getGroup(@AuthUser() user: User, @Param('id') groupId: number) {
     return this.groupService.findGroupById(groupId);
+  }
+
+  /**
+   * Route: /api/groups/:id/owner
+   */
+  @Patch(':id/owner')
+  updateGroupOwner(
+    @AuthUser() { id: userId }: User,
+    @Param('id', ParseIntPipe) groupId: number,
+    @Body() { newOwnerId }: TransferOwnerDto,
+  ) {
+    const params = { newOwnerId, userId, groupId };
+    return this.groupService.transferGroupOwner(params);
   }
 }

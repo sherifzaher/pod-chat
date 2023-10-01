@@ -1,5 +1,5 @@
 import { Conversation, Group, GroupMessage, Message, User } from './typeorm';
-import { Request } from "express";
+import { Request } from 'express';
 
 export type CreateUserDetails = {
   email: string;
@@ -109,4 +109,10 @@ export type AddGroupUserResponse = {
 export type RemoveGroupUserResponse = {
   group: Group;
   user: User;
+};
+
+export type TransferOwnerParams = {
+  userId: number;
+  groupId: number;
+  newOwnerId: number;
 };

@@ -1,5 +1,9 @@
 import { Group, User } from '../../utils/typeorm';
-import { CreateGroupParams, FetchGroupParams } from '../../utils/types';
+import {
+  CreateGroupParams,
+  FetchGroupParams,
+  TransferOwnerParams,
+} from '../../utils/types';
 
 export interface IGroupService {
   createGroup(params: CreateGroupParams): Promise<Group>;
@@ -7,4 +11,5 @@ export interface IGroupService {
   findGroupById(id: number): Promise<Group>;
   saveGroup(params: Group): Promise<Group>;
   hasAccess(groupId: number, userId: number): Promise<User | undefined>;
+  transferGroupOwner(params: TransferOwnerParams): Promise<Group>;
 }
