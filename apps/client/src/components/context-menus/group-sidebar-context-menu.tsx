@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { IoMdExit, IoIosArchive } from 'react-icons/io';
@@ -23,14 +23,12 @@ export const CustomIcon = ({ type }: CustomIconProps) => {
 };
 
 export default function GroupSidebarContextMenu() {
-  const { id: groupId } = useParams();
+  // const { id: groupId } = useParams();
   const { user } = useAuthContext();
   const menuRef = useRef<HTMLUListElement | null>(null);
   const dispatch = useDispatch<AppDispatch>();
   const points = useSelector((state: RootState) => state.groups.points);
-  const group = useSelector((state: RootState) => state.groups.groups).find(
-    (groupItem) => groupItem.id === parseInt(groupId!, 10)
-  );
+  const groupId = useSelector((state: RootState) => state.groups.selectedGroup?.id);
 
   useEffect(() => {
     const handleResize = (e: UIEvent) => dispatch(toggleContextMenu(false));
@@ -49,11 +47,14 @@ export default function GroupSidebarContextMenu() {
     };
   }, [dispatch, menuRef]);
 
-  const handleLeaveGroup = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
-    dispatch(leaveGroupThunk(parseInt(groupId!, 10)));
-  };
+  const handleLeaveGroup = useCallback(
+    (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+      dispatch(leaveGroupThunk(groupId!));
+    },
+    [dispatch, groupId]
+  );
 
-  if (!user) return null;
+  if (!user || !groupId) return null;
 
   return (
     <ContextMenu top={points.y} left={points.x} ref={menuRef}>

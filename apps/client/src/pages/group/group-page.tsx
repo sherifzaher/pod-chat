@@ -76,6 +76,15 @@ function GroupPage() {
       dispatch(updateGroup(payload));
     });
 
+    socket.on('onGroupParticipantLeft', (payload) => {
+      console.log('inside onGroupParticipantLeft');
+      console.log(payload);
+      dispatch(updateGroup(payload.group));
+      if (payload.userId === user?.id) {
+        navigate('/groups');
+      }
+    });
+
     return () => {
       socket.off('onGroupMessage');
       socket.off('onGroupCreate');
