@@ -50,7 +50,9 @@ export class GroupRecipientsController {
     @Param('id', ParseIntPipe) id: number,
   ) {
     const params = { id, userId };
-    return this.groupRecipientService.leaveGroup(params);
+    const group = await this.groupRecipientService.leaveGroup(params);
+    this.eventEmitter.emit('group.user.leave', { group, userId });
+    return group;
   }
 
   @Delete(':userId')

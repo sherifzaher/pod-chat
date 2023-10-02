@@ -255,4 +255,11 @@ export class MessagingGateway
       newOwnerSocket.emit('onGroupOwnerUpdate', payload);
     }
   }
+
+  @OnEvent('group.user.leave')
+  handleGroupUserLeave(payload) {
+    console.log('Inside group.user.leave');
+    const ROOM_NAME = `group-${payload.group.id}`;
+    this.server.to(ROOM_NAME).emit('onGroupParticipantLeft', payload);
+  }
 }
