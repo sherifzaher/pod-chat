@@ -49,7 +49,7 @@ export default function GroupSidebarContextMenu() {
 
   const handleLeaveGroup = useCallback(
     (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
-      dispatch(leaveGroupThunk(groupId!));
+      dispatch(leaveGroupThunk(groupId!)).finally(() => dispatch(toggleContextMenu(false)));
     },
     [dispatch, groupId]
   );
