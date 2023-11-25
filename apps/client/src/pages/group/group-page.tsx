@@ -82,6 +82,7 @@ function GroupPage() {
       dispatch(updateGroup(payload.group));
       if (payload.userId === user?.id) {
         navigate('/groups');
+        dispatch(removeGroup(payload.group));
       }
     });
 

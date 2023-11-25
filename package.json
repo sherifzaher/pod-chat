@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@turbo/gen": "^1.9.7",
-    "turbo": "latest"
+    "turbo": "^1.10.16"
   },
   "packageManager": "pnpm@7.15.0",
   "dependencies": {

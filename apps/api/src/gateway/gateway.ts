@@ -26,7 +26,7 @@ import { IGroupService } from '../groups/interfaces/group';
 
 @WebSocketGateway({
   cors: {
-    origin: ['http://localhost:3000', 'http://192.168.1.6:3000'],
+    origin: ['http://localhost:3000', 'http://192.168.1.5:3000'],
     credentials: true,
   },
 })
@@ -260,6 +260,22 @@ export class MessagingGateway
   handleGroupUserLeave(payload) {
     console.log('Inside group.user.leave');
     const ROOM_NAME = `group-${payload.group.id}`;
-    this.server.to(ROOM_NAME).emit('onGroupParticipantLeft', payload);
+    const { rooms } = this.server.sockets.adapter;
+    const leftUserSocket = this.sessions.getSocketId(payload.userId);
+    const socketsInRoom = rooms.get(ROOM_NAME);
+
+    if (leftUserSocket && socketsInRoom) {
+      if (socketsInRoom.has(leftUserSocket.id)) {
+        return this.server
+          .to(ROOM_NAME)
+          .emit('onGroupParticipantLeft', payload);
+      } else {
+        this.server.to(ROOM_NAME).emit('onGroupParticipantLeft', payload);
+        return leftUserSocket.emit('onGroupParticipantLeft', payload);
+      }
+    }
+    if (leftUserSocket && !socketsInRoom) {
+      return leftUserSocket.emit('onGroupParticipantLeft', payload);
+    }
   }
 }
