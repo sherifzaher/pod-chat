@@ -125,4 +125,4 @@ export type LeaveGroupParams = {
 export type CheckUserGroupParams = {
   id: number;
   userId: number;
-}
+};

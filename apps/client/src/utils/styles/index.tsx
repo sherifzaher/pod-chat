@@ -187,8 +187,10 @@ export const MessageInputContainer = styled.div`
   border-radius: 10px;
   background-color: #101010;
   width: 100%;
-  padding: 18px 32px;
-
+  padding: 16px 32px;
+  display: flex;
+  gap: 20px;
+  position: relative;
   & form {
     width: 100%;
   }
@@ -198,7 +200,7 @@ export const MessagePanelFooter = styled.footer`
   padding: 0 32px 10px 32px;
 `;
 
-export const MessageInput = styled.input`
+export const MessageInput = styled.textarea`
   background-color: inherit;
   resize: none;
   outline: none;
@@ -252,6 +254,7 @@ export const MessageItemHeader = styled.div`
 export const MessageItemContent = styled.div<MessageItemContentProps>`
   padding: ${(props) => props.padding};
   width: 100%;
+  white-space: pre-line;
 `;
 
 export const MessagePanelHeaderStyle = styled.header`
