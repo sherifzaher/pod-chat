@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { CirclePlusFill, FaceVeryHappy } from 'akar-icons';
 import { RiFileGifLine } from 'react-icons/ri';
+import data from '@emoji-mart/data';
+import Picker from '@emoji-mart/react';
 
 import { postGroupMessage, postNewMessage } from '../../utils/api';
 import { MessageInputContainer } from '../../utils/styles';
@@ -20,6 +22,8 @@ export default function MessageInputField() {
   const [content, setContent] = useState('');
   const [typing, setTyping] = useState(false);
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
+  const [caretStartPosition, setCaretStartPosition] = useState(0);
+  const [caretEndPosition, setCaretEndPosition] = useState(0);
 
   const { id: routeId } = useParams();
   const { user } = useAuthContext();
@@ -92,22 +96,34 @@ export default function MessageInputField() {
       if (e.key === 'Enter' && !e.shiftKey) {
         handleSendMessage(e);
       }
+      const target = e.target as HTMLTextAreaElement;
+      setCaretStartPosition(target.selectionStart);
+      setCaretEndPosition(target.selectionEnd);
     },
-    [handleSendTypingStatus]
+    [handleSendMessage, handleSendTypingStatus]
   );
+
+  const handleOnEmojiSelect = (e: any) => {
+    const emoji = e.native;
+    if (caretStartPosition === 0) {
+      const newContent = `${content.substring(9, caretStartPosition)} ${emoji} ${content.substring(
+        caretEndPosition,
+        content.length
+      )}`;
+      setContent(newContent);
+    } else {
+      const newContent = `${content.substring(
+        0,
+        caretStartPosition - 1
+      )} ${emoji} ${content.substring(caretEndPosition - 1, content.length)}`;
+      setContent(newContent);
+    }
+  };
 
   return (
     <MessageInputContainer>
       <CirclePlusFill className={styles.icon} size={ICON_SIZE} />
       <form>
-        {/* <MessageInput
-          onKeyDown={handleSendTypingStatus}
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder={`Send a message to ${
-            conversationType === 'group' ? group?.title || 'Group' : recipient?.firstName || 'user'
-          }`}
-        /> */}
         <MessageTextField
           onKeyDown={handleOnKeyDown}
           maxLength={MAX_LENGTH}
@@ -118,6 +134,9 @@ export default function MessageInputField() {
           }`}
         />
       </form>
+      <div className={styles.emojiPicker}>
+        <Picker data={data} onEmojiSelect={handleOnEmojiSelect} />
+      </div>
       {/* <RiFileGifLine className={styles.icon} size={ICON_SIZE} /> */}
       <FaceVeryHappy className={styles.icon} size={ICON_SIZE} />
       <div className={styles.characterCount}>{`${content.length}/${MAX_LENGTH}`}</div>
