@@ -93,21 +93,13 @@ export default function MessageInputField() {
         handleSendMessage(e);
       }
     },
-    [handleSendTypingStatus]
+    [handleSendMessage, handleSendTypingStatus]
   );
 
   return (
     <MessageInputContainer>
       <CirclePlusFill className={styles.icon} size={ICON_SIZE} />
       <form>
-        {/* <MessageInput
-          onKeyDown={handleSendTypingStatus}
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder={`Send a message to ${
-            conversationType === 'group' ? group?.title || 'Group' : recipient?.firstName || 'user'
-          }`}
-        /> */}
         <MessageTextField
           onKeyDown={handleOnKeyDown}
           maxLength={MAX_LENGTH}

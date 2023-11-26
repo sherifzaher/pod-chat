@@ -9,5 +9,8 @@ export interface IConversationsService {
   getConversations(id: number): Promise<Conversation[]>;
   findConversationById(id: number): Promise<Conversation>;
   hasAccess(conversationId: number, userId: number): Promise<boolean>;
-  isCreated(userId: number, recipientId: number): Promise<Conversation | undefined>;
+  isCreated(
+    userId: number,
+    recipientId: number,
+  ): Promise<Conversation | undefined>;
 }

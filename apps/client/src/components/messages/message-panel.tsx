@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import {
@@ -21,15 +22,22 @@ type Props = {
 };
 
 export default function MessagePanel({ isRecipientTyping }: Props) {
+  const ref = useRef<HTMLDivElement>(null);
   const { id } = useParams();
   const { user } = useAuthContext();
   const { conversations, loading } = useSelector((state: RootState) => state.conversations);
   const conversation = conversations.find((conv) => conv.id === Number(id!));
 
+  // useEffect(() => {
+  //   // if(ref.current){
+  //     // ref.current.
+  //   }
+  // }, []);
+
   return (
     <MessagePanelStyle>
       <MessagePanelHeader />
-      <MessagePanelBody>
+      <MessagePanelBody ref={ref}>
         <MessageContainer />
       </MessagePanelBody>
       <MessagePanelFooter>

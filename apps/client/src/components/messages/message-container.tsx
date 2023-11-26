@@ -1,6 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { useInView } from 'react-intersection-observer';
+
 import {
   MessageContainerStyle,
   MessageItemContainer,
@@ -39,6 +41,21 @@ export default function MessageContainer() {
   );
   const groupMessages = useSelector((state: RootState) => selectGroupMessage(state, Number(id!)));
   const selectedType = useSelector((state: RootState) => state.selectedConversationType.type);
+
+  const ref = useRef<HTMLDivElement>(null);
+  const {
+    ref: triggerRef,
+    inView,
+    entry
+  } = useInView({
+    /* Optional options */
+    threshold: 0.01,
+    onChange(isInView) {
+      if (isInView) {
+        console.log('Fetcing more messages');
+      }
+    }
+  });
 
   const onContextMenu = useCallback(
     (e: React.MouseEvent<HTMLDivElement, MouseEvent>, message: Message | GroupMessageType) => {
@@ -119,9 +136,20 @@ export default function MessageContainer() {
     return groupMessages?.messages.map(mapMessages);
   };
 
+  useEffect(() => {
+    if (ref.current) {
+      console.log('Divvvvvv');
+      const newScrollTop = ref.current.scrollHeight - ref.current.clientHeight;
+      console.log(newScrollTop);
+      ref.current.scrollTop = newScrollTop;
+    }
+  }, []);
+
   return (
     <MessageContainerStyle>
       {formatMessages()}
+      {/* Div to trigger user scroll for fetching more messages */}
+      <div ref={triggerRef} style={{ opacity: 0 }} />
       {showMenu && <SelectedMessageContextMenu points={points} />}
     </MessageContainerStyle>
   );

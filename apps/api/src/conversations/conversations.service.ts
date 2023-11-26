@@ -49,7 +49,7 @@ export class ConversationsService implements IConversationsService {
           recipient: { id: userId },
         },
       ],
-    })
+    });
   }
 
   async createConversation(user: User, params: CreateConversationParams) {
@@ -70,18 +70,19 @@ export class ConversationsService implements IConversationsService {
     if (existingConversation)
       throw new HttpException('Conversation exists', HttpStatus.CONFLICT);
 
-    
     const conversation = this.conversationRepository.create({
       creator: user,
       recipient: recipient,
     });
 
-    const savedConversation = await this.conversationRepository.save(conversation);
+    const savedConversation = await this.conversationRepository.save(
+      conversation,
+    );
 
     const newMessage = this.messageRepository.create({
       content: message,
       conversation: savedConversation,
-      author: user
+      author: user,
     });
     const savedMessage = await this.messageRepository.save(newMessage);
     savedConversation.lastMessageSent = savedMessage;
