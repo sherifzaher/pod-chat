@@ -84,7 +84,8 @@ export class ConversationsService implements IConversationsService {
       author: user
     });
     const savedMessage = await this.messageRepository.save(newMessage);
-
+    savedConversation.lastMessageSent = savedMessage;
+    await this.conversationRepository.save(savedConversation);
     return savedConversation;
   }
 
