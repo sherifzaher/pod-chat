@@ -28,12 +28,6 @@ export default function MessagePanel({ isRecipientTyping }: Props) {
   const { conversations, loading } = useSelector((state: RootState) => state.conversations);
   const conversation = conversations.find((conv) => conv.id === Number(id!));
 
-  // useEffect(() => {
-  //   // if(ref.current){
-  //     // ref.current.
-  //   }
-  // }, []);
-
   return (
     <MessagePanelStyle>
       <MessagePanelHeader />

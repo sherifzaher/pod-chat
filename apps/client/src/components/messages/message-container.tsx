@@ -12,8 +12,12 @@ import FormattedMessage from './formatted-messages';
 import EditMessageContainer from './edit-message-container';
 import SelectedMessageContextMenu from '../context-menus/selected-message-context-menu';
 
-import { RootState } from '../../store';
-import { selectConversationMessage } from '../../store/slices/messages-slice';
+import { AppDispatch, RootState } from '../../store';
+import {
+  fetchMessagesThunk,
+  selectConversationMessage,
+  updatePaginationSkip
+} from '../../store/slices/messages-slice';
 import { selectGroupMessage } from '../../store/slices/group-message-slice';
 import {
   setIsEditingMessage,
@@ -28,7 +32,7 @@ export default function MessageContainer() {
   const [showMenu, setShowMenu] = useState(false);
   const [points, setPoints] = useState({ x: 0, y: 0 });
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { isEditing, selectedMessage, messageBeingEdited } = useSelector(
     (state: RootState) => state.messageContainer
   );
@@ -41,8 +45,8 @@ export default function MessageContainer() {
   );
   const groupMessages = useSelector((state: RootState) => selectGroupMessage(state, Number(id!)));
   const selectedType = useSelector((state: RootState) => state.selectedConversationType.type);
+  const pagination = useSelector((state: RootState) => state.messages.pagination);
 
-  const ref = useRef<HTMLDivElement>(null);
   const {
     ref: triggerRef,
     inView,
@@ -52,7 +56,11 @@ export default function MessageContainer() {
     threshold: 0.01,
     onChange(isInView) {
       if (isInView) {
-        console.log('Fetcing more messages');
+        dispatch(fetchMessagesThunk({ id: Number(id!), skip: pagination.skip }))
+          .unwrap()
+          .then(() => {
+            dispatch(updatePaginationSkip(pagination.skip + 1));
+          });
       }
     }
   });
@@ -135,15 +143,6 @@ export default function MessageContainer() {
     if (selectedType === 'private') return conversationMessages?.messages.map(mapMessages);
     return groupMessages?.messages.map(mapMessages);
   };
-
-  useEffect(() => {
-    if (ref.current) {
-      console.log('Divvvvvv');
-      const newScrollTop = ref.current.scrollHeight - ref.current.clientHeight;
-      console.log(newScrollTop);
-      ref.current.scrollTop = newScrollTop;
-    }
-  }, []);
 
   return (
     <MessageContainerStyle>

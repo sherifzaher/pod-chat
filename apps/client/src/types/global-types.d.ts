@@ -44,6 +44,11 @@ type FetchMessagePayload = {
   messages: Message[];
 };
 
+type FetchMessagesProps = {
+  id: number;
+  skip: number;
+};
+
 type MessageEventPayload = {
   message: Message;
   conversation: Conversation;

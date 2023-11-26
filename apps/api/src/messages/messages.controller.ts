@@ -8,6 +8,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { Routes, Services } from '../utils/constants';
 import { IMessageService } from './message';
@@ -41,12 +42,17 @@ export class MessagesController {
 
   @Get()
   async getConversationMessages(
-    @Param('id', ParseIntPipe) conversationId: number,
     @AuthUser() user: User,
+    @Param('id', ParseIntPipe) conversationId: number,
+    @Query('skip', ParseIntPipe) skip: number,
   ) {
-    const messages = await this.messageService.getMessagesByConversationId(
-      conversationId,
-    );
+    const [messages, count] =
+      await this.messageService.getMessagesByConversationId(
+        conversationId,
+        skip,
+      );
+
+    console.log(count);
 
     return {
       id: conversationId,

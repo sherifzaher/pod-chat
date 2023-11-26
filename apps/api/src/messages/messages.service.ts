@@ -60,8 +60,8 @@ export class MessagesService implements IMessageService {
     };
   }
 
-  getMessagesByConversationId(conversationId: number): Promise<Message[]> {
-    return this.messageRepository.find({
+  getMessagesByConversationId(conversationId: number, skip: number) {
+    return this.messageRepository.findAndCount({
       where: {
         conversation: {
           id: conversationId,
@@ -71,6 +71,8 @@ export class MessagesService implements IMessageService {
       order: {
         createdAt: 'DESC',
       },
+      take: 50,
+      skip: 50 * skip,
     });
   }
 

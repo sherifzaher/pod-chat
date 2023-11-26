@@ -9,15 +9,22 @@ import { RootState } from '../index';
 export interface MessagesState {
   messages: FetchMessagePayload[];
   loading: boolean;
+  pagination: {
+    skip: number;
+  };
 }
 
 const initialState: MessagesState = {
   messages: [],
-  loading: false
+  loading: false,
+  pagination: {
+    skip: 0
+  }
 };
 
-export const fetchMessagesThunk = createAsyncThunk('messages/fetch', (id: number) =>
-  getConversationMessages(id)
+export const fetchMessagesThunk = createAsyncThunk(
+  'messages/fetch',
+  ({ id, skip }: FetchMessagesProps) => getConversationMessages(id, skip)
 );
 
 export const deleteMessageThunk = createAsyncThunk(
@@ -60,6 +67,9 @@ export const MessagesSlice = createSlice({
       if (messageIndex < 0) return;
 
       conversationMessage.messages[messageIndex] = action.payload;
+    },
+    updatePaginationSkip: (state, action: PayloadAction<number>) => {
+      state.pagination.skip = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -68,7 +78,11 @@ export const MessagesSlice = createSlice({
         const { id, messages } = action.payload.data;
         const index = state.messages.findIndex((msg) => msg.id === id);
         if (index > -1) {
-          state.messages[index] = action.payload.data;
+          if (state.pagination.skip === 0) {
+            state.messages[index] = action.payload.data;
+          } else {
+            state.messages[index].messages = [...state.messages[index].messages, ...messages];
+          }
         } else {
           state.messages.push(action.payload.data);
         }
@@ -117,5 +131,6 @@ export const selectConversationMessage = createSelector(
   (messages, id) => messages.find((gm) => gm.id === id)
 );
 
-export const { addMessage, deleteMessage, updateMessage } = MessagesSlice.actions;
+export const { addMessage, deleteMessage, updateMessage, updatePaginationSkip } =
+  MessagesSlice.actions;
 export default MessagesSlice.reducer;

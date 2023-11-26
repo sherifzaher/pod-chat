@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { useSocketContext } from '../../context/socket-context';
-import { fetchMessagesThunk, updateMessage } from '../../store/slices/messages-slice';
-import { AppDispatch } from '../../store';
+import {
+  fetchMessagesThunk,
+  updateMessage,
+  updatePaginationSkip
+} from '../../store/slices/messages-slice';
+import { AppDispatch, RootState } from '../../store';
 
 import MessagePanel from '../../components/messages/message-panel';
 
@@ -12,13 +16,20 @@ import { ConversationChannelPageStyle } from '../../utils/styles';
 
 function ConversationChannelPage() {
   const [isRecipientTyping, setIsRecipientTyping] = useState(false);
+
   const { id } = useParams<{ id: string }>();
+  const pagination = useSelector((state: RootState) => state.messages.pagination);
+
   const dispatch = useDispatch<AppDispatch>();
   const socket = useSocketContext();
 
   useEffect(() => {
     if (!id) return;
-    dispatch(fetchMessagesThunk(Number(id)));
+    dispatch(fetchMessagesThunk({ id: Number(id), skip: pagination.skip }));
+
+    return () => {
+      dispatch(updatePaginationSkip(0));
+    };
   }, [id, dispatch]);
 
   useEffect(() => {
