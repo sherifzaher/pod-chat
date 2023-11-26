@@ -70,3 +70,7 @@ export type ConversationSelectedProps = {
 export type SidebarItemProps = Partial<{
   active: boolean;
 }>;
+
+export type ConversationSidebarItemProps = {
+  selected: boolean;
+};

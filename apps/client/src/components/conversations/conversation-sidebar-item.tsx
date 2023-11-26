@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ConversationSidebarItemStyle } from '../../utils/styles';
 import styles from './index.module.scss';
 import { getRecipientFromConversation } from '../../utils/helpers';
@@ -12,6 +12,7 @@ const MESSAGE_LENGTH_MAX = 50;
 
 export default function ConversationSidebarItem({ conversation }: Props) {
   const navigate = useNavigate();
+  const { id } = useParams();
   const { user } = useAuthContext();
   const recipient = getRecipientFromConversation(conversation, user!);
 
@@ -26,7 +27,9 @@ export default function ConversationSidebarItem({ conversation }: Props) {
 
   return (
     <>
-      <ConversationSidebarItemStyle onClick={() => navigate(`/conversations/${conversation.id}`)}>
+      <ConversationSidebarItemStyle
+        selected={parseInt(id!, 10) === conversation.id}
+        onClick={() => navigate(`/conversations/${conversation.id}`)}>
         <div className={styles.conversationAvatar} />
         <div className={styles.contentContainer}>
           <span className={styles.conversationName}>
@@ -35,7 +38,7 @@ export default function ConversationSidebarItem({ conversation }: Props) {
           <span className={styles.conversationLastMessage}>{lastMessageContent()}</span>
         </div>
       </ConversationSidebarItemStyle>
-      <hr className={styles.hr} />
+      {/* <hr className={styles.hr} /> */}
     </>
   );
 }

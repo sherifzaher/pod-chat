@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import {
   ContextMenuProps,
   ConversationSelectedProps,
+  ConversationSidebarItemProps,
   InputContainerProps,
   MessageItemContentProps,
   MessageTypingStatusProps,
@@ -92,12 +93,18 @@ export const ConversationChannelPageStyle = styled.div`
 
 export const ConversationSidebarContainer = styled.div``;
 
-export const ConversationSidebarItemStyle = styled.div`
+export const ConversationSidebarItemStyle = styled.div<ConversationSidebarItemProps>`
   display: flex;
   align-items: center;
   gap: 20px;
   padding: 10px 32px;
   width: 100%;
+  cursor: pointer;
+  background-color: ${({ selected }) => selected && '#1a1a1a'};
+  transition: 200ms background-color ease-in-out;
+  &:hover {
+    background-color: #222222;
+  }
 `;
 
 export const OverlayStyle = styled.div`
