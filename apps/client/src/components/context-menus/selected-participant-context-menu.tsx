@@ -45,9 +45,7 @@ export default function SelectedParticipantContextMenu({ points }: Props) {
   const transferOwner = () => {
     console.log(`Transfering Group Owner to ${selectedUser?.id}`);
     if (!selectedUser) return;
-    dispatch(
-      updateGroupOwnerThunk({ id: parseInt(groupId!, 19), newOwnerId: Number(selectedUser.id) })
-    );
+    dispatch(updateGroupOwnerThunk({ id: Number(groupId!), newOwnerId: Number(selectedUser.id) }));
   };
 
   if (!user || !group) return null;

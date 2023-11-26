@@ -623,6 +623,12 @@ export const GroupRecipientSidebarItem = styled.div`
   font-size: 18px;
   font-weight: 500;
   margin: 10px 0;
+  & .left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+  }
 `;
 
 export const GroupHeaderIcons = styled.div`

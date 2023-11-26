@@ -56,11 +56,15 @@ export default function MessageContainer() {
     threshold: 0.01,
     onChange(isInView) {
       if (isInView) {
-        dispatch(fetchMessagesThunk({ id: Number(id!), skip: pagination.skip }))
-          .unwrap()
-          .then(() => {
-            dispatch(updatePaginationSkip(pagination.skip + 1));
-          });
+        if (selectedType === 'private') {
+          dispatch(fetchMessagesThunk({ id: Number(id!), skip: pagination.skip }))
+            .unwrap()
+            .then(() => {
+              dispatch(updatePaginationSkip(pagination.skip + 1));
+            });
+        } else {
+          // dispatch(fetchMessagesThunk({ id: Number(id!), skip: pagination.skip }))
+        }
       }
     }
   });
