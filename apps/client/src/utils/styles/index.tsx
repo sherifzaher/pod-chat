@@ -280,6 +280,7 @@ export const ContextMenu = styled.ul<ContextMenuProps>`
   list-style-type: none;
   margin: 0;
   padding: 10px;
+  z-index: 50;
 `;
 
 export const ContextMenuItem = styled.li`
