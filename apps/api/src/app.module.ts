@@ -12,6 +12,7 @@ import { MessagesModule } from './messages/messages.module';
 import { GatewayModule } from './gateway/gateway.module';
 import entities from './utils/typeorm';
 import { GroupModule } from './groups/group.module';
+import { FriendsModule } from './friends/friends.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { GroupModule } from './groups/group.module';
     ConversationsModule,
     MessagesModule,
     GatewayModule,
+    FriendsModule,
     EventEmitterModule.forRoot(),
     GroupModule,
     ConfigModule.forRoot({ envFilePath: '.env.development' }),
