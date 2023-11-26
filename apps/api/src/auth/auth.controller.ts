@@ -43,5 +43,7 @@ export class AuthController {
   }
 
   @Post('logout')
-  logout() {}
+  logout() {
+    console.log('null');
+  }
 }
