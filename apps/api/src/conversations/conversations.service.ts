@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { IConversationsService } from './conversations';
-import { Conversation, User } from '../utils/typeorm';
+import { Conversation, Message, User } from '../utils/typeorm';
 import { Services } from '../utils/constants';
 import { CreateConversationParams } from '../utils/types';
 import { IUserService } from '../users/user';
@@ -13,6 +13,8 @@ export class ConversationsService implements IConversationsService {
   constructor(
     @InjectRepository(Conversation)
     private readonly conversationRepository: Repository<Conversation>,
+    @InjectRepository(Message)
+    private readonly messageRepository: Repository<Message>,
     @Inject(Services.USERS)
     private readonly userService: IUserService,
   ) {}
@@ -35,8 +37,23 @@ export class ConversationsService implements IConversationsService {
     });
   }
 
+  async isCreated(userId: number, recipientId: number) {
+    return this.conversationRepository.findOne({
+      where: [
+        {
+          creator: { id: userId },
+          recipient: { id: recipientId },
+        },
+        {
+          creator: { id: recipientId },
+          recipient: { id: userId },
+        },
+      ],
+    })
+  }
+
   async createConversation(user: User, params: CreateConversationParams) {
-    const { email } = params;
+    const { email, message } = params;
 
     const recipient = await this.userService.findUser({ email });
     if (!recipient)
@@ -48,28 +65,27 @@ export class ConversationsService implements IConversationsService {
         HttpStatus.BAD_REQUEST,
       );
 
-    const existingConversation = await this.conversationRepository.findOne({
-      where: [
-        {
-          creator: { id: user.id },
-          recipient: { id: recipient.id },
-        },
-        {
-          creator: { id: recipient.id },
-          recipient: { id: user.id },
-        },
-      ],
-    });
+    const existingConversation = await this.isCreated(user.id, recipient.id);
 
     if (existingConversation)
       throw new HttpException('Conversation exists', HttpStatus.CONFLICT);
 
+    
     const conversation = this.conversationRepository.create({
       creator: user,
       recipient: recipient,
     });
 
-    return this.conversationRepository.save(conversation);
+    const savedConversation = await this.conversationRepository.save(conversation);
+
+    const newMessage = this.messageRepository.create({
+      content: message,
+      conversation: savedConversation,
+      author: user
+    });
+    const savedMessage = await this.messageRepository.save(newMessage);
+
+    return savedConversation;
   }
 
   async hasAccess(conversationId: number, userId: number) {
