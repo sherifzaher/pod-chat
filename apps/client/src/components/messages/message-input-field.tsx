@@ -36,19 +36,20 @@ export default function MessageInputField() {
   const handleSendMessage = useCallback(
     async (e: React.FormEvent<HTMLTextAreaElement>) => {
       e.preventDefault();
-      if (!routeId || !content) return;
+      const trimmedContent = content.trim();
+      if (!routeId || !trimmedContent) return;
       const id = Number(routeId);
 
       if (conversationType === 'private') {
         try {
-          await postNewMessage({ id, content });
+          await postNewMessage({ id, content: trimmedContent });
           setContent('');
         } catch (err) {
           console.log(err);
         }
       } else {
         try {
-          await postGroupMessage({ id, content });
+          await postGroupMessage({ id, content: trimmedContent });
           setContent('');
         } catch (err) {
           console.log(err);
@@ -90,7 +91,6 @@ export default function MessageInputField() {
       handleSendTypingStatus(e);
       if (e.key === 'Enter' && !e.shiftKey) {
         handleSendMessage(e);
-        setContent('');
       }
     },
     [handleSendTypingStatus]
