@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { IFriendRequestsService } from './friend-requests';
 import {
   AcceptFriendRequestParams,
+  CancelFriendRequestParams,
   CreateFriendRequestParams,
 } from '../utils/types';
 import { Friend, FriendRequest } from '../utils/typeorm';
@@ -14,6 +15,7 @@ import { IUserService } from '../users/user';
 import { UserNotFoundException } from '../groups/exceptions/user-not-found-exception';
 import { FriendShipFoundException } from './exceptions/friendship-found.exception';
 import { CannotAcceptRequestException } from './exceptions/cannot-accept-request.exception';
+import { CannotCancelRequestException } from './exceptions/cannot-cancel-request.exception';
 
 @Injectable()
 export class FriendRequestsService implements IFriendRequestsService {
@@ -43,6 +45,19 @@ export class FriendRequestsService implements IFriendRequestsService {
     });
 
     return this.friendRequestsRepository.save(friendRequest);
+  }
+
+  async cancelFriendRequest(params: CancelFriendRequestParams) {
+    const foundRequest = await this.friendRequestsRepository.findOne({
+      where: { id: params.id },
+      relations: ['receiver', 'sender'],
+    });
+    if (!foundRequest) throw new FriendRequestNotFoundException();
+
+    if (foundRequest.sender.id !== params.userId)
+      throw new CannotCancelRequestException();
+
+    return this.friendRequestsRepository.delete(params.id);
   }
 
   getFriendRequests(id: number) {

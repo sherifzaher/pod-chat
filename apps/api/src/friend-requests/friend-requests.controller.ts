@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Inject,
   Param,
@@ -43,5 +44,14 @@ export class FriendRequestsController {
   ) {
     const params = { id, userId: user.id };
     return this.friendsService.acceptFriendRequest(params);
+  }
+
+  @Delete(':id/cancel')
+  handleCancelFriendRequest(
+    @AuthUser() user: User,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    const params = { id, userId: user.id };
+    return this.friendsService.cancelFriendRequest(params);
   }
 }

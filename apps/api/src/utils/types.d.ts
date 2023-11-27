@@ -138,3 +138,8 @@ export type AcceptFriendRequestParams = {
   id: number;
   userId: number;
 };
+
+export type CancelFriendRequestParams = {
+  id: number;
+  userId: number;
+};
