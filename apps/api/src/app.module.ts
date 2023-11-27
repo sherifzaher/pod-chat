@@ -5,14 +5,17 @@ import { PassportModule } from '@nestjs/passport';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+
+import entities from './utils/typeorm';
+
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ConversationsModule } from './conversations/conversations.module';
 import { MessagesModule } from './messages/messages.module';
 import { GatewayModule } from './gateway/gateway.module';
-import entities from './utils/typeorm';
 import { GroupModule } from './groups/group.module';
 import { FriendsModule } from './friends/friends.module';
+import { FriendRequestsModule } from './friend-requests/friend-requests.module';
 
 @Module({
   imports: [
@@ -22,6 +25,7 @@ import { FriendsModule } from './friends/friends.module';
     MessagesModule,
     GatewayModule,
     FriendsModule,
+    FriendRequestsModule,
     EventEmitterModule.forRoot(),
     GroupModule,
     ConfigModule.forRoot({ envFilePath: '.env.development' }),

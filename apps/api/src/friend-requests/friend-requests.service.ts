@@ -1,0 +1,108 @@
+import { FriendRequestNotFoundException } from './exceptions/friend-request-not-found.exception';
+import { Inject, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { IFriendRequestsService } from './friend-requests';
+import {
+  AcceptFriendRequestParams,
+  CreateFriendRequestParams,
+} from '../utils/types';
+import { Friend, FriendRequest } from '../utils/typeorm';
+import { Services } from '../utils/constants';
+import { IUserService } from '../users/user';
+import { UserNotFoundException } from '../groups/exceptions/user-not-found-exception';
+import { FriendShipFoundException } from './exceptions/friendship-found.exception';
+import { CannotAcceptRequestException } from './exceptions/cannot-accept-request.exception';
+
+@Injectable()
+export class FriendRequestsService implements IFriendRequestsService {
+  constructor(
+    @InjectRepository(FriendRequest)
+    private readonly friendRequestsRepository: Repository<FriendRequest>,
+    @InjectRepository(Friend)
+    private readonly friendsRepository: Repository<Friend>,
+    @Inject(Services.USERS) private readonly userService: IUserService,
+  ) {}
+  async createFriendRequest(params: CreateFriendRequestParams) {
+    const userIsFound = await this.userService.findUser({
+      email: params.email,
+    });
+    if (!userIsFound) throw new UserNotFoundException();
+
+    const friendShipExist = await this.isFriendRequestPending(
+      params.user.id,
+      userIsFound.id,
+    );
+    if (friendShipExist) throw new FriendShipFoundException();
+
+    const friendRequest = this.friendRequestsRepository.create({
+      sender: params.user,
+      receiver: userIsFound,
+      status: 'pending',
+    });
+
+    return this.friendRequestsRepository.save(friendRequest);
+  }
+
+  async acceptFriendRequest(params: AcceptFriendRequestParams) {
+    const friendRequest = await this.friendRequestsRepository.findOne({
+      where: {
+        id: params.id,
+      },
+      relations: ['receiver', 'sender'],
+    });
+    if (!friendRequest) throw new FriendRequestNotFoundException();
+
+    if (friendRequest.status === 'accepted')
+      throw new FriendShipFoundException();
+
+    if (friendRequest.receiver.id !== params.userId)
+      throw new CannotAcceptRequestException();
+
+    friendRequest.status = 'accepted';
+
+    await this.friendRequestsRepository.save(friendRequest);
+
+    const newFriend = this.friendsRepository.create({
+      sender: friendRequest.sender,
+      receiver: friendRequest.receiver,
+    });
+
+    return this.friendsRepository.save(newFriend);
+  }
+
+  isFriends(firstUserId: number, secondUserId: number) {
+    return this.friendsRepository.findOne({
+      where: [
+        {
+          sender: { id: firstUserId },
+          receiver: { id: secondUserId },
+          status: 'accepted',
+        },
+        {
+          sender: { id: secondUserId },
+          receiver: { id: firstUserId },
+          status: 'accepted',
+        },
+      ],
+    });
+  }
+
+  isFriendRequestPending(firstUserId: number, secondUserId: number) {
+    return this.friendRequestsRepository.findOne({
+      where: [
+        {
+          sender: { id: firstUserId },
+          receiver: { id: secondUserId },
+          status: 'pending',
+        },
+        {
+          sender: { id: secondUserId },
+          receiver: { id: firstUserId },
+          status: 'pending',
+        },
+      ],
+    });
+  }
+}
