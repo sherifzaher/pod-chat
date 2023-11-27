@@ -60,6 +60,23 @@ export class FriendRequestsService implements IFriendRequestsService {
     return this.friendRequestsRepository.delete(params.id);
   }
 
+  async rejectFriendRequest(params: CancelFriendRequestParams) {
+    const foundRequest = await this.friendRequestsRepository.findOne({
+      where: { id: params.id },
+      relations: ['receiver', 'sender'],
+    });
+    if (!foundRequest) throw new FriendRequestNotFoundException();
+
+    if (foundRequest.status === 'accepted')
+      throw new FriendShipFoundException();
+
+    if (foundRequest.receiver.id !== params.userId)
+      throw new CannotCancelRequestException();
+
+    foundRequest.status = 'rejected';
+    return this.friendRequestsRepository.save(foundRequest);
+  }
+
   getFriendRequests(id: number) {
     return this.friendRequestsRepository.find({
       where: [
