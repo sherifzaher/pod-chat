@@ -45,6 +45,22 @@ export class FriendRequestsService implements IFriendRequestsService {
     return this.friendRequestsRepository.save(friendRequest);
   }
 
+  getFriendRequests(id: number) {
+    return this.friendRequestsRepository.find({
+      where: [
+        {
+          receiver: { id },
+          status: 'pending',
+        },
+        {
+          sender: { id },
+          status: 'pending',
+        },
+      ],
+      relations: ['receiver', 'sender'],
+    });
+  }
+
   async acceptFriendRequest(params: AcceptFriendRequestParams) {
     const friendRequest = await this.friendRequestsRepository.findOne({
       where: {
