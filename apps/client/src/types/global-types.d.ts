@@ -195,3 +195,5 @@ type FriendRequest = {
   createdAt: number;
   status: FriendRequestStatus;
 };
+
+type HandleFriendRequestAction = 'accept' | 'reject';

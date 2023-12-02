@@ -100,6 +100,7 @@ export const FriendRequestActionIcon = styled.div<FriendRequestActionItemProps>`
   border-radius: 50%;
   padding: 8px;
   color: #fff;
+  font-size: 20px;
   cursor: pointer;
   &:hover {
     background-color: #161616;

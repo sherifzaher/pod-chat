@@ -94,3 +94,6 @@ export const fetchFriendRequests = () =>
 
 export const createFriendRequest = (email: string) =>
   axiosClient.post('/friend-requests', { email }, config);
+
+export const cancelFriendRequest = (id: number) =>
+  axiosClient.delete(`/friend-requests/${id}/cancel`, config);

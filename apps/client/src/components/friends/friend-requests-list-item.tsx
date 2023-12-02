@@ -1,18 +1,33 @@
-import { MdCancel, MdCheck, MdCheckCircle, MdClose } from 'react-icons/md';
+import { MdCheck, MdClose } from 'react-icons/md';
+
+import { useDispatch } from 'react-redux';
 import { useAuthContext } from '../../context/auth-context';
-import { FlexBox } from '../../utils/styles/common';
 import { FriendRequestActionIcon, FriendRequestItemContainer } from '../../utils/styles/friends';
+import { AppDispatch } from '../../store';
+import { cancelFriendRequestThunk } from '../../store/slices/friends-slice';
 
 type Props = {
   friendRequest: FriendRequest;
 };
 
-const ICON_COLOR = '#2e2e2e';
-const ICON_SIZE = 20;
-
 function FriendRequestListItem({ friendRequest }: Props) {
   const { user } = useAuthContext();
   const isIncomingRequest = user?.id !== friendRequest.sender.id;
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleFriendRequest = (type: HandleFriendRequestAction) => {
+    if (!isIncomingRequest) {
+      // console.log('cancel friend request');
+      return dispatch(cancelFriendRequestThunk(friendRequest.id));
+      // return null;
+    }
+
+    if (type === 'accept') {
+      console.log('accept friend request');
+    } else {
+      console.log('reject friend request');
+    }
+  };
 
   return (
     <FriendRequestItemContainer>
@@ -27,12 +42,12 @@ function FriendRequestListItem({ friendRequest }: Props) {
       </div>
       <div className="requestActions">
         {isIncomingRequest && (
-          <FriendRequestActionIcon isAccept>
-            <MdCheck size={ICON_SIZE} />
+          <FriendRequestActionIcon isAccept onClick={() => handleFriendRequest('accept')}>
+            <MdCheck />
           </FriendRequestActionIcon>
         )}
-        <FriendRequestActionIcon>
-          <MdClose size={ICON_SIZE} />
+        <FriendRequestActionIcon onClick={() => handleFriendRequest('reject')}>
+          <MdClose />
         </FriendRequestActionIcon>
       </div>
     </FriendRequestItemContainer>
