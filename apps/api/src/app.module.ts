@@ -16,6 +16,7 @@ import { GatewayModule } from './gateway/gateway.module';
 import { GroupModule } from './groups/group.module';
 import { FriendsModule } from './friends/friends.module';
 import { FriendRequestsModule } from './friend-requests/friend-requests.module';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { FriendRequestsModule } from './friend-requests/friend-requests.module';
     FriendsModule,
     FriendRequestsModule,
     EventEmitterModule.forRoot(),
+    EventsModule,
     GroupModule,
     ConfigModule.forRoot({ envFilePath: '.env.development' }),
     PassportModule.register({ session: true }),

@@ -35,7 +35,7 @@ export class MessagingGateway
 {
   constructor(
     @Inject(Services.GATEWAY_SESSION_MANAGER)
-    private readonly sessions: IGatewaySession,
+    readonly sessions: IGatewaySession,
     @Inject(Services.CONVERSATIONS)
     private readonly conversationService: IConversationsService,
     @Inject(Services.GROUPS_SERVICE)
