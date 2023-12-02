@@ -1,25 +1,18 @@
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { FriendsNavbarItems } from '../../utils/constants';
-import { FriendsNavbar, FriendsNavbarItem, FriendsPageStyle } from '../../utils/styles/friends';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import FriendsList from '../../components/friends/friends-list';
+import { AppDispatch } from '../../store';
+import { fetchFriendsThunk } from '../../store/slices/friends-slice';
 
 function FriendsPage() {
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    dispatch(fetchFriendsThunk());
+  }, [dispatch]);
   return (
-    <FriendsPageStyle>
-      <FriendsNavbar>
-        {FriendsNavbarItems.map((item) => (
-          <FriendsNavbarItem
-            key={item.id}
-            active={pathname === item.pathname}
-            onClick={() => navigate(item.pathname)}>
-            {item.label}
-          </FriendsNavbarItem>
-        ))}
-      </FriendsNavbar>
-      {pathname === '/friends' && <div>Friends Component</div>}
-      <Outlet />
-    </FriendsPageStyle>
+    <div>
+      <FriendsList />
+    </div>
   );
 }
 

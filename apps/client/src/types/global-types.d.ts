@@ -178,3 +178,10 @@ type UpdateGroupOwnerParams = {
 };
 
 type ContextMenuEvent = React.MouseEvent<HTMLDivElement, MouseEvent>;
+
+type Friend = {
+  id: number;
+  sender: User;
+  receiver: User;
+  createdAt: number;
+};

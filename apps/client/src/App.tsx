@@ -13,7 +13,7 @@ import GroupChannelPage from './pages/group/group-channel-page';
 import AppPage from './pages/app-page';
 import ConversationPageGuard from './guards/conversation-page-guard';
 import GroupPageGuard from './guards/group-page-guard';
-import FriendsPage from './pages/friends/friends-page';
+import FriendsLayoutPage from './pages/friends/friends-layout-page';
 
 enableMapSet();
 
@@ -49,7 +49,7 @@ function App() {
               }
             />
           </Route>
-          <Route path="friends" element={<FriendsPage />}>
+          <Route path="friends" element={<FriendsLayoutPage />}>
             <Route path="requests" element={<div>Requests</div>} />
             <Route path="blocked" element={<div>Blocked</div>} />
           </Route>
