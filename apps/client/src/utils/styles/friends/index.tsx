@@ -9,11 +9,15 @@ export const FriendsPageStyle = styled.div`
 
 export const FriendsNavbar = styled.nav`
   display: flex;
-  align-items: center;
-  gap: 80px;
+  justify-content: space-between;
   font-size: 20px;
   padding: 26px 60px;
   border-bottom: 1px solid #303030;
+  & .navLinks {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+  }
 `;
 
 export const FriendsNavbarItem = styled.span<FriendsNavbarItemProps>`
@@ -48,6 +52,4 @@ export const FriendListItemContainer = styled.div`
   }
 `;
 
-export const FriendRequestItemContainer = styled.div`
-  
-`;
+export const FriendRequestItemContainer = styled.div``;
