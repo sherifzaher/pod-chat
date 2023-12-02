@@ -8,6 +8,7 @@ function FriendsRequestsList() {
   const friendRequests = useSelector((state: RootState) => state.friends.friendRequests);
   return (
     <FriendsListContainer>
+      {friendRequests.length === 0 && <div>No Friend Requests :(</div>}
       {friendRequests.map((friendRequest) => (
         <FriendRequestListItem key={friendRequest.id} friendRequest={friendRequest} />
       ))}

@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { FriendsNavbarItemProps } from '../../../types/style-types';
+import { FriendRequestActionItemProps, FriendsNavbarItemProps } from '../../../types/style-types';
 
 export const FriendsPageStyle = styled.div`
   background-color: #101010;
@@ -33,6 +33,11 @@ export const FriendsNavbarItem = styled.span<FriendsNavbarItemProps>`
 
 export const FriendsListContainer = styled.div`
   padding: 20px 60px;
+  height: calc(100% - 150px);
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const FriendListItemContainer = styled.div`
@@ -52,4 +57,52 @@ export const FriendListItemContainer = styled.div`
   }
 `;
 
-export const FriendRequestItemContainer = styled.div``;
+export const FriendRequestItemContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #181818;
+
+  &:last-child {
+    border-bottom: unset;
+  }
+
+  & .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #fff;
+  }
+
+  & .requestStatus {
+    font-size: 14px;
+    font-style: italic;
+    color: #8e8e8e;
+    font-weight: 500;
+  }
+
+  & .requestInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  & .requestActions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+`;
+
+export const FriendRequestActionIcon = styled.div<FriendRequestActionItemProps>`
+  background-color: #171717;
+  border-radius: 50%;
+  padding: 8px;
+  color: #fff;
+  cursor: pointer;
+  &:hover {
+    background-color: #161616;
+    color: ${({ isAccept = false }) => (isAccept ? '#00ff04' : '#ff3a3a')};
+  }
+`;
