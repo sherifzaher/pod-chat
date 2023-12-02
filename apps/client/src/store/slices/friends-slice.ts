@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
   fetchFriendRequests as fetchFriendRequestsAPI,
   fetchFriends as fetchFriendsAPI,
@@ -27,7 +27,11 @@ export const createFriendRequestThunk = createAsyncThunk(
 export const friendsSlice = createSlice({
   name: 'friends',
   initialState,
-  reducers: {},
+  reducers: {
+    addFriendRequest: (state, action: PayloadAction<FriendRequest>) => {
+      state.friendRequests = [...state.friendRequests, action.payload];
+    }
+  },
   extraReducers: (builder) =>
     builder
       .addCase(fetchFriendsThunk.fulfilled, (state, action) => {
@@ -44,5 +48,5 @@ export const friendsSlice = createSlice({
       })
 });
 
-// export const {} = friendsSlice.actions;
+export const { addFriendRequest } = friendsSlice.actions;
 export default friendsSlice.reducer;
