@@ -14,6 +14,7 @@ import AppPage from './pages/app-page';
 import ConversationPageGuard from './guards/conversation-page-guard';
 import GroupPageGuard from './guards/group-page-guard';
 import FriendsLayoutPage from './pages/friends/friends-layout-page';
+import FriendRequestsPage from './pages/friends/friend-requests-page';
 
 enableMapSet();
 
@@ -50,7 +51,7 @@ function App() {
             />
           </Route>
           <Route path="friends" element={<FriendsLayoutPage />}>
-            <Route path="requests" element={<div>Requests</div>} />
+            <Route path="requests" element={<FriendRequestsPage />} />
             <Route path="blocked" element={<div>Blocked</div>} />
           </Route>
         </Route>

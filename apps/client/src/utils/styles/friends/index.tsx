@@ -47,3 +47,7 @@ export const FriendListItemContainer = styled.div`
     border-bottom: unset;
   }
 `;
+
+export const FriendRequestItemContainer = styled.div`
+  
+`;

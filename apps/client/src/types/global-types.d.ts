@@ -179,9 +179,19 @@ type UpdateGroupOwnerParams = {
 
 type ContextMenuEvent = React.MouseEvent<HTMLDivElement, MouseEvent>;
 
+type FriendRequestStatus = 'pending' | 'accepted' | 'rejected';
+
 type Friend = {
   id: number;
   sender: User;
   receiver: User;
   createdAt: number;
+};
+
+type FriendRequest = {
+  id: number;
+  sender: User;
+  receiver: User;
+  createdAt: number;
+  status: FriendRequestStatus;
 };
