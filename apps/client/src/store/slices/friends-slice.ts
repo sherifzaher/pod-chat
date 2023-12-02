@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
   fetchFriendRequests as fetchFriendRequestsAPI,
-  fetchFriends as fetchFriendsAPI
+  fetchFriends as fetchFriendsAPI,
+  createFriendRequest as createFriendRequestAPI
 } from '../../utils/api';
 
 interface FriendsState {
@@ -18,6 +19,10 @@ export const fetchFriendsThunk = createAsyncThunk('friends/fetch', () => fetchFr
 export const fetchFriendRequestsThunk = createAsyncThunk('friends/requests', () =>
   fetchFriendRequestsAPI()
 );
+export const createFriendRequestThunk = createAsyncThunk(
+  'friends/requests/create',
+  (email: string) => createFriendRequestAPI(email)
+);
 
 export const friendsSlice = createSlice({
   name: 'friends',
@@ -32,6 +37,10 @@ export const friendsSlice = createSlice({
       .addCase(fetchFriendRequestsThunk.fulfilled, (state, action) => {
         console.log('fetchFriendRequestsThunk.fulfilled');
         state.friendRequests = action.payload.data;
+      })
+      .addCase(createFriendRequestThunk.fulfilled, (state, action) => {
+        console.log('createFriendRequestThunk.fulfilled');
+        state.friendRequests = [...state.friendRequests, action.payload.data];
       })
 });
 

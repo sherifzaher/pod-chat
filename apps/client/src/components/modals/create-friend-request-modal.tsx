@@ -1,14 +1,15 @@
-import { createRef, Dispatch, SetStateAction, useCallback, useEffect } from 'react';
+import { Dispatch, SetStateAction, createRef, useCallback, useEffect } from 'react';
 import { MdClose } from 'react-icons/md';
-import { ModalContainer, ModalContentBody, ModalHeader } from './index';
 import { OverlayStyle } from '../../utils/styles';
+import { ModalContainer, ModalContentBody, ModalHeader } from '.';
 import CreateConversationForm from '../forms/create-conversation-form';
+import CreateFriendRequestFrom from '../forms/create-friend-request-form';
 
 type Props = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
 };
 
-export default function CreateConversationModal({ setShowModal }: Props) {
+function CreateFriendRequestModal({ setShowModal }: Props) {
   const ref = createRef<HTMLDivElement>();
 
   useEffect(() => {
@@ -30,19 +31,19 @@ export default function CreateConversationModal({ setShowModal }: Props) {
     },
     [ref, setShowModal]
   );
-
   return (
     <OverlayStyle ref={ref} onClick={handleOverlayClick}>
       <ModalContainer>
         <ModalHeader>
-          <h2>Create a Conversation</h2>
+          <h2>Send a Friend Request</h2>
           <MdClose size={32} onClick={() => setShowModal(false)} />
         </ModalHeader>
         <ModalContentBody>
-          {/* <ConversationTypeForm setType={setType} type={type} /> */}
-          <CreateConversationForm closeModal={() => setShowModal(false)} />
+          <CreateFriendRequestFrom setShowModal={setShowModal} />
         </ModalContentBody>
       </ModalContainer>
     </OverlayStyle>
   );
 }
+
+export default CreateFriendRequestModal;
