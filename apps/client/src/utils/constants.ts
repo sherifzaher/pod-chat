@@ -1,4 +1,4 @@
-import { PersonCross } from 'akar-icons';
+import { ChatDots, Person, ArrowCycle } from 'akar-icons';
 
 export const chatTypes: ConversationTypeData[] = [
   {
@@ -47,5 +47,23 @@ export const FriendsNavbarItems = [
     id: 'blocked',
     label: 'Blocked',
     pathname: '/friends/blocked'
+  }
+];
+
+export const UserSidebarItems = [
+  {
+    id: 'conversations',
+    href: '/conversations',
+    icon: ChatDots
+  },
+  {
+    id: 'friends',
+    href: '/friends',
+    icon: Person
+  },
+  {
+    id: 'connections',
+    href: '/connections',
+    icon: ArrowCycle
   }
 ];

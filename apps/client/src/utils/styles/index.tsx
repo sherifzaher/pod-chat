@@ -579,6 +579,7 @@ export const UserSidebarItem = styled.div<SidebarItemProps>`
   justify-content: center;
   padding: 18px;
   background-color: ${({ active }) => active && '#1e1e1e'};
+  cursor: pointer;
 `;
 
 export const GroupRecipientsSidebarStyle = styled.aside`
