@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { IoMdPersonAdd } from 'react-icons/io';
+import { BsFillPersonCheckFill } from 'react-icons/bs';
 import UserSidebar from '../components/sidebars/user-sidebar';
 import { LayoutPage } from '../utils/styles';
 import { useSocketContext } from '../context/socket-context';
@@ -23,12 +24,12 @@ export default function AppPage() {
   useEffect(() => {
     socket.on('onFriendRequestReceived', (payload: FriendRequest) => {
       console.log('inside onFriendRequestReceived');
+      dispatch(addFriendRequest(payload));
       toast.info(`${payload.sender.firstName} sent you a friend request`, {
         position: 'bottom-left',
         icon: IoMdPersonAdd,
         onClick: () => navigate('/friends/requests')
       });
-      dispatch(addFriendRequest(payload));
     });
 
     socket.on('onFriendRequestCancelled', (payload: FriendRequest) => {
@@ -38,8 +39,12 @@ export default function AppPage() {
 
     socket.on('onFriendRequestAccepted', (payload: AcceptFriendRequestResponse) => {
       console.log('inside onFriendRequestAccepted');
-      toast.info(`${payload.friendRequest.sender.firstName} accepted your friend request`);
       dispatch(acceptFriendRequest(payload));
+      toast.info(`${payload.friendRequest.receiver.firstName} accepted your friend request`, {
+        position: 'bottom-left',
+        icon: BsFillPersonCheckFill,
+        onClick: () => navigate('/friends')
+      });
     });
 
     socket.on('onFriendRequestRejected', (payload: FriendRequest) => {
