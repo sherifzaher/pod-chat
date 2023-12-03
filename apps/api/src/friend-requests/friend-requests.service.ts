@@ -57,7 +57,8 @@ export class FriendRequestsService implements IFriendRequestsService {
     if (foundRequest.sender.id !== params.userId)
       throw new CannotCancelRequestException();
 
-    return this.friendRequestsRepository.delete(params.id);
+    await this.friendRequestsRepository.delete(params.id);
+    return foundRequest;
   }
 
   async rejectFriendRequest(params: CancelFriendRequestParams) {
@@ -110,14 +111,17 @@ export class FriendRequestsService implements IFriendRequestsService {
 
     friendRequest.status = 'accepted';
 
-    await this.friendRequestsRepository.save(friendRequest);
+    const updateFriendRequest = await this.friendRequestsRepository.save(
+      friendRequest,
+    );
 
     const newFriend = this.friendsRepository.create({
       sender: friendRequest.sender,
       receiver: friendRequest.receiver,
     });
 
-    return this.friendsRepository.save(newFriend);
+    const friend = await this.friendsRepository.save(newFriend);
+    return { friend, friendRequest: updateFriendRequest };
   }
 
   isFriends(firstUserId: number, secondUserId: number) {

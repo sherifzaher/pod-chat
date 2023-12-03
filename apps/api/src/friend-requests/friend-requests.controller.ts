@@ -56,8 +56,9 @@ export class FriendRequestsController {
     @Param('id', ParseIntPipe) id: number,
   ) {
     const params = { id, userId: user.id };
-    await this.friendsService.cancelFriendRequest(params);
-    return { id };
+    const friendRequest = await this.friendsService.cancelFriendRequest(params);
+    this.eventEmitter.emit('friend.request.cancelled', friendRequest);
+    return friendRequest;
   }
 
   @Patch(':id/reject')

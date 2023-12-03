@@ -14,4 +14,13 @@ export class FriendRequestsEvents {
     );
     if (receiverSocket) receiverSocket.emit('onFriendRequestReceived', payload);
   }
+
+  @OnEvent('friend.request.cancelled')
+  handleFriendRequestCanceled(payload: FriendRequest) {
+    const receiverSocket = this.gateway.sessions.getSocketId(
+      payload.receiver.id,
+    );
+    if (receiverSocket)
+      receiverSocket.emit('onFriendRequestCancelled', payload);
+  }
 }
