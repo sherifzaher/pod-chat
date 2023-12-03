@@ -25,11 +25,14 @@ export enum Services {
 
 export enum ServerEvents {
   FRIEND_REQUEST_ACCEPTED = 'friend.request.accepted',
-  FRIEND_REQUEST_REJECTED = '',
+  FRIEND_REQUEST_REJECTED = 'friend.request.rejected',
   FRIEND_REQUEST_CANCELLED = 'friend.request.cancelled',
   FRIEND_REQUEST_CREATED = 'friend.request.created',
 }
 
 export enum WebsocketEvents {
   FRIEND_REQUEST_ACCEPTED = 'onFriendRequestAccepted',
+  FRIEND_REQUEST_REJECTED = 'onFriendRequestRejected',
+  FRIEND_REQUEST_CANCELLED = 'onFriendRequestCancelled',
+  FRIEND_REQUEST_RECEIVED = 'onFriendRequestReceived',
 }

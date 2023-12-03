@@ -14,7 +14,8 @@ export class FriendRequestsEvents {
     const receiverSocket = this.gateway.sessions.getSocketId(
       payload.receiver.id,
     );
-    receiverSocket && receiverSocket.emit('onFriendRequestReceived', payload);
+    receiverSocket &&
+      receiverSocket.emit(WebsocketEvents.FRIEND_REQUEST_RECEIVED, payload);
   }
 
   @OnEvent(ServerEvents.FRIEND_REQUEST_CANCELLED)
@@ -22,7 +23,8 @@ export class FriendRequestsEvents {
     const receiverSocket = this.gateway.sessions.getSocketId(
       payload.receiver.id,
     );
-    receiverSocket && receiverSocket.emit('onFriendRequestCancelled', payload);
+    receiverSocket &&
+      receiverSocket.emit(WebsocketEvents.FRIEND_REQUEST_CANCELLED, payload);
   }
 
   @OnEvent(ServerEvents.FRIEND_REQUEST_ACCEPTED)
@@ -32,5 +34,12 @@ export class FriendRequestsEvents {
     );
     senderSocket &&
       senderSocket.emit(WebsocketEvents.FRIEND_REQUEST_ACCEPTED, payload);
+  }
+
+  @OnEvent(ServerEvents.FRIEND_REQUEST_REJECTED)
+  handleFriendRequestRejected(payload: FriendRequest) {
+    const senderSocket = this.gateway.sessions.getSocketId(payload.sender.id);
+    senderSocket &&
+      senderSocket.emit(WebsocketEvents.FRIEND_REQUEST_REJECTED, payload);
   }
 }

@@ -67,11 +67,13 @@ export class FriendRequestsController {
   }
 
   @Patch(':id/reject')
-  handleRejectFriendRequest(
+  async handleRejectFriendRequest(
     @AuthUser() user: User,
     @Param('id', ParseIntPipe) id: number,
   ) {
     const params = { id, userId: user.id };
-    return this.friendsService.rejectFriendRequest(params);
+    const friendRequest = await this.friendsService.rejectFriendRequest(params);
+    this.eventEmitter.emit(ServerEvents.FRIEND_REQUEST_REJECTED, friendRequest);
+    return friendRequest;
   }
 }
