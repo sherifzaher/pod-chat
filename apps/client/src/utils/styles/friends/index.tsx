@@ -33,7 +33,7 @@ export const FriendsNavbarItem = styled.span<FriendsNavbarItemProps>`
 
 export const FriendsListContainer = styled.div`
   padding: 20px 60px;
-  height: calc(100% - 150px);
+  height: calc(100vh - 150px);
   overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
