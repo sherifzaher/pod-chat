@@ -3,7 +3,9 @@ import {
   fetchFriendRequests as fetchFriendRequestsAPI,
   fetchFriends as fetchFriendsAPI,
   createFriendRequest as createFriendRequestAPI,
-  cancelFriendRequest as cancelFriendRequestAPI
+  cancelFriendRequest as cancelFriendRequestAPI,
+  rejectFriendRequest as rejectFriendRequestAPI,
+  acceptFriendRequest as acceptFriendRequestAPI
 } from '../../utils/api';
 
 interface FriendsState {
@@ -27,6 +29,12 @@ export const createFriendRequestThunk = createAsyncThunk(
 export const cancelFriendRequestThunk = createAsyncThunk('friends/requests/cancel', (id: number) =>
   cancelFriendRequestAPI(id)
 );
+export const rejectFriendRequestThunk = createAsyncThunk('friends/requests/cancel', (id: number) =>
+  rejectFriendRequestAPI(id)
+);
+export const acceptFriendRequestThunk = createAsyncThunk('friends/requests/cancel', (id: number) =>
+  acceptFriendRequestAPI(id)
+);
 
 export const friendsSlice = createSlice({
   name: 'friends',
@@ -34,6 +42,11 @@ export const friendsSlice = createSlice({
   reducers: {
     addFriendRequest: (state, action: PayloadAction<FriendRequest>) => {
       state.friendRequests = [...state.friendRequests, action.payload];
+    },
+    cancelFriendRequest: (state, action: PayloadAction<FriendRequest>) => {
+      state.friendRequests = [
+        ...state.friendRequests.filter((req) => req.id !== action.payload.id)
+      ];
     }
   },
   extraReducers: (builder) =>
@@ -57,5 +70,5 @@ export const friendsSlice = createSlice({
       })
 });
 
-export const { addFriendRequest } = friendsSlice.actions;
+export const { addFriendRequest, cancelFriendRequest } = friendsSlice.actions;
 export default friendsSlice.reducer;

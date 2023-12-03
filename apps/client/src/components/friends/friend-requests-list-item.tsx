@@ -33,11 +33,16 @@ function FriendRequestListItem({ friendRequest }: Props) {
     <FriendRequestItemContainer>
       <div className="avatar" />
       <div className="requestInfo">
-        <span>{`${friendRequest.receiver.firstName} ${friendRequest.receiver.lastName}`}</span>
         {isIncomingRequest ? (
-          <span className="requestStatus">Incoming request</span>
+          <>
+            <span>{`${friendRequest.sender.firstName} ${friendRequest.sender.lastName}`}</span>
+            <span className="requestStatus">Incoming request</span>
+          </>
         ) : (
-          <span className="requestStatus">Outgoing Friend Request</span>
+          <>
+            <span>{`${friendRequest.receiver.firstName} ${friendRequest.receiver.lastName}`}</span>
+            <span className="requestStatus">Outgoing Friend Request</span>
+          </>
         )}
       </div>
       <div className="requestActions">

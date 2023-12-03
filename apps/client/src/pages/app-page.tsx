@@ -6,7 +6,7 @@ import UserSidebar from '../components/sidebars/user-sidebar';
 import { LayoutPage } from '../utils/styles';
 import { useSocketContext } from '../context/socket-context';
 import { AppDispatch } from '../store';
-import { addFriendRequest } from '../store/slices/friends-slice';
+import { addFriendRequest, cancelFriendRequest } from '../store/slices/friends-slice';
 
 export default function AppPage() {
   const socket = useSocketContext();
@@ -16,6 +16,11 @@ export default function AppPage() {
     socket.on('onFriendRequestReceived', (payload: FriendRequest) => {
       console.log('inside onFriendRequestReceived');
       dispatch(addFriendRequest(payload));
+    });
+
+    socket.on('onFriendRequestCancelled', (payload: FriendRequest) => {
+      console.log('inside onFriendRequestCancelled');
+      dispatch(cancelFriendRequest(payload));
     });
     return () => {
       socket.removeAllListeners();
