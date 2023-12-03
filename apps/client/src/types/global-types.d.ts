@@ -197,3 +197,8 @@ type FriendRequest = {
 };
 
 type HandleFriendRequestAction = 'accept' | 'reject';
+
+type AcceptFriendRequestResponse = {
+  friend: Friend;
+  friendRequest: FriendRequest;
+};

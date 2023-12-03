@@ -4,7 +4,11 @@ import { useDispatch } from 'react-redux';
 import { useAuthContext } from '../../context/auth-context';
 import { FriendRequestActionIcon, FriendRequestItemContainer } from '../../utils/styles/friends';
 import { AppDispatch } from '../../store';
-import { cancelFriendRequestThunk } from '../../store/slices/friends-slice';
+import {
+  acceptFriendRequestThunk,
+  cancelFriendRequestThunk,
+  rejectFriendRequestThunk
+} from '../../store/slices/friends-slice';
 
 type Props = {
   friendRequest: FriendRequest;
@@ -17,15 +21,13 @@ function FriendRequestListItem({ friendRequest }: Props) {
 
   const handleFriendRequest = (type: HandleFriendRequestAction) => {
     if (!isIncomingRequest) {
-      // console.log('cancel friend request');
       return dispatch(cancelFriendRequestThunk(friendRequest.id));
-      // return null;
     }
 
     if (type === 'accept') {
-      console.log('accept friend request');
+      return dispatch(acceptFriendRequestThunk(friendRequest.id));
     } else {
-      console.log('reject friend request');
+      return dispatch(rejectFriendRequestThunk(friendRequest.id));
     }
   };
 
