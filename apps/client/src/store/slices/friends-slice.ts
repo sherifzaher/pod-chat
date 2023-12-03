@@ -51,7 +51,9 @@ export const friendsSlice = createSlice({
         state.friendRequests = [...state.friendRequests, action.payload.data];
       })
       .addCase(cancelFriendRequestThunk.fulfilled, (state, action) => {
-        // state.friendRequests = [...state.friendRequests.filter]
+        state.friendRequests = [
+          ...state.friendRequests.filter((req) => req.id !== action.payload.data.id)
+        ];
       })
 });
 
