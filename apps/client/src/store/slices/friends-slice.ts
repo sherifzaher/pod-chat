@@ -81,6 +81,9 @@ export const friendsSlice = createSlice({
       })
       .addCase(rejectFriendRequestThunk.fulfilled, (state, action) => {
         console.log('inside rejectFriendRequestThunk.fulfilled');
+        state.friendRequests = state.friendRequests.filter(
+          (req) => req.id !== action.payload.data.id
+        );
       })
 });
 

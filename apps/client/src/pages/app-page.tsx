@@ -32,6 +32,11 @@ export default function AppPage() {
       dispatch(acceptFriendRequest(payload));
     });
 
+    socket.on('onFriendRequestRejected', (payload: FriendRequest) => {
+      console.log('inside onFriendRequestRejected');
+      dispatch(cancelFriendRequest(payload));
+    });
+
     return () => {
       socket.removeAllListeners();
     };

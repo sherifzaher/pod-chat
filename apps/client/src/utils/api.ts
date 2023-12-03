@@ -99,7 +99,7 @@ export const cancelFriendRequest = (id: number) =>
   axiosClient.delete(`/friend-requests/${id}/cancel`, config);
 
 export const rejectFriendRequest = (id: number) =>
-  axiosClient.patch(`/friend-requests/${id}/reject`, null, config);
+  axiosClient.patch<FriendRequest>(`/friend-requests/${id}/reject`, null, config);
 
 export const acceptFriendRequest = (id: number) =>
   axiosClient.patch<AcceptFriendRequestResponse>(`/friend-requests/${id}/accept`, null, config);
