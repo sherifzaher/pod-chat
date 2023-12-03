@@ -1,17 +1,19 @@
 import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
 import * as session from 'express-session';
 import * as passport from 'passport';
 import { TypeormStore } from 'connect-typeorm';
 import { getRepository } from 'typeorm';
+
 import { AppModule } from './app.module';
 import { Session } from './utils/typeorm';
 import { WebsocketAdapter } from './gateway/gateway.adapter';
 
 async function bootstrap() {
   const { PORT, COOKIE_SECRET } = process.env;
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const sessionRepository = getRepository(Session);
   const adapter = new WebsocketAdapter(app);
   app.useWebSocketAdapter(adapter);
@@ -20,7 +22,10 @@ async function bootstrap() {
     origin: ['http://localhost:3000', 'http://192.168.1.5:3000'],
     credentials: true,
   });
+
+  app.set('trust proxy', 'loopback');
   app.setGlobalPrefix('api');
+
   app.use(
     session({
       secret: COOKIE_SECRET,
