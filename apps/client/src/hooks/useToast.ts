@@ -1,12 +1,16 @@
 import { Theme, toast, ToastOptions } from 'react-toastify';
 
-export function useToast(options: ToastOptions) {
+export function useToast(defaultOptions: ToastOptions) {
   const success = (message: string) => {
-    toast(message, { ...options, type: 'success' });
+    toast(message, { ...defaultOptions, type: 'success' });
   };
   const error = (message: string) => {
-    toast(message, { ...options, type: 'error' });
+    toast(message, { ...defaultOptions, type: 'error' });
   };
 
-  return { success, error };
+  const info = (message: string, options?: ToastOptions) => {
+    toast(message, { ...defaultOptions, ...options, type: 'info' });
+  };
+
+  return { success, error, info };
 }
