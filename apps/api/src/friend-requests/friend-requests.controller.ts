@@ -10,7 +10,7 @@ import {
   Post,
 } from '@nestjs/common';
 
-import { Routes, Services } from '../utils/constants';
+import { Routes, ServerEvents, Services } from '../utils/constants';
 import { User } from '../utils/typeorm';
 import { AuthUser } from '../utils/decorators';
 import { IFriendRequestsService } from './friend-requests';
@@ -37,17 +37,19 @@ export class FriendRequestsController {
   ) {
     const params = { user, email: createFriendData.email };
     const friendRequest = await this.friendsService.createFriendRequest(params);
-    this.eventEmitter.emit('friend.request.created', friendRequest);
+    this.eventEmitter.emit(ServerEvents.FRIEND_REQUEST_CREATED, friendRequest);
     return friendRequest;
   }
 
   @Patch(':id/accept')
-  handleAcceptFriendRequest(
+  async handleAcceptFriendRequest(
     @AuthUser() user: User,
     @Param('id', ParseIntPipe) id: number,
   ) {
     const params = { id, userId: user.id };
-    return this.friendsService.acceptFriendRequest(params);
+    const response = await this.friendsService.acceptFriendRequest(params);
+    this.eventEmitter.emit(ServerEvents.FRIEND_REQUEST_ACCEPTED, response);
+    return response;
   }
 
   @Delete(':id/cancel')
@@ -57,7 +59,10 @@ export class FriendRequestsController {
   ) {
     const params = { id, userId: user.id };
     const friendRequest = await this.friendsService.cancelFriendRequest(params);
-    this.eventEmitter.emit('friend.request.cancelled', friendRequest);
+    this.eventEmitter.emit(
+      ServerEvents.FRIEND_REQUEST_CANCELLED,
+      friendRequest,
+    );
     return friendRequest;
   }
 

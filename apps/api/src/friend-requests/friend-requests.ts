@@ -4,10 +4,13 @@ import {
   CreateFriendRequestParams,
   CancelFriendRequestParams,
   RejectFriendRequestParams,
+  AcceptFriendRequestResponse,
 } from '../utils/types';
 export interface IFriendRequestsService {
   createFriendRequest(params: CreateFriendRequestParams);
-  acceptFriendRequest(params: AcceptFriendRequestParams);
+  acceptFriendRequest(
+    params: AcceptFriendRequestParams,
+  ): Promise<AcceptFriendRequestResponse>;
   cancelFriendRequest(
     params: CancelFriendRequestParams,
   ): Promise<FriendRequest>;
