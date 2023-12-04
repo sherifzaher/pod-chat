@@ -2,7 +2,8 @@ import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@r
 import {
   deleteMessage as deleteMessageApi,
   getConversationMessages,
-  editMessage as editMessageAPI
+  editMessage as editMessageAPI,
+  postNewMessage as postNewMessageAPI
 } from '../../utils/api';
 import { RootState } from '../index';
 
@@ -34,6 +35,18 @@ export const deleteMessageThunk = createAsyncThunk(
 
 export const editMessageThunk = createAsyncThunk('messages/edit', (params: EditMessagePayload) =>
   editMessageAPI(params)
+);
+
+export const createMessageThunk = createAsyncThunk(
+  'messages/create',
+  async (params: CreateMessageParams, thunkAPI) => {
+    try {
+      const response = await postNewMessageAPI(params);
+      return thunkAPI.fulfillWithValue(response);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
 );
 
 export const MessagesSlice = createSlice({

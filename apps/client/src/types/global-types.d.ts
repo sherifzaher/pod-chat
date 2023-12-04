@@ -202,3 +202,10 @@ type AcceptFriendRequestResponse = {
   friend: Friend;
   friendRequest: FriendRequest;
 };
+
+type RateLimitType = 'group' | 'private';
+
+type UpdateRateLimitPayload = {
+  type: RateLimitType;
+  status: boolean;
+};
