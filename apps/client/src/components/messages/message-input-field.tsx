@@ -1,26 +1,32 @@
 import React, { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CirclePlusFill, FaceVeryHappy } from 'akar-icons';
 import { RiFileGifLine } from 'react-icons/ri';
 
+import { AxiosError } from 'axios';
 import { postGroupMessage, postNewMessage } from '../../utils/api';
 import { MessageInputContainer } from '../../utils/styles';
 import styles from '../forms/index.module.scss';
 
 import { useSocketContext } from '../../context/socket-context';
 import { useAuthContext } from '../../context/auth-context';
-import { RootState } from '../../store';
+import { AppDispatch, RootState } from '../../store';
 import MessageTextField from '../inputs/message-text-field';
+import { createMessageThunk } from '../../store/slices/messages-slice';
+import { useToast } from '../../hooks/useToast';
 
 const ICON_SIZE = 32;
 const MAX_LENGTH = 2048;
 
 export default function MessageInputField() {
+  const toastId = 'rateLimitToast';
   const [content, setContent] = useState('');
   const [typing, setTyping] = useState(false);
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
 
+  const { error } = useToast({ theme: 'dark' });
+  const dispatch = useDispatch<AppDispatch>();
   const { id: routeId } = useParams();
   const { user } = useAuthContext();
   const conversationType = useSelector((state: RootState) => state.selectedConversationType.type);
@@ -40,23 +46,33 @@ export default function MessageInputField() {
       if (!routeId || !trimmedContent) return;
       const id = Number(routeId);
 
-      if (conversationType === 'private') {
-        try {
-          await postNewMessage({ id, content: trimmedContent });
-          setContent('');
-        } catch (err) {
-          console.log(err);
-        }
-      } else {
-        try {
-          await postGroupMessage({ id, content: trimmedContent });
-          setContent('');
-        } catch (err) {
-          console.log(err);
-        }
+      const params = { id, content: trimmedContent };
+      try {
+        conversationType === 'private'
+          ? await postNewMessage(params)
+          : await postGroupMessage(params);
+        setContent('');
+      } catch (err) {
+        (err as AxiosError).response?.status === 429 && error('You are rate limited', { toastId });
       }
+
+      //   if (conversationType === 'private') {
+      //     try {
+      //       await postNewMessage(params);
+      //       setContent('');
+      //     } catch (err) {
+      //       console.log(err);
+      //     }
+      //   } else {
+      //     try {
+      //       await postGroupMessage(params);
+      //       setContent('');
+      //     } catch (err) {
+      //       console.log(err);
+      //     }
+      //   }
     },
-    [routeId, content, conversationType]
+    [content, routeId, conversationType, error]
   );
 
   const handleSendTypingStatus = useCallback(

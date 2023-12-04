@@ -4,8 +4,8 @@ export function useToast(defaultOptions: ToastOptions) {
   const success = (message: string) => {
     toast(message, { ...defaultOptions, type: 'success' });
   };
-  const error = (message: string) => {
-    toast(message, { ...defaultOptions, type: 'error' });
+  const error = (message: string, options?: ToastOptions) => {
+    toast(message, { ...defaultOptions, ...options, type: 'error' });
   };
 
   const info = (message: string, options?: ToastOptions) => {
