@@ -90,8 +90,9 @@ function GroupPage() {
       socket.off('onGroupMessage');
       socket.off('onGroupCreate');
       socket.off('onGroupUserAdd');
-      socket.off('AddGroupUserMessagePayload');
+      socket.off('onGroupReceivedUser');
       socket.off('onGroupRemovedUser');
+      socket.off('onGroupParticipantLeft');
       socket.off('onGroupOwnerUpdate');
     };
   }, [dispatch, id, navigate, socket, user?.id]);

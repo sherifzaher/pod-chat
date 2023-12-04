@@ -572,14 +572,29 @@ export const ConversationSearchbar = styled.input`
   border-radius: 5px;
 `;
 
-export const UserSidebarItem = styled.div<SidebarItemProps>`
+export const UserSidebarItemStyle = styled.div<SidebarItemProps>`
   width: 100%;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 18px;
   background-color: ${({ active }) => active && '#1e1e1e'};
   cursor: pointer;
+`;
+
+export const IconBadge = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 8px;
+  background-color: #ff3535;
+  height: 20px;
+  width: 20px;
+  border-radius: 5px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const GroupRecipientsSidebarStyle = styled.aside`

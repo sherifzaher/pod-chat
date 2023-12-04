@@ -53,9 +53,12 @@ export default function AppPage() {
     });
 
     return () => {
-      socket.removeAllListeners();
+      socket.off('onFriendRequestReceived');
+      socket.off('onFriendRequestCancelled');
+      socket.off('onFriendRequestAccepted');
+      socket.off('onFriendRequestRejected');
     };
-  }, [socket, dispatch]);
+  }, [socket, dispatch, toast, navigate]);
 
   return (
     <LayoutPage>

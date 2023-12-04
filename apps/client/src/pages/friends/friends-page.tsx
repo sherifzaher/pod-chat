@@ -20,7 +20,6 @@ function FriendsPage() {
 
     return () => {
       clearInterval(interval);
-      socket.removeAllListeners();
     };
   }, [socket]);
 
@@ -32,7 +31,7 @@ function FriendsPage() {
     });
 
     return () => {
-      socket.removeAllListeners();
+      socket.off('onFriendListReceive');
     };
   }, [socket, dispatch]);
 
