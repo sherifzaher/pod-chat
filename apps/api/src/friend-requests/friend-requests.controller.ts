@@ -9,14 +9,16 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { SkipThrottle } from '@nestjs/throttler';
 
 import { Routes, ServerEvents, Services } from '../utils/constants';
 import { User } from '../utils/typeorm';
 import { AuthUser } from '../utils/decorators';
 import { IFriendRequestsService } from './friend-requests';
 import { CreateFriendDto } from './dtos/create-friend.dto';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 
+@SkipThrottle()
 @Controller(Routes.FRIEND_REQUESTS)
 export class FriendRequestsController {
   constructor(

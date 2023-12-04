@@ -11,7 +11,9 @@ import { Routes, Services } from '../utils/constants';
 import { IFriendsService } from './friends';
 import { AuthUser } from '../utils/decorators';
 import { User } from '../utils/typeorm';
+import { SkipThrottle } from '@nestjs/throttler';
 
+@SkipThrottle()
 @Controller(Routes.FRIENDS)
 export class FriendsController {
   constructor(

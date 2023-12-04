@@ -14,7 +14,9 @@ import { AddGroupRecipientDto } from '../dtos/add-group-recipient.dto';
 import { IGroupRecipientService } from '../interfaces/group-recipient';
 import { RemoveGroupRecipientParams } from '../../utils/types';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { SkipThrottle } from '@nestjs/throttler';
 
+@SkipThrottle()
 @Controller(Routes.GROUP_RECIPIENTS)
 export class GroupRecipientsController {
   constructor(

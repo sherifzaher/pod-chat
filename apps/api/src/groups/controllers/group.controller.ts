@@ -15,7 +15,9 @@ import { AuthUser } from '../../utils/decorators';
 import { CreateGroupDto } from '../dtos/create-group.dto';
 import { User } from 'src/utils/typeorm/entities/User';
 import { TransferOwnerDto } from '../dtos/transfer-owner.dto';
+import { SkipThrottle } from '@nestjs/throttler';
 
+@SkipThrottle()
 @Controller(Routes.GROUPS)
 export class GroupController {
   constructor(

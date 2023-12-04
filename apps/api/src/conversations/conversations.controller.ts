@@ -15,7 +15,9 @@ import { CreateConversationDto } from './dtos/createConversation.dto';
 import { AuthUser } from '../utils/decorators';
 import { User } from '../utils/typeorm';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { SkipThrottle } from '@nestjs/throttler';
 
+@SkipThrottle()
 @Controller(Routes.CONVERSATIONS)
 @UseGuards(AuthenticationGuard)
 export class ConversationsController {
