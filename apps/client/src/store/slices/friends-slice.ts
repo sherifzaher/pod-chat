@@ -11,11 +11,15 @@ import {
 interface FriendsState {
   friends: Friend[];
   friendRequests: FriendRequest[];
+  onlineFriends: Friend[];
+  offlineFriends: Friend[];
 }
 
 const initialState: FriendsState = {
   friends: [],
-  friendRequests: []
+  friendRequests: [],
+  onlineFriends: [],
+  offlineFriends: []
 };
 
 export const fetchFriendsThunk = createAsyncThunk('friends/fetch', () => fetchFriendsAPI());
@@ -51,6 +55,12 @@ export const friendsSlice = createSlice({
         (req) => req.id !== action.payload.friendRequest.id
       );
       state.friends = [...state.friends, action.payload.friend];
+    },
+    setFriendsOnlineStatus: (state, action: PayloadAction<Friend[]>) => {
+      state.onlineFriends = action.payload;
+      state.offlineFriends = state.friends.filter(
+        (friend) => !action.payload.find((onlineFriend) => onlineFriend.id === friend.id)
+      );
     }
   },
   extraReducers: (builder) =>
@@ -87,5 +97,10 @@ export const friendsSlice = createSlice({
       })
 });
 
-export const { addFriendRequest, cancelFriendRequest, acceptFriendRequest } = friendsSlice.actions;
+export const {
+  addFriendRequest,
+  cancelFriendRequest,
+  acceptFriendRequest,
+  setFriendsOnlineStatus
+} = friendsSlice.actions;
 export default friendsSlice.reducer;
