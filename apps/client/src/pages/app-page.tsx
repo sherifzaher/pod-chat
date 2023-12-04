@@ -11,7 +11,8 @@ import { AppDispatch } from '../store';
 import {
   acceptFriendRequest,
   addFriendRequest,
-  cancelFriendRequest
+  cancelFriendRequest,
+  fetchFriendRequestsThunk
 } from '../store/slices/friends-slice';
 import { useToast } from '../hooks/useToast';
 
@@ -59,6 +60,10 @@ export default function AppPage() {
       socket.off('onFriendRequestRejected');
     };
   }, [socket, dispatch, toast, navigate]);
+
+  useEffect(() => {
+    dispatch(fetchFriendRequestsThunk());
+  }, [dispatch]);
 
   return (
     <LayoutPage>
