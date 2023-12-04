@@ -23,6 +23,7 @@ import {
 } from '../utils/types';
 import { IConversationsService } from '../conversations/conversations';
 import { IGroupService } from '../groups/interfaces/group';
+import { IFriendsService } from 'src/friends/friends';
 
 @WebSocketGateway({
   cors: {
@@ -40,6 +41,8 @@ export class MessagingGateway
     private readonly conversationService: IConversationsService,
     @Inject(Services.GROUPS_SERVICE)
     private readonly groupsService: IGroupService,
+    @Inject(Services.FRIENDS)
+    private readonly friendsService: IFriendsService,
   ) {}
   handleConnection(socket: AuthenticatedSocket, ...args: any[]) {
     console.log('New Incoming Connection');
@@ -276,6 +279,33 @@ export class MessagingGateway
     }
     if (leftUserSocket && !socketsInRoom) {
       return leftUserSocket.emit('onGroupParticipantLeft', payload);
+    }
+  }
+
+  @SubscribeMessage('getOnlineFriends')
+  async handleFriendListRetrieve(
+    @MessageBody() data: any,
+    @ConnectedSocket() socket: AuthenticatedSocket,
+  ) {
+    const { user } = socket;
+    if (user) {
+      console.log('user is authenticated');
+      console.log(`fetching ${user.email}'s friends`);
+      const friends = await this.friendsService.getFriends(user.id);
+      const onlineFriends = friends
+        .map((friend) => {
+          return (
+            this.sessions.getSocketId(
+              user.id === friend.sender.id
+                ? friend.receiver.id
+                : friend.sender.id,
+            ) && friend
+          );
+        })
+        .filter(Boolean);
+      // console.log(friends);
+      console.log(onlineFriends);
+      socket.emit('onFriendListReceive', onlineFriends);
     }
   }
 }
