@@ -5,7 +5,8 @@ import {
   createFriendRequest as createFriendRequestAPI,
   cancelFriendRequest as cancelFriendRequestAPI,
   rejectFriendRequest as rejectFriendRequestAPI,
-  acceptFriendRequest as acceptFriendRequestAPI
+  acceptFriendRequest as acceptFriendRequestAPI,
+  removeFriend as removeFriendAPI
 } from '../../utils/api';
 
 interface FriendsState {
@@ -43,6 +44,9 @@ export const rejectFriendRequestThunk = createAsyncThunk('friends/requests/rejec
 );
 export const acceptFriendRequestThunk = createAsyncThunk('friends/requests/accept', (id: number) =>
   acceptFriendRequestAPI(id)
+);
+export const removeFriendThunk = createAsyncThunk('friends/remove', (id: number) =>
+  removeFriendAPI(id)
 );
 
 export const friendsSlice = createSlice({
@@ -108,6 +112,9 @@ export const friendsSlice = createSlice({
         state.friendRequests = state.friendRequests.filter(
           (req) => req.id !== action.payload.data.id
         );
+      })
+      .addCase(removeFriendThunk.fulfilled, (state, action) => {
+        state.friends = state.friends.filter((friend) => friend.id !== action.payload.data.id);
       })
 });
 

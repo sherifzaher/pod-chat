@@ -37,7 +37,7 @@ function FriendsList() {
 
       {offlineFriends.length > 0 && (
         <div>
-          <span>Online ({offlineFriends.length})</span>
+          <span>offline ({offlineFriends.length})</span>
         </div>
       )}
       {offlineFriends.map((friend) => (

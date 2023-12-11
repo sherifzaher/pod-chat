@@ -103,3 +103,6 @@ export const rejectFriendRequest = (id: number) =>
 
 export const acceptFriendRequest = (id: number) =>
   axiosClient.patch<AcceptFriendRequestResponse>(`/friend-requests/${id}/accept`, null, config);
+
+export const removeFriend = (id: number) =>
+  axiosClient.delete<Friend>(`/friends/${id}/delete`, config);
