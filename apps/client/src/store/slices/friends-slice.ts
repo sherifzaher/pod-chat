@@ -13,13 +13,18 @@ interface FriendsState {
   friendRequests: FriendRequest[];
   onlineFriends: Friend[];
   offlineFriends: Friend[];
+  showFriendsContextMenu: boolean;
+  selectedFriendContextMenu?: Friend;
+  points: Points;
 }
 
 const initialState: FriendsState = {
   friends: [],
   friendRequests: [],
   onlineFriends: [],
-  offlineFriends: []
+  offlineFriends: [],
+  showFriendsContextMenu: false,
+  points: { x: 0, y: 0 }
 };
 
 export const fetchFriendsThunk = createAsyncThunk('friends/fetch', () => fetchFriendsAPI());
@@ -61,6 +66,15 @@ export const friendsSlice = createSlice({
       state.offlineFriends = state.friends.filter(
         (friend) => !action.payload.find((onlineFriend) => onlineFriend.id === friend.id)
       );
+    },
+    toggleContextMenu: (state, action: PayloadAction<boolean>) => {
+      state.showFriendsContextMenu = action.payload;
+    },
+    setSelectedFriend: (state, action: PayloadAction<Friend>) => {
+      state.selectedFriendContextMenu = action.payload;
+    },
+    setContextMenuPoints: (state, action: PayloadAction<Points>) => {
+      state.points = action.payload;
     }
   },
   extraReducers: (builder) =>
@@ -101,6 +115,9 @@ export const {
   addFriendRequest,
   cancelFriendRequest,
   acceptFriendRequest,
-  setFriendsOnlineStatus
+  setFriendsOnlineStatus,
+  toggleContextMenu,
+  setSelectedFriend,
+  setContextMenuPoints
 } = friendsSlice.actions;
 export default friendsSlice.reducer;
