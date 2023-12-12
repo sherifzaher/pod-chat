@@ -25,8 +25,9 @@ function CreateFriendRequestFrom({ setShowModal }: Props) {
         setShowModal(false);
         success('Friend Request Sent!');
       })
-      .catch(() => {
+      .catch((axiosError) => {
         error('Error sending friend request');
+        console.log(axiosError);
       });
   };
 
