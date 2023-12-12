@@ -28,6 +28,7 @@ export enum ServerEvents {
   FRIEND_REQUEST_REJECTED = 'friend.request.rejected',
   FRIEND_REQUEST_CANCELLED = 'friend.request.cancelled',
   FRIEND_REQUEST_CREATED = 'friend.request.created',
+  FRIEND_REMOVED = 'friend.removed',
 }
 
 export enum WebsocketEvents {

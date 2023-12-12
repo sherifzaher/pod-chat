@@ -1,5 +1,6 @@
 import {
   Conversation,
+  Friend,
   FriendRequest,
   Group,
   GroupMessage,
@@ -164,4 +165,9 @@ export type DeleteFriendRequestParams = {
 export type AcceptFriendRequestResponse = {
   friend: Friend;
   friendRequest: FriendRequest;
+};
+
+export type RemoveFriendEventPayload = {
+  friend: Friend;
+  userId: number;
 };
