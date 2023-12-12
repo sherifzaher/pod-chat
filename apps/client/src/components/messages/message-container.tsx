@@ -33,7 +33,7 @@ export default function MessageContainer() {
   const [points, setPoints] = useState({ x: 0, y: 0 });
 
   const dispatch = useDispatch<AppDispatch>();
-  const { isEditing, selectedMessage, messageBeingEdited } = useSelector(
+  const { isEditing, messageBeingEdited } = useSelector(
     (state: RootState) => state.messageContainer
   );
 
@@ -47,12 +47,7 @@ export default function MessageContainer() {
   const selectedType = useSelector((state: RootState) => state.selectedConversationType.type);
   const pagination = useSelector((state: RootState) => state.messages.pagination);
 
-  const {
-    ref: triggerRef,
-    inView,
-    entry
-  } = useInView({
-    /* Optional options */
+  const { ref: triggerRef } = useInView({
     threshold: 0.01,
     onChange(isInView) {
       if (isInView) {

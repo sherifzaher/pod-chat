@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FriendsListContainer } from '../../utils/styles/friends';
 import { AppDispatch, RootState } from '../../store';
 import FriendListItem from './friend-list-item';
@@ -16,6 +16,13 @@ function FriendsList() {
   );
 
   const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    const handleClick = () => dispatch(toggleContextMenu(false));
+    window.addEventListener('click', handleClick);
+
+    return () => window.removeEventListener('click', handleClick);
+  }, [dispatch]);
 
   const onContextMenu = (event: ContextMenuEvent, friend: Friend) => {
     event.preventDefault();

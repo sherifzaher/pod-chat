@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ChatAdd } from 'akar-icons';
 import { AiOutlineUsergroupAdd } from 'react-icons/ai';
@@ -50,6 +50,13 @@ export default function ConversationSidebar() {
     },
     [dispatch]
   );
+
+  useEffect(() => {
+    const handleClick = () => dispatch(toggleContextMenu(false));
+    window.addEventListener('click', handleClick);
+
+    return () => window.removeEventListener('click', handleClick);
+  }, [dispatch]);
 
   return (
     <>
