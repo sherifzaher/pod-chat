@@ -71,6 +71,9 @@ export const friendsSlice = createSlice({
         (friend) => !action.payload.find((onlineFriend) => onlineFriend.id === friend.id)
       );
     },
+    removeFriend: (state, action: PayloadAction<Friend>) => {
+      state.friends = state.friends.filter((friend) => friend.id !== action.payload.id);
+    },
     toggleContextMenu: (state, action: PayloadAction<boolean>) => {
       state.showFriendsContextMenu = action.payload;
     },
@@ -122,6 +125,7 @@ export const {
   addFriendRequest,
   cancelFriendRequest,
   acceptFriendRequest,
+  removeFriend,
   setFriendsOnlineStatus,
   toggleContextMenu,
   setSelectedFriend,

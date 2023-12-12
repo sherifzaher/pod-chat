@@ -2,7 +2,11 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import FriendsList from '../../components/friends/friends-list';
 import { AppDispatch } from '../../store';
-import { fetchFriendsThunk, setFriendsOnlineStatus } from '../../store/slices/friends-slice';
+import {
+  fetchFriendsThunk,
+  removeFriend,
+  setFriendsOnlineStatus
+} from '../../store/slices/friends-slice';
 import { useSocketContext } from '../../context/socket-context';
 
 function FriendsPage() {
@@ -18,6 +22,11 @@ function FriendsPage() {
       socket.emit('getOnlineFriends');
     }, 10000);
 
+    socket.on('onFriendRemoved', (friend: Friend) => {
+      console.log('inside onFriendRemoved');
+      dispatch(removeFriend(friend));
+    });
+
     return () => {
       clearInterval(interval);
     };
@@ -32,6 +41,7 @@ function FriendsPage() {
 
     return () => {
       socket.off('onFriendListReceive');
+      socket.off('onFriendRemoved');
     };
   }, [socket, dispatch]);
 

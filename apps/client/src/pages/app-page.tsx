@@ -41,6 +41,7 @@ export default function AppPage() {
     socket.on('onFriendRequestAccepted', (payload: AcceptFriendRequestResponse) => {
       console.log('inside onFriendRequestAccepted');
       dispatch(acceptFriendRequest(payload));
+      socket.emit('getOnlineFriends');
       toast.info(`${payload.friendRequest.receiver.firstName} accepted your friend request`, {
         position: 'bottom-left',
         icon: BsFillPersonCheckFill,
