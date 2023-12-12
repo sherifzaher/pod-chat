@@ -37,6 +37,8 @@ export class FriendRequestsService implements IFriendRequestsService {
       userIsFound.id,
     );
     if (friendShipExist) throw new FriendShipFoundException();
+    if (userIsFound.id === params.user.id)
+      throw new CannotAcceptRequestException('Cannot add yourself');
 
     const friendRequest = this.friendRequestsRepository.create({
       sender: params.user,
