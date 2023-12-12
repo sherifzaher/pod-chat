@@ -16,6 +16,8 @@ import { UserNotFoundException } from '../groups/exceptions/user-not-found-excep
 import { FriendShipFoundException } from './exceptions/friendship-found.exception';
 import { CannotAcceptRequestException } from './exceptions/cannot-accept-request.exception';
 import { CannotCancelRequestException } from './exceptions/cannot-cancel-request.exception';
+import { IFriendsService } from 'src/friends/friends';
+import { FriendsAlreadyExists } from 'src/friends/exceptions/friends-already-exists';
 
 @Injectable()
 export class FriendRequestsService implements IFriendRequestsService {
@@ -25,6 +27,7 @@ export class FriendRequestsService implements IFriendRequestsService {
     @InjectRepository(Friend)
     private readonly friendsRepository: Repository<Friend>,
     @Inject(Services.USERS) private readonly userService: IUserService,
+    @Inject(Services.FRIENDS) private readonly friendsService: IFriendsService,
   ) {}
   async createFriendRequest(params: CreateFriendRequestParams) {
     const userIsFound = await this.userService.findUser({
@@ -39,6 +42,14 @@ export class FriendRequestsService implements IFriendRequestsService {
     if (friendShipExist) throw new FriendShipFoundException();
     if (userIsFound.id === params.user.id)
       throw new CannotAcceptRequestException('Cannot add yourself');
+
+    const isFriends = await this.friendsService.isFriends(
+      params.user.id,
+      userIsFound.id,
+    );
+    if (isFriends) throw new FriendsAlreadyExists();
+
+    console.log('Friendship exists');
 
     const friendRequest = this.friendRequestsRepository.create({
       sender: params.user,
@@ -124,23 +135,6 @@ export class FriendRequestsService implements IFriendRequestsService {
 
     const friend = await this.friendsRepository.save(newFriend);
     return { friend, friendRequest: updateFriendRequest };
-  }
-
-  isFriends(firstUserId: number, secondUserId: number) {
-    return this.friendsRepository.findOne({
-      where: [
-        {
-          sender: { id: firstUserId },
-          receiver: { id: secondUserId },
-          status: 'accepted',
-        },
-        {
-          sender: { id: secondUserId },
-          receiver: { id: firstUserId },
-          status: 'accepted',
-        },
-      ],
-    });
   }
 
   isFriendRequestPending(firstUserId: number, secondUserId: number) {

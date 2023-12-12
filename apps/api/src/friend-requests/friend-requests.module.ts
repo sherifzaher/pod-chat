@@ -6,9 +6,14 @@ import { FriendRequestsService } from './friend-requests.service';
 import { Friend, FriendRequest } from '../utils/typeorm';
 import { FriendRequestsController } from './friend-requests.controller';
 import { UsersModule } from '../users/users.module';
+import { FriendsModule } from 'src/friends/friends.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([FriendRequest, Friend]), UsersModule],
+  imports: [
+    TypeOrmModule.forFeature([FriendRequest, Friend]),
+    UsersModule,
+    FriendsModule,
+  ],
   controllers: [FriendRequestsController],
   providers: [
     {
