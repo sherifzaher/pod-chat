@@ -1,4 +1,4 @@
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
 import {
   fetchFriendRequests as fetchFriendRequestsAPI,
   fetchFriends as fetchFriendsAPI,
@@ -8,6 +8,7 @@ import {
   acceptFriendRequest as acceptFriendRequestAPI,
   removeFriend as removeFriendAPI
 } from '../../utils/api';
+import { RootState } from '..';
 
 interface FriendsState {
   friends: Friend[];
@@ -120,6 +121,13 @@ export const friendsSlice = createSlice({
         state.friends = state.friends.filter((friend) => friend.id !== action.payload.data.id);
       })
 });
+
+const selectConversations = (state: RootState) => state.conversations.conversations;
+const selectConversationId = (state: RootState, id: number) => id;
+export const selectConversationById = createSelector(
+  [selectConversations, selectConversationId],
+  (conversations, conversationId) => conversations.find((conv) => conv.id === conversationId)
+);
 
 export const {
   addFriendRequest,
