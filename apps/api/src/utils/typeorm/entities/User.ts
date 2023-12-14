@@ -4,11 +4,13 @@ import {
   JoinColumn,
   ManyToMany,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { Message } from './Message';
 import { Group } from './Group';
+import { Profile } from './Profile';
 
 @Entity({ name: 'users' })
 export class User {
@@ -27,6 +29,10 @@ export class User {
   @Column({ select: false })
   @Exclude()
   password: string;
+
+  @OneToOne(() => Profile)
+  @JoinColumn()
+  profile: Profile;
 
   @OneToMany(() => Message, (message) => message.author)
   @JoinColumn()
