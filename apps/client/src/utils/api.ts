@@ -75,8 +75,8 @@ export const editGroupMessageAPI = ({ groupId, messageId, content }: EditGroupMe
     config
   );
 
-export const addGroupRecipient = ({ id, email }: AddGroupRecipientParams) =>
-  axiosClient.post(`/groups/${id}/recipients`, { email }, config);
+export const addGroupRecipient = ({ id, username }: AddGroupRecipientParams) =>
+  axiosClient.post(`/groups/${id}/recipients`, { username }, config);
 
 export const removeGroupRecipient = ({ id, userId }: RemoveGroupRecipientParams) =>
   axiosClient.delete<Group>(`/groups/${id}/recipients/${userId}`, config);
@@ -92,8 +92,8 @@ export const fetchFriends = () => axiosClient.get<Friend[]>('/friends', config);
 export const fetchFriendRequests = () =>
   axiosClient.get<FriendRequest[]>('/friend-requests', config);
 
-export const createFriendRequest = (email: string) =>
-  axiosClient.post('/friend-requests', { email }, config);
+export const createFriendRequest = (username: string) =>
+  axiosClient.post('/friend-requests', { username }, config);
 
 export const cancelFriendRequest = (id: number) =>
   axiosClient.delete(`/friend-requests/${id}/cancel`, config);

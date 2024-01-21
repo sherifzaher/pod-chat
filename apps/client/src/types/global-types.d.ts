@@ -21,6 +21,7 @@ type User = {
   email: string;
   firstName: string;
   lastName: string;
+  username: string;
 };
 
 type Conversation = {
@@ -60,7 +61,7 @@ type CreateMessageParams = {
 };
 
 type CreateConversationParams = {
-  email: string;
+  username: string;
   message: string;
 };
 
@@ -141,7 +142,7 @@ type CreateGroupParams = {
 
 type AddGroupRecipientParams = {
   id: number;
-  email: string;
+  username: string;
 };
 
 type RemoveGroupRecipientParams = {

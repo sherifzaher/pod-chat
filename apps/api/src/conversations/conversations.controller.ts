@@ -1,21 +1,21 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Inject,
   Param,
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { SkipThrottle } from '@nestjs/throttler';
+
 import { Routes, Services } from '../utils/constants';
 import { AuthenticationGuard } from '../auth/utils/Guards';
 import { IConversationsService } from './conversations';
 import { CreateConversationDto } from './dtos/createConversation.dto';
 import { AuthUser } from '../utils/decorators';
 import { User } from '../utils/typeorm';
-import { EventEmitter2 } from '@nestjs/event-emitter';
-import { SkipThrottle } from '@nestjs/throttler';
 
 @SkipThrottle()
 @Controller(Routes.CONVERSATIONS)

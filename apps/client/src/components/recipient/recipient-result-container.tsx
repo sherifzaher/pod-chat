@@ -21,7 +21,7 @@ export default function RecipientResultContainer({ userResults, handleSelectUser
       <RecipientScrollableItemContainer>
         {userResults.map((user) => (
           <RecipientResultItem key={user.id} onClick={() => handleSelectSelection(user)}>
-            <span>{user.email}</span>
+            <span>{user.username}</span>
           </RecipientResultItem>
         ))}
       </RecipientScrollableItemContainer>

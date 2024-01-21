@@ -41,6 +41,7 @@ export class UserService implements IUserService {
     const selection: (keyof User)[] = [
       'email',
       'firstName',
+      'username',
       'lastName',
       'id',
       'profile',
@@ -56,7 +57,7 @@ export class UserService implements IUserService {
   }
 
   async searchUsers(param: string): Promise<User[]> {
-    const statement = '(user.email LIKE :query)';
+    const statement = '(user.username LIKE :query)';
     return this.userRepository
       .createQueryBuilder('user')
       .where(statement, {

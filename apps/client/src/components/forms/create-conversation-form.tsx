@@ -47,7 +47,7 @@ export default function CreateConversationForm({ closeModal }: Props) {
       if (!message || !selectedUser) return;
 
       const messageParams = {
-        email: selectedUser.email,
+        username: selectedUser.username,
         message
       };
 

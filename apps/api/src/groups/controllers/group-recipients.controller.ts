@@ -32,7 +32,7 @@ export class GroupRecipientsController {
   ) {
     const params = {
       userId: user.id,
-      email: payload.email,
+      username: payload.username,
       id,
     };
     const response = await this.groupRecipientService.addGroupRecipient(params);

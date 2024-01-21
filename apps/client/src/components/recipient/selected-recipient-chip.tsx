@@ -11,7 +11,7 @@ export default function SelectedRecipientChip({ user, handleOnClick }: Props) {
   return (
     <SelectedRecipientPillStyle>
       <div className="container">
-        <span>{user?.email}</span>
+        <span>{user?.username}</span>
         <CircleX className="icon" size="20px" onClick={handleOnClick} />
       </div>
     </SelectedRecipientPillStyle>

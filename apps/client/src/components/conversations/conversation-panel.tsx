@@ -6,7 +6,7 @@ function ConversationPanel() {
   return (
     <ConversationChannelPageStyle>
       ConversationPanel
-      {user?.email}
+      {user?.username}
     </ConversationChannelPageStyle>
   );
 }

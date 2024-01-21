@@ -8,16 +8,16 @@ import { useToast } from '../../hooks/useToast';
 
 export default function GroupRecipientAddForm() {
   const { id: groupId } = useParams();
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
 
   const { success, error } = useToast({ theme: 'dark' });
 
   const onSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await addGroupRecipient({ email, id: Number(groupId!) });
+      const response = await addGroupRecipient({ username, id: Number(groupId!) });
       success('Recipient Added to Group');
-      setEmail('');
+      setUsername('');
     } catch (err) {
       console.log(err);
       error('Failed to add user');
@@ -28,10 +28,10 @@ export default function GroupRecipientAddForm() {
     <form onSubmit={onSubmit} className={styles.createConversationForm}>
       <InputContainer backgroundColor="#161616">
         <InputLabel>Recipient</InputLabel>
-        <InputField value={email} onChange={(e) => setEmail(e.target.value)} />
+        <InputField value={username} onChange={(e) => setUsername(e.target.value)} />
       </InputContainer>
       <br />
-      <Button disabled={!email} type="submit">
+      <Button disabled={!username} type="submit">
         Add Recipient
       </Button>
     </form>

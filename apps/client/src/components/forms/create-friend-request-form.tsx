@@ -12,14 +12,14 @@ type Props = {
 };
 
 function CreateFriendRequestFrom({ setShowModal }: Props) {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const { success, error } = useToast({ theme: 'dark' });
 
   const dispatch = useDispatch<AppDispatch>();
 
   const onSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(createFriendRequestThunk(email))
+    dispatch(createFriendRequestThunk(username))
       .unwrap()
       .then(() => {
         setShowModal(false);
@@ -35,10 +35,10 @@ function CreateFriendRequestFrom({ setShowModal }: Props) {
     <form onSubmit={onSubmit} className={styles.createConversationForm}>
       <InputContainer backgroundColor="#161616">
         <InputLabel>Recipient</InputLabel>
-        <InputField value={email} onChange={(e) => setEmail(e.target.value)} />
+        <InputField value={username} onChange={(e) => setUsername(e.target.value)} />
       </InputContainer>
       <br />
-      <Button disabled={!email} type="submit">
+      <Button disabled={!username} type="submit">
         Send
       </Button>
     </form>

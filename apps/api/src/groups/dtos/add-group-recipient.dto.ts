@@ -1,7 +1,7 @@
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, MinLength } from 'class-validator';
 
 export class AddGroupRecipientDto {
-  @IsEmail()
+  @MinLength(3)
   @IsNotEmpty()
-  email: string;
+  username: string;
 }

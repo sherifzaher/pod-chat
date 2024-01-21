@@ -1,7 +1,7 @@
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { MinLength, IsNotEmpty } from 'class-validator';
 
 export class CreateFriendDto {
-  @IsEmail()
+  @MinLength(3)
   @IsNotEmpty()
-  email: string;
+  username: string;
 }

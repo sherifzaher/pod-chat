@@ -11,7 +11,7 @@ function FriendListItem({ friend, onContextMenu }: Props) {
   return (
     <FriendListItemContainer onContextMenu={(e) => onContextMenu(e, friend)}>
       <div className="avatar" />
-      <div>{user?.id === friend.sender.id ? friend.receiver.email : friend.sender.email}</div>
+      <div>{user?.id === friend.sender.id ? friend.receiver.username : friend.sender.username}</div>
     </FriendListItemContainer>
   );
 }

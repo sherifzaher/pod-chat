@@ -47,8 +47,8 @@ export default function CreateGroupForm({ closeModal }: Props) {
     e.preventDefault();
     if (disabled) return;
 
-    const emails = selectedUsers.map((userItem) => userItem.email);
-    dispatch(createGroupThunk({ users: emails, title }))
+    const usernames = selectedUsers.map((userItem) => userItem.username);
+    dispatch(createGroupThunk({ users: usernames, title }))
       .unwrap()
       .then(({ data }) => {
         closeModal();
