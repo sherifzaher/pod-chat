@@ -1,5 +1,6 @@
-import { User } from '../utils/typeorm';
+import { Profile, User } from '../utils/typeorm';
 import {
+  CompleteOnboarding,
   CreateUserDetails,
   FindUserOptions,
   FindUserParams,
@@ -10,5 +11,5 @@ export interface IUserService {
   findUser(findUser: FindUserParams, options?: FindUserOptions): Promise<User>;
   saveUser(user: User): Promise<User>;
   searchUsers(param: string): Promise<User[]>;
-  updateProfile(data: any);
+  completeOnboarding(data: CompleteOnboarding): Promise<void>;
 }

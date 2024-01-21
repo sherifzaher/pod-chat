@@ -1,15 +1,15 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { IUserService } from './user';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../utils/typeorm';
 import { Repository } from 'typeorm';
 import { hashPassword } from '../utils/helpers';
 import {
+  CompleteOnboarding,
   CreateUserDetails,
   FindUserOptions,
   FindUserParams,
 } from '../utils/types';
-import { Services } from '../utils/constants';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class UserService implements IUserService {
   async createUser(userDetails: CreateUserDetails) {
     const findUser = await this.userRepository.findOne({
       where: {
-        email: userDetails.email,
+        username: userDetails.username,
       },
     });
 
@@ -67,14 +67,15 @@ export class UserService implements IUserService {
         'user.firstName',
         'user.lastName',
         'user.email',
+        'user.username',
         'user.id',
         'user.profile',
       ])
       .getMany();
   }
 
-  async updateProfile(data: any) {
-    const response = await this.cloudinary.uploadImage(data);
-
+  async completeOnboarding(data: CompleteOnboarding) {
+    const imageUploadResponse = await this.cloudinary.uploadImage(data.file);
+    console.log(imageUploadResponse.url);
   }
 }
