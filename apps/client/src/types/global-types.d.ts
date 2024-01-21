@@ -1,3 +1,5 @@
+// import {Icon} from "akar-icons";
+
 type ConversationType = {
   id: number;
   name: string;
@@ -202,6 +204,19 @@ type HandleFriendRequestAction = 'accept' | 'reject';
 type AcceptFriendRequestResponse = {
   friend: Friend;
   friendRequest: FriendRequest;
+};
+
+type SettingsSidebarRouteType =
+  | 'profile'
+  | 'security'
+  | 'notifications'
+  | 'integrations'
+  | 'appearance';
+
+type UserSettingsItemType = {
+  id: SettingsSidebarRouteType;
+  label: string;
+  pathname: string;
 };
 
 type RateLimitType = 'group' | 'private';

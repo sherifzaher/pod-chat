@@ -35,7 +35,7 @@ export class User {
 
   @OneToOne(() => Profile)
   @JoinColumn()
-  profile: Profile;
+  profile?: Profile;
 
   @OneToMany(() => Message, (message) => message.author)
   @JoinColumn()

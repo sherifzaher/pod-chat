@@ -16,6 +16,8 @@ import GroupPageGuard from './guards/group-page-guard';
 import FriendsLayoutPage from './pages/friends/friends-layout-page';
 import FriendRequestsPage from './pages/friends/friend-requests-page';
 import OnBoardingPage from './pages/onboarding/on-boarding-page';
+import SettingsPage from './pages/settings/settings-page';
+import SettingsProfilePage from './pages/settings/settings-profile-page';
 
 enableMapSet();
 
@@ -51,6 +53,9 @@ function App() {
                 </GroupPageGuard>
               }
             />
+          </Route>
+          <Route path="settings" element={<SettingsPage />}>
+            <Route path="profile" element={<SettingsProfilePage />} />
           </Route>
           <Route path="friends" element={<FriendsLayoutPage />}>
             <Route path="requests" element={<FriendRequestsPage />} />

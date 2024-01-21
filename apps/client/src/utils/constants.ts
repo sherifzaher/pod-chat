@@ -1,4 +1,12 @@
-import { ChatDots, Person, ArrowCycle } from 'akar-icons';
+import { ChatDots, Person, ArrowCycle, Gear } from 'akar-icons';
+import { IconType } from 'react-icons';
+import {
+  IoIosLock,
+  IoIosNotifications,
+  IoIosPerson,
+  IoMdColorPalette,
+  IoMdInfinite
+} from 'react-icons/io';
 
 export const chatTypes: ConversationTypeData[] = [
   {
@@ -65,5 +73,43 @@ export const UserSidebarItems = [
     id: 'connections',
     href: '/connections',
     icon: ArrowCycle
+  },
+  {
+    id: 'settings',
+    href: '/settings',
+    icon: Gear
+  }
+];
+
+export const userSettingsItems: (UserSettingsItemType & { icon: IconType })[] = [
+  {
+    id: 'profile',
+    label: 'Profile',
+    pathname: '/settings/profile',
+    icon: IoIosPerson
+  },
+  {
+    id: 'security',
+    label: 'Security',
+    pathname: '/settings/security',
+    icon: IoIosLock
+  },
+  {
+    id: 'notifications',
+    label: 'Notifications',
+    pathname: '/settings/notifications',
+    icon: IoIosNotifications
+  },
+  {
+    id: 'integrations',
+    label: 'Integrations',
+    pathname: '/settings/integrations',
+    icon: IoMdInfinite
+  },
+  {
+    id: 'appearance',
+    label: 'Appearance',
+    pathname: '/settings/appearance',
+    icon: IoMdColorPalette
   }
 ];

@@ -1,4 +1,3 @@
-import { ChatDots, Person, ArrowCycle } from 'akar-icons';
 import { useState } from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
