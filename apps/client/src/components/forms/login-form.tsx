@@ -29,11 +29,12 @@ function RegisterForm() {
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <InputContainer>
-        <InputLabel htmlFor="email">Email</InputLabel>
+        <InputLabel htmlFor="username">Username</InputLabel>
         <InputField
-          {...register('email', { required: 'Email is required.' })}
-          id="email"
-          name="email"
+          {...register('username', { required: 'Username is required.' })}
+          id="username"
+          type="text"
+          name="username"
         />
       </InputContainer>
       <InputContainer className={styles.loginFormPassword}>

@@ -49,6 +49,18 @@ export const InputLabel = styled.label`
   margin: 4px 0;
 `;
 
+export const InputContainerHeader = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+`;
+
+export const InputError = styled.span`
+  color: #ff0000;
+  text-transform: capitalize;
+  font-size: 12px;
+`;
+
 export const Button = styled.button`
   width: 100%;
   background-color: #2b09ff;

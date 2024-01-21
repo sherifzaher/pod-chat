@@ -5,14 +5,14 @@ type ConversationType = {
 };
 
 type CreateUserParams = {
-  email: string;
+  username: string;
   firstName: string;
   lastName: string;
   password: string;
 };
 
 type UserCredentialsParams = {
-  email: string;
+  username: string;
   password: string;
 };
 

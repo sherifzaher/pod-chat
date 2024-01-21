@@ -109,3 +109,14 @@ export const removeFriend = (id: number) =>
 
 export const checkConversationOrCreate = (recipientId: number) =>
   axiosClient.get(`/exists/conversations/${recipientId}`, config);
+
+export const completeUserProfile = (data: any) =>
+  axiosClient.post('/users/profile', data, {
+    ...config,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+
+export const checkUsernameExists = (username: string) =>
+  axiosClient.get(`/users/check?username=${username}`, config);
