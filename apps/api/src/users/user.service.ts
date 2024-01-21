@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { IUserService } from './user';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../utils/typeorm';
@@ -9,11 +9,14 @@ import {
   FindUserOptions,
   FindUserParams,
 } from '../utils/types';
+import { Services } from '../utils/constants';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Injectable()
 export class UserService implements IUserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    private cloudinary: CloudinaryService,
   ) {}
   async createUser(userDetails: CreateUserDetails) {
     const findUser = await this.userRepository.findOne({
@@ -68,5 +71,10 @@ export class UserService implements IUserService {
         'user.profile',
       ])
       .getMany();
+  }
+
+  async updateProfile(data: any) {
+    const response = await this.cloudinary.uploadImage(data);
+
   }
 }

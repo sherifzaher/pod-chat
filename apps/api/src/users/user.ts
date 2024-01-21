@@ -10,4 +10,5 @@ export interface IUserService {
   findUser(findUser: FindUserParams, options?: FindUserOptions): Promise<User>;
   saveUser(user: User): Promise<User>;
   searchUsers(param: string): Promise<User[]>;
+  updateProfile(data: any);
 }

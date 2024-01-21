@@ -37,5 +37,6 @@ export class UserController {
   ) {
     console.log(file);
     console.log(userProfile);
+    return this.userService.updateProfile(file);
   }
 }

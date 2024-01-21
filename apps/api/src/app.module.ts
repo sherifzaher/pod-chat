@@ -7,6 +7,7 @@ import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 
 import entities from './utils/typeorm';
+// import ServiceJson from './firebase.json';
 
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
