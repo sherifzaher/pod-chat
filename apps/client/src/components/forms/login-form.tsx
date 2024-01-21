@@ -11,7 +11,7 @@ function RegisterForm() {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm<UserCredentialsParams>();
+  } = useForm<UserCredentialsParams>({ reValidateMode: 'onBlur' });
   const navigate = useNavigate();
   const socket = useSocketContext();
   const onSubmit = async (data: UserCredentialsParams) => {
