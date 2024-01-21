@@ -92,6 +92,7 @@ export const Button = styled.button`
 
 export const Page = styled.div<PageProps>`
   height: 100%;
+  width: 100%;
   background-color: #1a1a1a;
   display: ${(props) => props.display};
   justify-content: ${(props) => props.justifyContent};

@@ -92,3 +92,7 @@ export type FriendRequestActionItemProps = {
 export type SettingsSidebarItemProps = {
   isActive: boolean;
 };
+
+export type UserBannerProps = Partial<{
+  backgroundUrl: string;
+}>;
