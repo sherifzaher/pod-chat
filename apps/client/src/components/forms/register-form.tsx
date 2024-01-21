@@ -36,8 +36,10 @@ function RegisterForm() {
         firstNameError={errors.firstName?.message}
         lastNameError={errors.lastName?.message}
       />
-      <PasswordField register={register} />
-      <Button className={styles.button}>Create My Account</Button>
+      <PasswordField errorMessage={errors.password?.message} register={register} />
+      <Button type="submit" className={styles.button}>
+        Create My Account
+      </Button>
       <div className={styles.footerText}>
         <span>Already have an account? </span>
         <Link to="/login">Login</Link>
