@@ -25,7 +25,8 @@ export default function SettingsProfilePage() {
   const reset = () => {
     setEditedAbout(about);
     setSourceCopy(source);
-  }
+    setIsEditing(false);
+  };
 
   return (
     <Page>

@@ -52,9 +52,14 @@ export const getButtonVariantStyle = (variant?: ButtonVariant) => {
     }
   `;
   const outline = css`
-    background-color: inherit;
-    border: 1px solid #2b09ff;
+    background-color: #242424;
+    //border: 1px solid #2b09ff;
     color: #fff;
+
+    &:hover {
+      cursor: pointer;
+      background-color: #333232;
+    }
   `;
   switch (variant) {
     case 'primary':
