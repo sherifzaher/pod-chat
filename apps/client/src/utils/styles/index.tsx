@@ -102,6 +102,7 @@ export const Page = styled.div<PageProps>`
 export const ConversationChannelPageStyle = styled.div`
   height: 100%;
   width: 100%;
+  overflow: hidden;
 `;
 
 export const ConversationSidebarContainer = styled.div``;
@@ -182,6 +183,7 @@ export const MessagePanelStyle = styled.div`
   display: flex;
   flex-direction: column;
   border-left: 1px solid #5454543d;
+  overflow: hidden;
 `;
 
 export const MessagePanelBody = styled.div`
@@ -678,4 +680,28 @@ export const TestContextMenu = styled.div<ContextMenuProps>`
 
   width: 200px;
   background-color: #000;
+`;
+
+export const MessageAttachmentContainerStyle = styled.div`
+  display: flex;
+  overflow-x: scroll;
+  flex: 0 0 auto;
+  gap: 20px;
+`;
+
+export const MessageAttachmentStyle = styled.div`
+  box-sizing: border-box;
+  padding: 50px 0 0 0;
+  position: relative;
+  max-height: 200px;
+  height: 200px;
+  width: 200px;
+  max-width: 200px;
+  background-color: #161616;
+  margin: 10px 0;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: center;
 `;

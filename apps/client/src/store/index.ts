@@ -9,6 +9,7 @@ import GroupSidebar from './slices/group-sidebar-slice';
 import FriendsReducer from './slices/friends-slice';
 import rateLimitReducer from './slices/rate-limit-slice';
 import userReducer from './slices/user-slice';
+import messagePanelReducer from './slices/message-panel-slice';
 
 export const store = configureStore({
   reducer: {
@@ -21,7 +22,8 @@ export const store = configureStore({
     groupSidebar: GroupSidebar,
     friends: FriendsReducer,
     rateLimit: rateLimitReducer,
-    user: userReducer
+    user: userReducer,
+    messagePanel: messagePanelReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
 });

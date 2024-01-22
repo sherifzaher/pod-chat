@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import {
@@ -14,6 +14,7 @@ import MessageContainer from './message-container';
 import MessageInputField from './message-input-field';
 
 import { RootState } from '../../store';
+import MessageAttachmentContainer from './attachments/message-attachment-container';
 
 type Props = {
   isRecipientTyping: boolean;
@@ -21,6 +22,7 @@ type Props = {
 
 export default function MessagePanel({ isRecipientTyping }: Props) {
   const ref = useRef<HTMLDivElement>(null);
+  const { attachments } = useSelector((state: RootState) => state.messagePanel);
   const { id } = useParams();
   const { user } = useSelector((state: RootState) => state.user);
   const { conversations, loading } = useSelector((state: RootState) => state.conversations);
@@ -33,6 +35,7 @@ export default function MessagePanel({ isRecipientTyping }: Props) {
         <MessageContainer />
       </MessagePanelBody>
       <MessagePanelFooter>
+        {attachments.length > 0 && <MessageAttachmentContainer />}
         <MessageInputField />
         <MessageTypingStatus isRecipientTyping={isRecipientTyping}>
           {isRecipientTyping &&

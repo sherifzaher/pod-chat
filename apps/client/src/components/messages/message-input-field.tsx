@@ -12,6 +12,7 @@ import { useSocketContext } from '../../context/socket-context';
 import { AppDispatch, RootState } from '../../store';
 import MessageTextField from '../inputs/message-text-field';
 import { useToast } from '../../hooks/useToast';
+import MessageAttachmentActionIcon from "./message-attachment-action-icon";
 
 const ICON_SIZE = 32;
 const MAX_LENGTH = 2048;
@@ -111,7 +112,7 @@ export default function MessageInputField() {
 
   return (
     <MessageInputContainer>
-      <CirclePlusFill className={styles.icon} size={ICON_SIZE} />
+      <MessageAttachmentActionIcon />
       <form>
         <MessageTextField
           onKeyDown={handleOnKeyDown}
