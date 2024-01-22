@@ -1,8 +1,10 @@
 import { Edit } from 'akar-icons';
 import { useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { MoonLoader } from 'react-spinners';
+
+import DefaultProfilePic from '../../__assets__/default_avatar.jpg';
+import BackgroundImage from '../../__assets__/test_banner.jpg';
 import { OverlayStyle, Page } from '../../utils/styles';
 import UserBanner from '../../components/settings/profile/user-banner';
 import {
@@ -13,10 +15,10 @@ import {
   SettingsProfileUserDetails
 } from '../../utils/styles/settings';
 import { Button } from '../../utils/styles/button';
-import BackgroundImage from '../../__assets__/test_banner.jpg';
 import { updateUserProfile } from '../../utils/api';
 import { AppDispatch, RootState } from '../../store';
 import { setUser } from '../../store/slices/user-slice';
+import UserAvatar from '../../components/settings/profile/user-avatar';
 
 export default function SettingsProfilePage() {
   const { user } = useSelector((state: RootState) => state.user);
@@ -24,30 +26,37 @@ export default function SettingsProfilePage() {
 
   const about = user?.profile?.about || '';
   const bannerSource = user?.profile?.banner || BackgroundImage;
+  const avatarSource = user?.profile?.avatar || DefaultProfilePic;
 
   const [isLoading, setIsLoading] = useState(false);
+  const [avatarFile, setAvatarFile] = useState<File>();
+  const [avatarSourceCopy, setAvatarSourceCopy] = useState(avatarSource);
   const [bannerFile, setBannerFile] = useState<File>();
   const [bannerSourceCopy, setBannerSourceCopy] = useState(bannerSource);
   const [aboutCopy, setAboutCopy] = useState(about);
   const [isEditing, setIsEditing] = useState(false);
 
   const isChanged = useMemo(
-    () => aboutCopy !== about || bannerFile,
-    [about, aboutCopy, bannerFile]
+    () => aboutCopy !== about || bannerFile || avatarFile,
+    [about, aboutCopy, avatarFile, bannerFile]
   );
 
   const reset = useCallback(() => {
     console.log(user);
     setAboutCopy(about || '');
     setBannerSourceCopy(bannerSource);
+    setAvatarSourceCopy(avatarSource);
     setIsEditing(false);
     setBannerFile(undefined);
+    setAvatarFile(undefined);
     URL.revokeObjectURL(bannerSourceCopy);
+    URL.revokeObjectURL(avatarSourceCopy);
   }, [about, bannerSource, bannerSourceCopy, user]);
 
   const save = useCallback(async () => {
     const formData = new FormData();
     bannerSource !== bannerSourceCopy && bannerFile && formData.append('banner', bannerFile);
+    avatarSource !== avatarSourceCopy && avatarFile && formData.append('avatar', avatarFile);
     about !== aboutCopy && formData.append('about', aboutCopy);
 
     try {
@@ -55,13 +64,24 @@ export default function SettingsProfilePage() {
       const response = await updateUserProfile(formData);
       dispatch(setUser(response.data));
       setBannerFile(undefined);
+      setAvatarFile(undefined);
       setIsEditing(false);
     } catch (error) {
       console.log(error);
     } finally {
       setIsLoading(false);
     }
-  }, [about, aboutCopy, bannerFile, bannerSource, bannerSourceCopy, dispatch]);
+  }, [
+    about,
+    aboutCopy,
+    avatarFile,
+    avatarSource,
+    avatarSourceCopy,
+    bannerFile,
+    bannerSource,
+    bannerSourceCopy,
+    dispatch
+  ]);
 
   return (
     <>
@@ -79,8 +99,14 @@ export default function SettingsProfilePage() {
         />
         <ProfileSections>
           <SettingsProfileUserDetails>
-            <div className="avatar" />
-            <span className="username">@username</span>
+            {/* <div className="avatar" /> */}
+            <UserAvatar
+              avatarSource={avatarSource}
+              setAvatarSourceCopy={setAvatarSourceCopy}
+              avatarSourceCopy={avatarSourceCopy}
+              setAvatarFile={setAvatarFile}
+            />
+            <span className="username">@{user?.username}</span>
           </SettingsProfileUserDetails>
           <ProfileAboutSection>
             <div className="about_header">

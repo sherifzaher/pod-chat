@@ -96,3 +96,7 @@ export type SettingsSidebarItemProps = {
 export type UserBannerProps = Partial<{
   backgroundUrl: string;
 }>;
+
+export type UserAvatarContainerProps = Partial<{
+  avatar: string;
+}>;

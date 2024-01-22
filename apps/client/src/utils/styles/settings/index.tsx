@@ -1,5 +1,9 @@
 import styled, { css } from 'styled-components';
-import { SettingsSidebarItemProps, UserBannerProps } from '../../../types/style-types';
+import {
+  SettingsSidebarItemProps,
+  UserAvatarContainerProps,
+  UserBannerProps
+} from '../../../types/style-types';
 import { slideDown, slideUp } from '../keyframes';
 
 export const SettingsSidebarStyle = styled.aside`
@@ -169,4 +173,45 @@ export const ProfileEditButtonActionsBar = styled.div`
     align-items: center;
     gap: 10px;
   }
+`;
+
+export const UserAvatarContainer = styled.div<UserAvatarContainerProps>`
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  border: 2px solid #afafaf;
+  background-color: #2a2a2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  &::before {
+    background-color: #292929cf;
+    content: 'Change Avatar';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #b5b5b5;
+    font-size: 10px;
+    font-weight: 500;
+    opacity: 0;
+    bottom: 0;
+    transition: 250ms opacity ease;
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
+`;
+
+export const UserAvatarImage = styled.img`
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  object-fit: contain;
 `;
