@@ -18,3 +18,21 @@ export const slideRightToLeft = keyframes`
   transform: translateX(0%);
     }
 `;
+
+export const slideUp = keyframes`
+    0% {
+        transform: translate(-50%, 100%);
+    } 
+    100% {
+        transform: translate(-50%, -20%);
+    }
+`;
+
+export const slideDown = keyframes`
+    0% {
+        transform: translate(-50%, -20%);
+    } 
+    100% {
+        transform: translate(-50%, 100%);
+    }
+`;

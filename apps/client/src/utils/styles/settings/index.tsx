@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { SettingsSidebarItemProps, UserBannerProps } from '../../../types/style-types';
+import { slideDown, slideUp } from '../keyframes';
 
 export const SettingsSidebarStyle = styled.aside`
   display: flex;
@@ -125,5 +126,27 @@ export const ProfileDescriptionField = styled.textarea`
 
   &:disabled {
     color: #484848;
+  }
+`;
+
+export const ProfileEditButtonActionsBar = styled.div`
+  background-color: #0e0e0e;
+  width: 600px;
+  height: 70px;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  justify-content: space-between;
+  color: #fff;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  animation: 500ms ${slideUp} ease forwards;
+  border-radius: 8px;
+  & .buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 `;
