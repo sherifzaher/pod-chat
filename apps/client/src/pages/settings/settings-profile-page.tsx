@@ -51,7 +51,7 @@ export default function SettingsProfilePage() {
     setAvatarFile(undefined);
     URL.revokeObjectURL(bannerSourceCopy);
     URL.revokeObjectURL(avatarSourceCopy);
-  }, [about, bannerSource, bannerSourceCopy, user]);
+  }, [about, avatarSource, avatarSourceCopy, bannerSource, bannerSourceCopy, user]);
 
   const save = useCallback(async () => {
     const formData = new FormData();
