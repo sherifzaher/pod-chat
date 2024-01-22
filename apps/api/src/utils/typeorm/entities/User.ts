@@ -35,7 +35,7 @@ export class User {
 
   @OneToOne(() => Profile, { cascade: ['insert', 'update'] })
   @JoinColumn()
-  profile?: Profile;
+  profile: Profile;
 
   @OneToMany(() => Message, (message) => message.author)
   @JoinColumn()
