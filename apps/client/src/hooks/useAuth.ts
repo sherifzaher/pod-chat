@@ -1,19 +1,18 @@
-import { useEffect, useState } from 'react';
-import { useAuthContext } from '../context/auth-context';
-import { getAuthUser } from '../utils/api';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { AppDispatch, RootState } from '../store';
+import { fetchUserThunk } from '../store/slices/user-slice';
 
 export function useAuth() {
-  const { user, setUser } = useAuthContext();
-  const [isLoading, setIsLoading] = useState(true);
-
+  const { loading, user } = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    getAuthUser()
-      .then((data) => {
-        setUser(data.data);
-      })
-      .catch((error) => console.log(error))
-      .finally(() => setIsLoading(false));
-  }, [setUser]);
+    !user && dispatch(fetchUserThunk());
+  }, [dispatch, user]);
 
-  return { user, isLoading };
+  return {
+    user,
+    loading
+  };
 }

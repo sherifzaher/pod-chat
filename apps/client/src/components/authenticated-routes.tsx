@@ -7,7 +7,7 @@ type Props = {
 };
 
 function AuthenticatedRoutes({ children }: Props) {
-  const { isLoading, user } = useAuth();
+  const { loading: isLoading, user } = useAuth();
   const location = useLocation();
 
   if (isLoading) return null;
@@ -15,6 +15,7 @@ function AuthenticatedRoutes({ children }: Props) {
   if (user) {
     return <>{children}</>;
   }
+  console.log(isLoading, user);
   return <Navigate to="/login" state={{ from: location }} replace />;
 }
 
