@@ -11,15 +11,20 @@ import {
   SettingsProfileUserDetails
 } from '../../utils/styles/settings';
 import { Button } from '../../utils/styles/button';
+import BackgroundImage from '../../__assets__/test_banner.jpg';
 
 export default function SettingsProfilePage() {
+  const [source] = useState(BackgroundImage);
+  const [sourceCopy, setSourceCopy] = useState(source);
   const [about, setAbout] = useState('how are u?');
   const [editedAbout, setEditedAbout] = useState(about);
   const [isEditing, setIsEditing] = useState(false);
 
+  const isChanged = editedAbout !== about || source !== sourceCopy;
+
   return (
     <Page>
-      <UserBanner />
+      <UserBanner source={source} sourceCopy={sourceCopy} setSourceCopy={setSourceCopy} />
       <ProfileSections>
         <SettingsProfileUserDetails>
           <div className="avatar" />
@@ -28,7 +33,7 @@ export default function SettingsProfilePage() {
         <ProfileAboutSection>
           <div className="about_header">
             <label htmlFor="about">About Me</label>
-            <Edit size={25} onClick={() => setIsEditing((prev) => !prev)} />
+            <Edit size={25} cursor="pointer" onClick={() => setIsEditing((prev) => !prev)} />
           </div>
           <ProfileDescriptionField
             id="about"
@@ -39,7 +44,7 @@ export default function SettingsProfilePage() {
           />
         </ProfileAboutSection>
       </ProfileSections>
-      {editedAbout !== about && (
+      {isChanged && (
         <ProfileEditButtonActionsBar>
           <div>
             <span>You have unsaved changes</span>

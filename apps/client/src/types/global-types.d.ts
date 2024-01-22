@@ -225,3 +225,6 @@ type UpdateRateLimitPayload = {
   type: RateLimitType;
   status: boolean;
 };
+
+type DivMouseEvent = React.MouseEvent<HTMLDivElement, MouseEvent>;
+type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
