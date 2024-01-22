@@ -22,6 +22,11 @@ export default function SettingsProfilePage() {
 
   const isChanged = editedAbout !== about || source !== sourceCopy;
 
+  const reset = () => {
+    setEditedAbout(about);
+    setSourceCopy(source);
+  }
+
   return (
     <Page>
       <UserBanner source={source} sourceCopy={sourceCopy} setSourceCopy={setSourceCopy} />
@@ -50,7 +55,7 @@ export default function SettingsProfilePage() {
             <span>You have unsaved changes</span>
           </div>
           <div className="buttons">
-            <Button size="md" variant="outline">
+            <Button size="md" variant="outline" onClick={reset}>
               Reset
             </Button>
             <Button size="md">Save</Button>

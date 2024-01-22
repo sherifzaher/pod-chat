@@ -73,6 +73,7 @@ export const Button = styled.button<ButtonProps>`
   gap: 3px;
   border: none;
   font-family: 'Inter';
+  cursor: pointer;
   border-radius: 10px;
   font-weight: 500;
   transition: 250ms background-color ease;
