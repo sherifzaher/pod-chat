@@ -4,12 +4,18 @@ import { SettingsProfileBanner } from '../../../utils/styles/settings';
 import { FileInput } from '../../../utils/styles/inputs/text-area';
 
 type TUserBanner = {
-  source: string;
-  sourceCopy: string;
-  setSourceCopy: React.Dispatch<SetStateAction<string>>;
+  bannerSource: string;
+  bannerSourceCopy: string;
+  setBannerSourceCopy: React.Dispatch<SetStateAction<string>>;
+  setBannerFile: React.Dispatch<SetStateAction<File | undefined>>;
 };
 
-export default function UserBanner({ sourceCopy, setSourceCopy, source }: TUserBanner) {
+export default function UserBanner({
+  bannerSource,
+  setBannerSourceCopy,
+  bannerSourceCopy,
+  setBannerFile
+}: TUserBanner) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const bannerRef = useRef<HTMLDivElement>(null);
   const handleBannerClick = (e: DivMouseEvent) => fileInputRef.current?.click();
@@ -19,7 +25,8 @@ export default function UserBanner({ sourceCopy, setSourceCopy, source }: TUserB
     const { files } = e.target;
     if (!files || !files.length) return;
     const firstFile = files.item(0);
-    setSourceCopy(firstFile ? URL.createObjectURL(firstFile) : source);
+    setBannerSourceCopy(firstFile ? URL.createObjectURL(firstFile) : bannerSource);
+    setBannerFile(firstFile || undefined);
   };
 
   return (
@@ -27,7 +34,7 @@ export default function UserBanner({ sourceCopy, setSourceCopy, source }: TUserB
       <SettingsProfileBanner
         ref={bannerRef}
         onClick={handleBannerClick}
-        backgroundUrl={sourceCopy}
+        backgroundUrl={bannerSourceCopy}
       />
       <FileInput ref={fileInputRef} onChange={handleOnFileChange} type="file" accept="image/*" />
     </>

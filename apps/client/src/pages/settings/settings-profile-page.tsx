@@ -12,25 +12,47 @@ import {
 } from '../../utils/styles/settings';
 import { Button } from '../../utils/styles/button';
 import BackgroundImage from '../../__assets__/test_banner.jpg';
+import { updateUserProfile } from '../../utils/api';
+import { useAuthContext } from '../../context/auth-context';
 
 export default function SettingsProfilePage() {
-  const [source] = useState(BackgroundImage);
-  const [sourceCopy, setSourceCopy] = useState(source);
-  const [about, setAbout] = useState('how are u?');
-  const [editedAbout, setEditedAbout] = useState(about);
+  const { user } = useAuthContext();
+  const [bannerSource] = useState(user?.profile?.banner || BackgroundImage);
+  const [bannerFile, setBannerFile] = useState<File>();
+  const [bannerSourceCopy, setBannerSourceCopy] = useState(bannerSource);
+  const [about, setAbout] = useState(user?.profile?.about || '');
+  const [aboutCopy, setAboutCopy] = useState(about);
   const [isEditing, setIsEditing] = useState(false);
 
-  const isChanged = editedAbout !== about || source !== sourceCopy;
+  const isChanged = aboutCopy !== about || bannerFile;
 
   const reset = () => {
-    setEditedAbout(about);
-    setSourceCopy(source);
+    setAboutCopy(about);
+    setBannerSourceCopy(bannerSource);
     setIsEditing(false);
+    setBannerFile(undefined);
+    URL.revokeObjectURL(bannerSourceCopy);
+  };
+
+  const save = async () => {
+    const formData = new FormData();
+    bannerSource !== bannerSourceCopy && bannerFile && formData.append('banner', bannerFile);
+    about !== aboutCopy && formData.append('about', aboutCopy);
+    try {
+      await updateUserProfile(formData);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <Page>
-      <UserBanner source={source} sourceCopy={sourceCopy} setSourceCopy={setSourceCopy} />
+      <UserBanner
+        setBannerFile={setBannerFile}
+        bannerSource={bannerSource}
+        bannerSourceCopy={bannerSourceCopy}
+        setBannerSourceCopy={setBannerSourceCopy}
+      />
       <ProfileSections>
         <SettingsProfileUserDetails>
           <div className="avatar" />
@@ -43,9 +65,9 @@ export default function SettingsProfilePage() {
           </div>
           <ProfileDescriptionField
             id="about"
-            value={editedAbout}
+            value={aboutCopy}
             disabled={!isEditing}
-            onChange={(e) => setEditedAbout(e.target.value)}
+            onChange={(e) => setAboutCopy(e.target.value)}
             maxLength={200}
           />
         </ProfileAboutSection>
@@ -59,7 +81,9 @@ export default function SettingsProfilePage() {
             <Button size="md" variant="outline" onClick={reset}>
               Reset
             </Button>
-            <Button size="md">Save</Button>
+            <Button size="md" onClick={save}>
+              Save
+            </Button>
           </div>
         </ProfileEditButtonActionsBar>
       )}

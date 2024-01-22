@@ -24,6 +24,14 @@ type User = {
   firstName: string;
   lastName: string;
   username: string;
+  profile?: Partial<Profile>;
+};
+
+type Profile = {
+  id: number;
+  avatar: string;
+  banner: string;
+  about: string;
 };
 
 type Conversation = {
@@ -228,3 +236,9 @@ type UpdateRateLimitPayload = {
 
 type DivMouseEvent = React.MouseEvent<HTMLDivElement, MouseEvent>;
 type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
+
+type UpdateProfileParams = Partial<{
+  banner: File;
+  avatar: File;
+  about: string;
+}>;
