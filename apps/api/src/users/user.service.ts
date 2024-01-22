@@ -44,11 +44,11 @@ export class UserService implements IUserService {
       'username',
       'lastName',
       'id',
-      'profile',
     ];
     const selectionWithPassword: (keyof User)[] = [...selection, 'password'];
     return this.userRepository.findOne(findUser, {
       select: options?.selectAll ? selectionWithPassword : selection,
+      relations: ['profile'],
     });
   }
 
