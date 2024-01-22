@@ -33,7 +33,7 @@ export class User {
   @Exclude()
   password: string;
 
-  @OneToOne(() => Profile)
+  @OneToOne(() => Profile, { cascade: ['insert', 'update'] })
   @JoinColumn()
   profile?: Profile;
 
