@@ -1,11 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Crown, PersonCross, Person } from 'akar-icons';
+
 import { ContextMenu, ContextMenuItem } from '../../utils/styles';
-import { userContextMenuItems } from '../../utils/constants';
 import { getUserContextMenuIcon, isGroupOwner } from '../../utils/helpers';
 import { AppDispatch, RootState } from '../../store';
-import { useAuthContext } from '../../context/auth-context';
 import { removeGroupRecipientThunk, updateGroupOwnerThunk } from '../../store/slices/group-slice';
 
 type Props = {
@@ -23,7 +22,7 @@ export const CustomIcon = ({ type }: CustomIconProps) => {
 export default function SelectedParticipantContextMenu({ points }: Props) {
   const { id: groupId } = useParams();
   const dispatch = useDispatch<AppDispatch>();
-  const { user } = useAuthContext();
+  const { user } = useSelector((state: RootState) => state.user);
   const selectedUser = useSelector((state: RootState) => state.groupSidebar.selectedUser);
   const group = useSelector((state: RootState) => state.groups.groups).find(
     (groupItem) => groupItem.id === parseInt(groupId!, 10)

@@ -2,7 +2,6 @@ import React, { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { CirclePlusFill, FaceVeryHappy } from 'akar-icons';
-import { RiFileGifLine } from 'react-icons/ri';
 
 import { AxiosError } from 'axios';
 import { postGroupMessage, postNewMessage } from '../../utils/api';
@@ -10,10 +9,8 @@ import { MessageInputContainer } from '../../utils/styles';
 import styles from '../forms/index.module.scss';
 
 import { useSocketContext } from '../../context/socket-context';
-import { useAuthContext } from '../../context/auth-context';
 import { AppDispatch, RootState } from '../../store';
 import MessageTextField from '../inputs/message-text-field';
-import { createMessageThunk } from '../../store/slices/messages-slice';
 import { useToast } from '../../hooks/useToast';
 
 const ICON_SIZE = 32;
@@ -28,7 +25,7 @@ export default function MessageInputField() {
   const { error } = useToast({ theme: 'dark' });
   const dispatch = useDispatch<AppDispatch>();
   const { id: routeId } = useParams();
-  const { user } = useAuthContext();
+  const { user } = useSelector((state: RootState) => state.user);
   const conversationType = useSelector((state: RootState) => state.selectedConversationType.type);
   const recipient = useSelector((state: RootState) => state.conversations.conversations).find(
     (conv) => conv.id === parseInt(routeId!, 10)

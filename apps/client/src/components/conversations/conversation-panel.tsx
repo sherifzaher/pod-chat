@@ -1,8 +1,10 @@
-import { useAuthContext } from '../../context/auth-context';
+import { useSelector } from 'react-redux';
+
 import { ConversationChannelPageStyle } from '../../utils/styles';
+import { RootState } from '../../store';
 
 function ConversationPanel() {
-  const { user } = useAuthContext();
+  const { user } = useSelector((state: RootState) => state.user);
   return (
     <ConversationChannelPageStyle>
       ConversationPanel

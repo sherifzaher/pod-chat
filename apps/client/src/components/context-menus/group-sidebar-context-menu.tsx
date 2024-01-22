@@ -1,18 +1,12 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import { IoMdExit, IoIosArchive } from 'react-icons/io';
 
 import { ContextMenu, ContextMenuItem } from '../../utils/styles';
 import { getUserContextMenuIcon } from '../../utils/helpers';
 
 import { AppDispatch, RootState } from '../../store';
-import { useAuthContext } from '../../context/auth-context';
 import { leaveGroupThunk, toggleContextMenu } from '../../store/slices/group-slice';
-
-type Props = {
-  points: { x: number; y: number };
-};
 
 type CustomIconProps = {
   type: UserContextMenuActionType;
@@ -24,7 +18,7 @@ export const CustomIcon = ({ type }: CustomIconProps) => {
 
 export default function GroupSidebarContextMenu() {
   // const { id: groupId } = useParams();
-  const { user } = useAuthContext();
+  const { user } = useSelector((state: RootState) => state.user);
   const menuRef = useRef<HTMLUListElement | null>(null);
   const dispatch = useDispatch<AppDispatch>();
   const points = useSelector((state: RootState) => state.groups.points);

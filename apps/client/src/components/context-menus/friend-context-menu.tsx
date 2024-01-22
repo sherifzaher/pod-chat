@@ -1,19 +1,18 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { IoMdExit } from 'react-icons/io';
 import { MdOutlineTextsms, MdPersonRemove } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+
 import { ContextMenu, ContextMenuItem } from '../../utils/styles';
 import { AppDispatch, RootState } from '../../store';
 import { removeFriendThunk, toggleContextMenu } from '../../store/slices/friends-slice';
 import { useSocketContext } from '../../context/socket-context';
-import { useAuthContext } from '../../context/auth-context';
 import { checkConversationOrCreate } from '../../utils/api';
 
 function FriendContextMenu() {
   const { points, selectedFriendContextMenu } = useSelector((state: RootState) => state.friends);
   const socket = useSocketContext();
-  const { user } = useAuthContext();
+  const { user } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 

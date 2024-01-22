@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import {
@@ -15,8 +15,6 @@ import MessageInputField from './message-input-field';
 
 import { RootState } from '../../store';
 
-import { useAuthContext } from '../../context/auth-context';
-
 type Props = {
   isRecipientTyping: boolean;
 };
@@ -24,7 +22,7 @@ type Props = {
 export default function MessagePanel({ isRecipientTyping }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const { id } = useParams();
-  const { user } = useAuthContext();
+  const { user } = useSelector((state: RootState) => state.user);
   const { conversations, loading } = useSelector((state: RootState) => state.conversations);
   const conversation = conversations.find((conv) => conv.id === Number(id!));
 

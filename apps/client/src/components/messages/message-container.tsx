@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
@@ -26,8 +26,6 @@ import {
   setSelectedMessage
 } from '../../store/slices/message-container-slice';
 
-import { useAuthContext } from '../../context/auth-context';
-
 export default function MessageContainer() {
   const [showMenu, setShowMenu] = useState(false);
   const [points, setPoints] = useState({ x: 0, y: 0 });
@@ -37,7 +35,7 @@ export default function MessageContainer() {
     (state: RootState) => state.messageContainer
   );
 
-  const { user } = useAuthContext();
+  const { user } = useSelector((state: RootState) => state.user);
   const { id } = useParams();
 
   const conversationMessages = useSelector((state: RootState) =>

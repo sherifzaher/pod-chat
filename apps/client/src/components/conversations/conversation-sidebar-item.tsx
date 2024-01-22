@@ -1,8 +1,10 @@
 import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 import { ConversationSidebarItemStyle } from '../../utils/styles';
-import styles from './index.module.scss';
 import { getRecipientFromConversation } from '../../utils/helpers';
-import { useAuthContext } from '../../context/auth-context';
+import { RootState } from '../../store';
+import styles from './index.module.scss';
 
 type Props = {
   conversation: Conversation;
@@ -13,7 +15,7 @@ const MESSAGE_LENGTH_MAX = 50;
 export default function ConversationSidebarItem({ conversation }: Props) {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { user } = useAuthContext();
+  const { user } = useSelector((state: RootState) => state.user);
   const recipient = getRecipientFromConversation(conversation, user!);
 
   const lastMessageContent = () => {

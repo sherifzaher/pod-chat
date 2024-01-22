@@ -1,9 +1,8 @@
 import { MdCheck, MdClose } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { useDispatch } from 'react-redux';
-import { useAuthContext } from '../../context/auth-context';
 import { FriendRequestActionIcon, FriendRequestItemContainer } from '../../utils/styles/friends';
-import { AppDispatch } from '../../store';
+import { AppDispatch, RootState } from '../../store';
 import {
   acceptFriendRequestThunk,
   cancelFriendRequestThunk,
@@ -15,7 +14,7 @@ type Props = {
 };
 
 function FriendRequestListItem({ friendRequest }: Props) {
-  const { user } = useAuthContext();
+  const { user } = useSelector((state: RootState) => state.user);
   const isIncomingRequest = user?.id !== friendRequest.sender.id;
   const dispatch = useDispatch<AppDispatch>();
 

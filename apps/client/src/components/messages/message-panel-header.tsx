@@ -2,15 +2,15 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCallback, useState } from 'react';
 import { PeopleGroup, PersonAdd } from 'akar-icons';
+
 import { GroupHeaderIcons, MessagePanelHeaderStyle } from '../../utils/styles';
-import { useAuthContext } from '../../context/auth-context';
 import { AppDispatch, RootState } from '../../store';
 import AddGroupRecipientModal from '../modals/add-group-recipient-modal';
 import { toggleSidebar } from '../../store/slices/group-sidebar-slice';
 
 export default function MessagePanelHeader() {
   const { id } = useParams();
-  const { user } = useAuthContext();
+  const { user } = useSelector((state: RootState) => state.user);
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
 

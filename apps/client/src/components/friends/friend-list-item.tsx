@@ -1,5 +1,6 @@
-import { useAuthContext } from '../../context/auth-context';
+import { useSelector } from 'react-redux';
 import { FriendListItemContainer } from '../../utils/styles/friends';
+import { RootState } from '../../store';
 
 type Props = {
   friend: Friend;
@@ -7,7 +8,7 @@ type Props = {
 };
 
 function FriendListItem({ friend, onContextMenu }: Props) {
-  const { user } = useAuthContext();
+  const { user } = useSelector((state: RootState) => state.user);
   return (
     <FriendListItemContainer onContextMenu={(e) => onContextMenu(e, friend)}>
       <div className="avatar" />

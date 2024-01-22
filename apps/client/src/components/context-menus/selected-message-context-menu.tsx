@@ -9,7 +9,6 @@ import {
   setMessageBeingEditing
 } from '../../store/slices/message-container-slice';
 
-import { useAuthContext } from '../../context/auth-context';
 import { deleteGroupMessageThunk } from '../../store/slices/group-message-slice';
 
 type Props = {
@@ -20,7 +19,7 @@ export default function SelectedMessageContextMenu({ points }: Props) {
   const conversationType = useSelector((state: RootState) => state.selectedConversationType.type);
 
   const { id } = useParams();
-  const { user } = useAuthContext();
+  const { user } = useSelector((state: RootState) => state.user);
 
   const dispatch = useDispatch<AppDispatch>();
 

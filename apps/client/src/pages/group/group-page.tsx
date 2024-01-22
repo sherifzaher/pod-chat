@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+
 import ConversationPanel from '../../components/conversations/conversation-panel';
 import ConversationSidebar from '../../components/sidebars/conversation-sidebar';
 
-import { AppDispatch } from '../../store';
+import { AppDispatch, RootState } from '../../store';
 import {
   addGroup,
   fetchGroupThunk,
@@ -17,11 +17,10 @@ import { updateType } from '../../store/slices/selected-slice';
 import { addGroupMessage } from '../../store/slices/group-message-slice';
 
 import { useSocketContext } from '../../context/socket-context';
-import { useAuthContext } from '../../context/auth-context';
 
 function GroupPage() {
   const { id } = useParams();
-  const { user } = useAuthContext();
+  const { user } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch<AppDispatch>();
   const socket = useSocketContext();
   const navigate = useNavigate();
