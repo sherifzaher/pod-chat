@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FileInput } from '../../utils/styles/inputs/text-area';
 import { AppDispatch, RootState } from '../../store';
 import { addAttachment } from '../../store/slices/message-panel-slice';
-import { FileLimit } from '../../utils/constants';
+import { AttachmentCount, FileLimit } from '../../utils/constants';
 import { useToast } from '../../hooks/useToast';
 
 export default function MessageAttachmentActionIcon() {
@@ -21,22 +21,25 @@ export default function MessageAttachmentActionIcon() {
 
   const onChange = (e: InputChangeEvent) => {
     e.preventDefault();
-    const file = e.target.files?.item(0);
-    if (attachments.length >= 5) {
-      return error('Maximum 5 attachments', { position: 'top-center' });
-    }
-    if (file) {
-      if (file.size >= FileLimit.MEGABYTE) {
-        return error('File exceeds limit: 1MB', { position: 'top-center' });
-      }
-      dispatch(addAttachment({ id: attachmentCounter + 1, file }));
+    const { files } = e.target;
+    if (!files) return;
+
+    const filesArray = Array.from(files);
+    let localCounter = attachmentCounter;
+    const maxFilesDropped = AttachmentCount.count - attachments.length;
+    if (maxFilesDropped === 0) return error('Max files reached');
+
+    for (let i = 0; i < filesArray.length; i++) {
+      if (i === maxFilesDropped) break;
+      if (filesArray[i].size >= FileLimit.MEGABYTE) return error('File size exceeds max 1MB');
+      dispatch(addAttachment({ id: localCounter++, file: filesArray[i] }));
     }
   };
 
   return (
     <div ref={attachmentIconRef} onClick={onClick}>
       <CirclePlusFill size={30} cursor="pointer" />
-      <FileInput onChange={onChange} ref={fileInputRef} type="file" accept="image/*" />
+      <FileInput onChange={onChange} ref={fileInputRef} multiple type="file" accept="image/*" />
     </div>
   );
 }
