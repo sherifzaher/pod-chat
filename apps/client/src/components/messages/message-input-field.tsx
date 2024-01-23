@@ -12,7 +12,8 @@ import { useSocketContext } from '../../context/socket-context';
 import { AppDispatch, RootState } from '../../store';
 import MessageTextField from '../inputs/message-text-field';
 import { useToast } from '../../hooks/useToast';
-import MessageAttachmentActionIcon from "./message-attachment-action-icon";
+import MessageAttachmentActionIcon from './message-attachment-action-icon';
+import { resetAttachments } from '../../store/slices/message-panel-slice';
 
 const ICON_SIZE = 32;
 const MAX_LENGTH = 2048;
@@ -31,6 +32,7 @@ export default function MessageInputField() {
   const recipient = useSelector((state: RootState) => state.conversations.conversations).find(
     (conv) => conv.id === parseInt(routeId!, 10)
   )?.recipient;
+  const { attachments } = useSelector((state: RootState) => state.messagePanel);
   const group = useSelector((state: RootState) => state.groups.groups).find(
     (groupItem) => groupItem.id === parseInt(routeId!, 10)
   );
@@ -41,36 +43,25 @@ export default function MessageInputField() {
     async (e: React.FormEvent<HTMLTextAreaElement>) => {
       e.preventDefault();
       const trimmedContent = content.trim();
-      if (!routeId || !trimmedContent) return;
-      const id = Number(routeId);
+      if (!routeId || (!trimmedContent && !attachments.length)) return;
 
-      const params = { id, content: trimmedContent };
+      const formData = new FormData();
+      formData.append('id', routeId);
+      formData.append('content', trimmedContent);
+
+      attachments.forEach((attachment) => formData.append('attachments', attachment.file));
+
       try {
         conversationType === 'private'
-          ? await postNewMessage(params)
-          : await postGroupMessage(params);
+          ? await postNewMessage(routeId, formData)
+          : await postGroupMessage(routeId, formData);
         setContent('');
+        dispatch(resetAttachments());
       } catch (err) {
         (err as AxiosError).response?.status === 429 && error('You are rate limited', { toastId });
       }
-
-      //   if (conversationType === 'private') {
-      //     try {
-      //       await postNewMessage(params);
-      //       setContent('');
-      //     } catch (err) {
-      //       console.log(err);
-      //     }
-      //   } else {
-      //     try {
-      //       await postGroupMessage(params);
-      //       setContent('');
-      //     } catch (err) {
-      //       console.log(err);
-      //     }
-      //   }
     },
-    [content, routeId, conversationType, error]
+    [content, routeId, attachments, conversationType]
   );
 
   const handleSendTypingStatus = useCallback(

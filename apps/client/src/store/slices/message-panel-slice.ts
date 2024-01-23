@@ -26,9 +26,13 @@ export const messagePanelSlice = createSlice({
     removeAttachment: (state, action: PayloadAction<IAttachment>) => {
       state.attachments = state.attachments.filter((file) => file.id !== action.payload.id);
       state.attachmentCounter -= 1;
+    },
+    resetAttachments: (state) => {
+      state.attachments = [];
+      state.attachmentCounter = 0;
     }
   }
 });
 
-export const { addAttachment, removeAttachment } = messagePanelSlice.actions;
+export const { addAttachment, removeAttachment, resetAttachments } = messagePanelSlice.actions;
 export default messagePanelSlice.reducer;

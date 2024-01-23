@@ -1,5 +1,3 @@
-// import {Icon} from "akar-icons";
-
 type ConversationType = {
   id: number;
   name: string;
@@ -42,12 +40,19 @@ type Conversation = {
   lastMessageSent: Message;
 };
 
+type MessageAttachment = {
+  id: string;
+  attachmentUrl: string;
+  message: Message;
+};
+
 type Message = {
   id: number;
   content: string;
   createdAt: string;
   author: User;
   conversation: Conversation;
+  attachments?: MessageAttachment[];
 };
 
 type FetchMessagePayload = {
@@ -128,6 +133,7 @@ type GroupMessageType = {
   createdAt: string;
   author: User;
   group: Group;
+  attachments?: MessageAttachment[];
 };
 
 type FetchGroupMessagePayload = {

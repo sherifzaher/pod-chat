@@ -37,18 +37,6 @@ export const editMessageThunk = createAsyncThunk('messages/edit', (params: EditM
   editMessageAPI(params)
 );
 
-export const createMessageThunk = createAsyncThunk(
-  'messages/create',
-  async (params: CreateMessageParams, thunkAPI) => {
-    try {
-      const response = await postNewMessageAPI(params);
-      return thunkAPI.fulfillWithValue(response);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-
 export const MessagesSlice = createSlice({
   name: 'messages',
   initialState,
@@ -89,6 +77,7 @@ export const MessagesSlice = createSlice({
     builder
       .addCase(fetchMessagesThunk.fulfilled, (state, action) => {
         const { id, messages } = action.payload.data;
+        // console.log(action.payload.data.messages);
         const index = state.messages.findIndex((msg) => msg.id === id);
         if (index > -1) {
           if (state.pagination.skip === 0) {

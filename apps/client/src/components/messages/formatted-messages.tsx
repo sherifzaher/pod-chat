@@ -27,6 +27,10 @@ export default function FormattedMessage({
     (state: RootState) => state.messageContainer
   );
 
+  if (message.content === 'lol') {
+  }
+  console.log(message.content);
+
   return (
     <MessageItemContainer onContextMenu={onContextMenu}>
       <MessageItemAvatar />
@@ -46,7 +50,25 @@ export default function FormattedMessage({
             <EditMessageContainer onEditMessageChange={onEditMessageChange} />
           </MessageItemContent>
         ) : (
-          <MessageItemContent padding="4px 0 0 2px">{message.content}</MessageItemContent>
+          <MessageItemContent padding="4px 0 0 2px">
+            {message?.content}
+            <div>
+              {message?.attachments &&
+                message.attachments.map((attachment) => (
+                  <img
+                    key={attachment.id}
+                    width="100px"
+                    height="100px"
+                    style={{
+                      objectFit: 'contain',
+                      objectPosition: 'center'
+                    }}
+                    src={attachment.attachmentUrl}
+                    alt=""
+                  />
+                ))}
+            </div>
+          </MessageItemContent>
         )}
       </MessageItemDetails>
     </MessageItemContainer>

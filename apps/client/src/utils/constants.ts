@@ -113,3 +113,7 @@ export const userSettingsItems: (UserSettingsItemType & { icon: IconType })[] = 
     icon: IoMdColorPalette
   }
 ];
+
+export enum FileLimit {
+  MEGABYTE = 1048576
+}

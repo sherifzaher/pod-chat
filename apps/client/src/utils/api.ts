@@ -27,8 +27,13 @@ export const getConversationMessages = (conversationId: number, skip: number) =>
     config
   );
 
-export const postNewMessage = ({ id, content }: CreateMessageParams) =>
-  axiosClient.post(`/conversations/${id}/messages`, { content }, config);
+export const postNewMessage = (id: string, data: FormData) =>
+  axiosClient.post(`/conversations/${id}/messages`, data, {
+    ...config,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
 
 export const postNewConversation = (data: CreateConversationParams) =>
   axiosClient.post<Conversation>(`/conversations`, data, config);
@@ -53,8 +58,13 @@ export const fetchGroupById = (id: number) => axiosClient.get<Group>(`/groups/${
 export const fetchGroupMessages = (id: number) =>
   axiosClient.get<FetchGroupMessagePayload>(`/groups/${id}/messages`, config);
 
-export const postGroupMessage = ({ id, content }: CreateMessageParams) =>
-  axiosClient.post(`/groups/${id}/messages`, { content }, config);
+export const postGroupMessage = (id: string, data: FormData) =>
+  axiosClient.post(`/groups/${id}/messages`, data, {
+    ...config,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
 
 export const searchUsers = (query: string) =>
   axiosClient.get<User[]>(`/users/search?query=${query}`, config);

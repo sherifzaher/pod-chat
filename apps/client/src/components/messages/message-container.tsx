@@ -130,7 +130,25 @@ export default function MessageContainer() {
               <EditMessageContainer onEditMessageChange={onEditMessageChange} />
             </MessageItemContent>
           ) : (
-            <MessageItemContent padding="0 0 0 70px">{message.content}</MessageItemContent>
+            <MessageItemContent padding="0 0 0 70px">
+              {message.content}
+              <div>
+                {message?.attachments &&
+                  message.attachments.map((attachment) => (
+                    <img
+                      key={attachment.id}
+                      width="100px"
+                      height="100px"
+                      style={{
+                        objectFit: 'contain',
+                        objectPosition: 'center'
+                      }}
+                      src={attachment.attachmentUrl}
+                      alt=""
+                    />
+                  ))}
+              </div>
+            </MessageItemContent>
           )}
         </MessageItemContainer>
       );
