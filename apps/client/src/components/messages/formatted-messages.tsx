@@ -27,10 +27,6 @@ export default function FormattedMessage({
     (state: RootState) => state.messageContainer
   );
 
-  if (message.content === 'lol') {
-  }
-  console.log(message.content);
-
   return (
     <MessageItemContainer onContextMenu={onContextMenu}>
       <MessageItemAvatar />
