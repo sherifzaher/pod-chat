@@ -9,6 +9,9 @@ import {
   Patch,
   Post,
   Query,
+  UploadedFiles,
+  UseInterceptors,
+  UsePipes,
 } from '@nestjs/common';
 import { Routes, Services } from '../utils/constants';
 import { IMessageService } from './message';
@@ -18,6 +21,12 @@ import { User } from '../utils/typeorm';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { EditMessageDto } from './dtos/EditMessage.dto';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
+import {
+  FileFieldsInterceptor,
+  FileInterceptor,
+} from '@nestjs/platform-express';
+import { EmptyMessageException } from './exceptions/empty-message-exception';
+import { Attachment, UploadedFilesType } from '../utils/types';
 
 @Controller(Routes.MESSAGES)
 export class MessagesController {
@@ -27,14 +36,23 @@ export class MessagesController {
   ) {}
 
   @Throttle(5, 10)
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      {
+        name: 'attachments',
+        maxCount: 5,
+      },
+    ]),
+  )
   @Post()
   async createMessage(
     @AuthUser() user: User,
     @Body() { content }: CreateMessageDto,
+    @UploadedFiles() { attachments }: UploadedFilesType,
     @Param('id', ParseIntPipe) conversationId: number,
   ) {
-    console.log(conversationId);
-    const params = { user, content, conversationId };
+    if (!attachments && !content) throw new EmptyMessageException();
+    const params = { user, content, conversationId, attachments };
     const msg = await this.messageService.createMessage(params);
     this.eventEmitter.emit('message.create', msg);
     return;

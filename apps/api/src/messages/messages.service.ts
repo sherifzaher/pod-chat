@@ -1,15 +1,17 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { IMessageService } from './message';
-import { Conversation, Message, User } from '../utils/typeorm';
-import {
-  CreateMessageParams,
-  CreateMessageResponse,
-  DeleteMessageParams,
-  EditMessageParams,
-} from '../utils/types';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { instanceToPlain } from 'class-transformer';
+
+import { IMessageService } from './message';
+import { Conversation, Message } from '../utils/typeorm';
+import {
+  CreateMessageParams,
+  DeleteMessageParams,
+  EditMessageParams,
+} from '../utils/types';
+import { Services } from '../utils/constants';
+import { IMessageAttachments } from '../message-attachments/message-attachments';
 
 @Injectable()
 export class MessagesService implements IMessageService {
@@ -18,19 +20,26 @@ export class MessagesService implements IMessageService {
     private readonly messageRepository: Repository<Message>,
     @InjectRepository(Conversation)
     private readonly conversationRepository: Repository<Conversation>,
+    @Inject(Services.MESSAGES_ATTACHMENTS)
+    private readonly messageAttachmentsService: IMessageAttachments,
   ) {}
   async createMessage({
     user,
     conversationId,
     content,
-  }: CreateMessageParams): Promise<CreateMessageResponse> {
+    attachments,
+  }: CreateMessageParams) {
+    // : Promise<CreateMessageResponse>
     const conversation = await this.conversationRepository.findOne(
       {
         id: conversationId,
       },
       { relations: ['creator', 'recipient', 'lastMessageSent'] },
     );
-    console.log(conversation);
+
+    const messageAttachments = attachments
+      ? await this.messageAttachmentsService.create(attachments)
+      : [];
 
     if (!conversation) {
       throw new HttpException('Conversation not found', HttpStatus.BAD_REQUEST);
@@ -47,6 +56,7 @@ export class MessagesService implements IMessageService {
       content,
       conversation,
       author: instanceToPlain(user),
+      attachments: messageAttachments,
     });
 
     const savedMessage = await this.messageRepository.save(newMessage);
@@ -67,7 +77,7 @@ export class MessagesService implements IMessageService {
           id: conversationId,
         },
       },
-      relations: ['author'],
+      relations: ['author', 'attachments'],
       order: {
         createdAt: 'DESC',
       },

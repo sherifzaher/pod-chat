@@ -37,7 +37,8 @@ export interface AuthenticatedRequest extends Request {
 }
 
 export type CreateMessageParams = {
-  content: string;
+  content?: string;
+  attachments?: Attachment[];
   conversationId: number;
   user: User;
 };
@@ -189,3 +190,9 @@ export type UpdateUserProfileParams = Partial<{
   banner: Express.Multer.File;
   avatar: Express.Multer.File;
 }>;
+
+export interface Attachment extends Express.Multer.File {}
+
+export type UploadedFilesType = {
+  attachments: Attachment[];
+};
