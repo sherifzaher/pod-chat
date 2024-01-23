@@ -20,9 +20,9 @@ export default function ConversationSidebarItem({ conversation }: Props) {
 
   const lastMessageContent = () => {
     const { lastMessageSent } = conversation;
-    if (lastMessageSent)
-      return lastMessageSent.content.length >= MESSAGE_LENGTH_MAX
-        ? lastMessageSent.content.slice(0, MESSAGE_LENGTH_MAX).concat('...')
+    if (lastMessageSent && lastMessageSent.content)
+      return lastMessageSent.content?.length >= MESSAGE_LENGTH_MAX
+        ? lastMessageSent.content?.slice(0, MESSAGE_LENGTH_MAX).concat('...')
         : lastMessageSent.content;
     return null;
   };

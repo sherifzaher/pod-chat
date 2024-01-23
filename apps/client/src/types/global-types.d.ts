@@ -48,7 +48,7 @@ type MessageAttachment = {
 
 type Message = {
   id: number;
-  content: string;
+  content?: string;
   createdAt: string;
   author: User;
   conversation: Conversation;
@@ -242,6 +242,8 @@ type UpdateRateLimitPayload = {
 
 type DivMouseEvent = React.MouseEvent<HTMLDivElement, MouseEvent>;
 type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
+type DragElementEvent = React.DragEvent<HTMLTextAreaElement>;
+type ClipboardPasteEvent = React.ClipboardEvent<HTMLTextAreaElement>;
 
 type UpdateProfileParams = Partial<{
   banner: File;

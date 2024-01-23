@@ -117,3 +117,7 @@ export const userSettingsItems: (UserSettingsItemType & { icon: IconType })[] = 
 export enum FileLimit {
   MEGABYTE = 1048576
 }
+
+export enum AttachmentCount {
+  count = 5
+}
