@@ -8,6 +8,8 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Routes, Services } from '../../utils/constants';
@@ -17,6 +19,8 @@ import { CreateMessageDto } from '../../messages/dtos/CreateMessage.dto';
 import { EditMessageDto } from '../../messages/dtos/EditMessage.dto';
 import { User } from 'src/utils/typeorm';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { UploadedFilesType } from 'src/utils/types';
 
 @Controller(Routes.GROUP_MESSAGES)
 export class GroupMessageController {
@@ -28,9 +32,18 @@ export class GroupMessageController {
 
   @Post()
   @Throttle(5, 10)
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      {
+        name: 'attachments',
+        maxCount: 5,
+      },
+    ]),
+  )
   async createGroupMessage(
     @AuthUser() user: User,
     @Param('id', ParseIntPipe) id: number,
+    @UploadedFiles() { attachments }: UploadedFilesType,
     @Body() { content }: CreateMessageDto,
   ) {
     console.log(`Creating group message for ${id}`);
@@ -40,7 +53,7 @@ export class GroupMessageController {
       author: user,
     });
     this.eventEmitter.emit('group.message.create', response);
-    return;
+    return response;
   }
 
   @Get()

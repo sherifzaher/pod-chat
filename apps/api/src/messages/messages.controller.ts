@@ -21,12 +21,9 @@ import { User } from '../utils/typeorm';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { EditMessageDto } from './dtos/EditMessage.dto';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
-import {
-  FileFieldsInterceptor,
-  FileInterceptor,
-} from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { EmptyMessageException } from './exceptions/empty-message-exception';
-import { Attachment, UploadedFilesType } from '../utils/types';
+import { UploadedFilesType } from '../utils/types';
 
 @Controller(Routes.MESSAGES)
 export class MessagesController {

@@ -39,6 +39,8 @@ export class GroupMessageService implements IGroupMessageService {
       author: instanceToPlain(params.author),
     });
 
+    console.log(groupMessage);
+
     const saveGroupMessage = await this.groupMessageRepository.save(
       groupMessage,
     );
