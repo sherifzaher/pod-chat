@@ -1,71 +1,47 @@
-import React, { useState } from 'react';
+import React, { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { EditMessageActionsContainer, EditMessageInputField } from '../../utils/styles';
-
 import { AppDispatch, RootState } from '../../store';
+import { EditMessageActionsContainer, EditMessageInputField } from '../../utils/styles';
 import { editMessageThunk } from '../../store/slices/messages-slice';
-import { setIsEditingMessage } from '../../store/slices/message-container-slice';
 import { editGroupMessageThunk } from '../../store/slices/group-message-slice';
+import { setIsEditing } from '../../store/slices/message-container-slice';
 
 type Props = {
   onEditMessageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
-
-export default function EditMessageContainer({ onEditMessageChange }: Props) {
-  const [disabled, setDisabled] = useState(false);
+const EditMessageContainer: FC<Props> = ({ onEditMessageChange }) => {
+  const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const { messageBeingEdited } = useSelector((state: RootState) => state.messageContainer);
   const conversationType = useSelector((state: RootState) => state.selectedConversationType.type);
-  const { id } = useParams();
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('submitting edit');
+    console.log(messageBeingEdited);
+    console.log('Submitting Edit');
     if (!messageBeingEdited) {
-      console.log('MessageIsBeingEdited is undefined... Returning');
+      console.log('messageBeingEdited is undefined... Returning');
       return;
     }
-
-    if (conversationType === 'private') {
-      const params: EditMessagePayload = {
-        conversationId: Number(id!),
-        messageId: messageBeingEdited?.id!,
-        content: messageBeingEdited?.content!
-      };
-
-      dispatch(editMessageThunk(params))
-        .unwrap()
-        .then(() => dispatch(setIsEditingMessage(false)))
-        .catch((err) => {
-          console.log(err);
-          dispatch(setIsEditingMessage(false));
-        });
-    } else {
-      const params: EditGroupMessagePayload = {
-        groupId: Number(id!),
-        messageId: messageBeingEdited?.id!,
-        content: messageBeingEdited?.content!
-      };
-
-      dispatch(editGroupMessageThunk(params))
-        .unwrap()
-        .then(() => dispatch(setIsEditingMessage(false)))
-        .catch((err) => {
-          console.log(err);
-          dispatch(setIsEditingMessage(false));
-        });
-    }
+    const params: EditMessagePayload = {
+      conversationId: parseInt(id!, 10),
+      messageId: messageBeingEdited.id,
+      content: messageBeingEdited.content || ''
+    };
+    console.log(params);
+    console.log('Editing...', conversationType);
+    conversationType === 'private'
+      ? dispatch(editMessageThunk(params)).finally(() => dispatch(setIsEditing(false)))
+      : dispatch(editGroupMessageThunk({ ...params, groupId: params.conversationId })).finally(() =>
+          dispatch(setIsEditing(false))
+        );
   };
 
   return (
-    <div>
-      <form style={{ width: '100%' }} onSubmit={onSubmit}>
-        <EditMessageInputField
-          disabled={disabled}
-          value={messageBeingEdited?.content}
-          onChange={onEditMessageChange}
-        />
+    <div style={{ width: '100%' }}>
+      <form onSubmit={onSubmit}>
+        <EditMessageInputField value={messageBeingEdited?.content} onChange={onEditMessageChange} />
       </form>
       <EditMessageActionsContainer>
         <div>
@@ -74,4 +50,6 @@ export default function EditMessageContainer({ onEditMessageChange }: Props) {
       </EditMessageActionsContainer>
     </div>
   );
-}
+};
+
+export default EditMessageContainer;

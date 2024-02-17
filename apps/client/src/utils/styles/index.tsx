@@ -259,7 +259,7 @@ export const MessageItemDetails = styled.div`
   flex-grow: 1;
 `;
 
-export const MessageItemHeader = styled.div`
+export const MessageItemHeaderContainer = styled.div`
   display: flex;
   gap: 12px;
   .time {
