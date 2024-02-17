@@ -382,6 +382,8 @@ export const UserAvatar = styled.img`
   height: 55px;
   border-radius: 55px;
   margin: 10px 0;
+  object-fit: contain;
+  border: 1px solid gray;
 `;
 
 export const UserSidebarTop = styled.div`

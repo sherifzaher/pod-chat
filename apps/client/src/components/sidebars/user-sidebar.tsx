@@ -1,22 +1,20 @@
 import { useState } from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
-import { IconBadge, UserAvatar, UserSidebarStyle } from '../../utils/styles';
+import { UserAvatar, UserSidebarStyle } from '../../utils/styles';
 import CreateConversationModal from '../modals/create-conversation-modal';
 import avatar from '../../__assets__/avatar_1.png';
 import styles from './index.module.scss';
 import { UserSidebarItems } from '../../utils/constants';
-import { RootState } from '../../store';
 import UserSidebarItem from './sidebar-items/user-sidebar-item';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function UserSidebar() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [showModal, setShowModal] = useState(false);
-
-  const friendRequests = useSelector((state: RootState) => state.friends.friendRequests);
 
   function isActive(href: string, id: string) {
     if (id === 'conversations' && pathname.includes('/group')) return true;
@@ -27,7 +25,7 @@ export default function UserSidebar() {
     <>
       {showModal && <CreateConversationModal setShowModal={setShowModal} />}
       <UserSidebarStyle>
-        <UserAvatar src={avatar} width="55px" alt="avatar" />
+        <UserAvatar src={user?.profile?.avatar ?? avatar} width="55px" alt="avatar" />
         <hr className={styles.hr} />
         {UserSidebarItems.map(({ id, href, icon }) => (
           <UserSidebarItem
