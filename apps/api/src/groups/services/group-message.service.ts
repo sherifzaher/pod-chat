@@ -11,6 +11,7 @@ import { Services } from '../../utils/constants';
 import { IGroupMessageService } from '../interfaces/group-message';
 import { Group, GroupMessage } from '../../utils/typeorm';
 import { IGroupService } from '../interfaces/group';
+import { IMessageAttachments } from 'src/message-attachments/message-attachments';
 
 @Injectable()
 export class GroupMessageService implements IGroupMessageService {
@@ -21,6 +22,8 @@ export class GroupMessageService implements IGroupMessageService {
     private readonly groupRepository: Repository<Group>,
     @Inject(Services.GROUPS_SERVICE)
     private readonly groupService: IGroupService,
+    @Inject(Services.MESSAGES_ATTACHMENTS)
+    private readonly messageAttachmentsService: IMessageAttachments,
   ) {}
   async createGroupMessage(params: CreateGroupMessageParams) {
     const { content, author } = params;
@@ -33,10 +36,17 @@ export class GroupMessageService implements IGroupMessageService {
     if (!findUser)
       throw new HttpException('User not in group', HttpStatus.BAD_REQUEST);
 
+    const attachments =
+      await this.messageAttachmentsService.createGroupAttachments(
+        params.attachments,
+      );
+    console.log(attachments);
+
     const groupMessage = this.groupMessageRepository.create({
       group,
       content,
       author: instanceToPlain(params.author),
+      attachments,
     });
 
     console.log(groupMessage);
@@ -54,7 +64,7 @@ export class GroupMessageService implements IGroupMessageService {
   getGroupMessages(id: number): Promise<GroupMessage[]> {
     return this.groupMessageRepository.find({
       where: { group: id },
-      relations: ['author'],
+      relations: ['author', 'attachments'],
       order: {
         createdAt: 'DESC',
       },

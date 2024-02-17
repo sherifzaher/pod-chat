@@ -21,6 +21,7 @@ import { User } from 'src/utils/typeorm';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { UploadedFilesType } from 'src/utils/types';
+import { EmptyMessageException } from 'src/messages/exceptions/empty-message-exception';
 
 @Controller(Routes.GROUP_MESSAGES)
 export class GroupMessageController {
@@ -47,11 +48,9 @@ export class GroupMessageController {
     @Body() { content }: CreateMessageDto,
   ) {
     console.log(`Creating group message for ${id}`);
-    const response = await this.groupMessageService.createGroupMessage({
-      content,
-      groupId: id,
-      author: user,
-    });
+    if (!attachments && !content) throw new EmptyMessageException();
+    const params = { groupId: id, author: user, content, attachments };
+    const response = await this.groupMessageService.createGroupMessage(params);
     this.eventEmitter.emit('group.message.create', response);
     return response;
   }

@@ -4,10 +4,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Services } from '../utils/constants';
 import { MessageAttachmentsService } from './message-attachments.service';
 import { CloudinaryModule } from '../cloudinary/cloudinary.module';
-import { MessageAttachment } from '../utils/typeorm';
+import { GroupMessageAttachment, MessageAttachment } from '../utils/typeorm';
 
 @Module({
-  imports: [CloudinaryModule, TypeOrmModule.forFeature([MessageAttachment])],
+  imports: [
+    CloudinaryModule,
+    TypeOrmModule.forFeature([MessageAttachment, GroupMessageAttachment]),
+  ],
   controllers: [],
   providers: [
     {

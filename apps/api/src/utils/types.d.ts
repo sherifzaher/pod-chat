@@ -4,6 +4,7 @@ import {
   FriendRequest,
   Group,
   GroupMessage,
+  GroupMessageAttachment,
   Message,
   User,
 } from './typeorm';
@@ -72,9 +73,10 @@ export type FetchGroupParams = {
 };
 
 export type CreateGroupMessageParams = {
-  groupId: number;
-  content: string;
   author: User;
+  attachments?: Attachment[];
+  content: string;
+  groupId: number;
 };
 
 export type CreateGroupMessageResponse = {
@@ -216,4 +218,9 @@ export type FindMessageParams = {
   userId: number;
   conversationId: number;
   messageId: number;
+};
+
+export type UploadGroupMessageAttachmentParams = {
+  file: Attachment;
+  messageAttachment: GroupMessageAttachment;
 };
