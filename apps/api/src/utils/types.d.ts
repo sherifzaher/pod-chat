@@ -211,3 +211,9 @@ export type AccessParams = {
   id: number;
   userId: number;
 };
+
+export type FindMessageParams = {
+  userId: number;
+  conversationId: number;
+  messageId: number;
+};

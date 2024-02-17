@@ -16,6 +16,7 @@ import { IConversationsService } from 'src/conversations/conversations';
 import { ConversationNotFound } from 'src/conversations/exceptions/conversation-not-found';
 import { CannotCreateMessageException } from './exceptions/cannot-create-message-excpetion';
 import { CannotDeleteMessage } from './exceptions/cannot-delete-message';
+import { buildFindMessageParams } from 'src/utils/builders';
 
 @Injectable()
 export class MessagesService implements IMessageService {
@@ -83,11 +84,9 @@ export class MessagesService implements IMessageService {
     const msgParams = { id: conversationId, limit: 5 };
     const conversation = await this.conversationService.getMessages(msgParams);
     if (!conversation) throw new ConversationNotFound();
-    const message = await this.messageRepository.findOne({
-      id: params.messageId,
-      author: { id: params.userId },
-      conversation: { id: params.conversationId },
-    });
+    const findMessageParams = buildFindMessageParams(params);
+    const message = await this.messageRepository.findOne(findMessageParams);
+
     if (!message) throw new CannotDeleteMessage();
     if (conversation.lastMessageSent.id !== message.id)
       return this.messageRepository.delete({ id: message.id });

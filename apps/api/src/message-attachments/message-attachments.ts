@@ -3,4 +3,5 @@ import { MessageAttachment } from '../utils/typeorm';
 
 export interface IMessageAttachments {
   create(attachments: Attachment[]): Promise<MessageAttachment[]>;
+  deleteAllAttachments(attachments: MessageAttachment[]);
 }
