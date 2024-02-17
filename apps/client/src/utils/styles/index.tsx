@@ -243,11 +243,12 @@ export const MessageItemContainer = styled.div`
   word-break: break-all;
 `;
 
-export const MessageItemAvatar = styled.div`
+export const MessageItemAvatarStyle = styled.img`
   width: 50px;
   height: 50px;
-  background-color: #b12b2b;
   border-radius: 50%;
+  object-fit: contain;
+  border: 1px solid gray;
 `;
 
 export const MessageItemDetails = styled.div`

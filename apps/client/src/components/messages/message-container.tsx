@@ -15,13 +15,13 @@ import {
 import { useHandleClick, useKeydown } from '../../hooks';
 import {
   MessageContainerStyle,
-  MessageItemAvatar,
   MessageItemContainer,
   MessageItemDetails
 } from '../../utils/styles';
 import { MessageItemHeader } from './attachments/message-item-header';
 import { MessageItemContainerBody } from './attachments/message-item-container-body';
 import { SelectedMessageContextMenu } from '../context-menus/selected-message-context-menu';
+import { MessageItemAvatar } from './message-item-avatar';
 
 const MessageContainer = () => {
   const { id } = useParams();
@@ -70,7 +70,7 @@ const MessageContainer = () => {
       messages.length === index + 1 || currentMessage.author.id !== nextMessage.author.id;
     return (
       <MessageItemContainer key={message.id} onContextMenu={(e) => onContextMenu(e, message)}>
-        {showMessageHeader && <MessageItemAvatar />}
+        {showMessageHeader && <MessageItemAvatar message={message} />}
         {showMessageHeader ? (
           <MessageItemDetails>
             <MessageItemHeader message={message} />

@@ -7,7 +7,7 @@ import {
   GroupRecipientSidebarItemContainer,
   GroupRecipientsSidebarHeader,
   GroupRecipientsSidebarStyle,
-  MessageItemAvatar
+  MessageItemAvatarStyle
 } from '../../utils/styles';
 import { AppDispatch, RootState } from '../../store';
 import { useSocketContext } from '../../context/socket-context';
@@ -84,7 +84,7 @@ export default function GroupRecipientsSidebar() {
             key={user.id}
             onContextMenu={(e) => onUserContextMenu(e, user)}>
             <div className="left">
-              <MessageItemAvatar />
+              <MessageItemAvatarStyle />
               <span>{user.firstName}</span>
             </div>
             {user.id === group?.owner.id && <Crown color="#ffbf00" />}
@@ -98,7 +98,7 @@ export default function GroupRecipientsSidebar() {
               key={user.id}
               onContextMenu={(e) => onUserContextMenu(e, user)}>
               <div className="left">
-                <MessageItemAvatar />
+                <MessageItemAvatarStyle />
                 <span>{user.firstName}</span>
               </div>
               {user.id === group?.owner.id && <Crown color="#ffbf00" />}
