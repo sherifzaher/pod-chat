@@ -173,7 +173,7 @@ export class MessagingGateway
 
   @OnEvent('message.delete')
   async handleDeleteMessage(payload: DeleteMessageParams) {
-    const conversation = await this.conversationService.findConversationById(
+    const conversation = await this.conversationService.findById(
       payload.conversationId,
     );
     if (!conversation) return;

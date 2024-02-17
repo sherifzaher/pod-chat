@@ -4,7 +4,12 @@ import { Repository } from 'typeorm';
 import { IConversationsService } from './conversations';
 import { Conversation, Message, User } from '../utils/typeorm';
 import { Services } from '../utils/constants';
-import { CreateConversationParams } from '../utils/types';
+import {
+  AccessParams,
+  CreateConversationParams,
+  GetConversationMessagesParams,
+  UpdateConversationParams,
+} from '../utils/types';
 import { IUserService } from '../users/user';
 import { ConversationNotFound } from './exceptions/conversation-not-found';
 
@@ -24,7 +29,7 @@ export class ConversationsService implements IConversationsService {
       .createQueryBuilder('conversation')
       .leftJoinAndSelect('conversation.lastMessageSent', 'lastMessageSent')
       .leftJoinAndSelect('conversation.creator', 'creator')
-      .leftJoinAndSelect('creator.profile', 'creatorProf  ile')
+      .leftJoinAndSelect('creator.profile', 'creatorProfile')
       .leftJoinAndSelect('conversation.recipient', 'recipient')
       .leftJoinAndSelect('recipient.profile', 'recipientProfile')
       .where('creator.id = :id', { id })
@@ -33,14 +38,15 @@ export class ConversationsService implements IConversationsService {
       .getMany();
   }
 
-  async findConversationById(id: number): Promise<Conversation> {
-    return this.conversationRepository.findOne(id, {
+  async findById(id: number) {
+    return this.conversationRepository.findOne({
+      where: { id },
       relations: [
-        'lastMessageSent',
         'creator',
         'recipient',
         'creator.profile',
         'recipient.profile',
+        'lastMessageSent',
       ],
     });
   }
@@ -98,17 +104,34 @@ export class ConversationsService implements IConversationsService {
     return savedConversation;
   }
 
-  async hasAccess(conversationId: number, userId: number) {
-    const conversation = await this.conversationRepository.findOne(
-      conversationId,
-      {
-        relations: ['creator', 'recipient'],
-      },
-    );
+  async hasAccess({ id, userId }: AccessParams) {
+    const conversation = await this.findById(id);
     if (!conversation) throw new ConversationNotFound();
-
     return (
       conversation.creator.id === userId || conversation.recipient.id === userId
     );
+  }
+
+  save(conversation: Conversation): Promise<Conversation> {
+    return this.conversationRepository.save(conversation);
+  }
+
+  getMessages({
+    id,
+    limit,
+  }: GetConversationMessagesParams): Promise<Conversation> {
+    return this.conversationRepository
+      .createQueryBuilder('conversation')
+      .where('id = :id', { id })
+      .leftJoinAndSelect('conversation.lastMessageSent', 'lastMessageSent')
+      .leftJoinAndSelect('conversation.messages', 'message')
+      .where('conversation.id = :id', { id })
+      .orderBy('message.createdAt', 'DESC')
+      .limit(limit)
+      .getOne();
+  }
+
+  update({ id, lastMessageSent }: UpdateConversationParams) {
+    return this.conversationRepository.update(id, { lastMessageSent });
   }
 }

@@ -49,10 +49,10 @@ export class MessagesController {
     @AuthUser() user: User,
     @Body() { content }: CreateMessageDto,
     @UploadedFiles() { attachments }: UploadedFilesType,
-    @Param('id', ParseIntPipe) conversationId: number,
+    @Param('id', ParseIntPipe) id: number,
   ) {
     if (!attachments && !content) throw new EmptyMessageException();
-    const params = { user, content, conversationId, attachments };
+    const params = { user, id, content, attachments };
     const msg = await this.messageService.createMessage(params);
     this.eventEmitter.emit('message.create', msg);
     return;
@@ -60,23 +60,13 @@ export class MessagesController {
 
   @Get()
   @SkipThrottle()
-  async getConversationMessages(
+  async getMessagesFromConversation(
     @AuthUser() user: User,
-    @Param('id', ParseIntPipe) conversationId: number,
-    @Query('skip', ParseIntPipe) skip: number,
+    @Param('id', ParseIntPipe) id: number,
   ) {
-    const [messages, count] =
-      await this.messageService.getMessagesByConversationId(
-        conversationId,
-        skip,
-      );
-
-    console.log(count);
-
-    return {
-      id: conversationId,
-      messages,
-    };
+    console.log(id);
+    const messages = await this.messageService.getMessagesByConversationId(id);
+    return { id, messages };
   }
 
   @Delete(':messageId')

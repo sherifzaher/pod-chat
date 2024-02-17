@@ -7,12 +7,14 @@ import { Services } from '../utils/constants';
 import { Conversation, Message, MessageAttachment } from '../utils/typeorm';
 import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 import { MessageAttachmentsModule } from '../message-attachments/message-attachments.module';
+import { ConversationsModule } from 'src/conversations/conversations.module';
 
 @Module({
   imports: [
     MessageAttachmentsModule,
     CloudinaryModule,
     TypeOrmModule.forFeature([Message, Conversation, MessageAttachment]),
+    ConversationsModule,
   ],
   controllers: [MessagesController],
   providers: [

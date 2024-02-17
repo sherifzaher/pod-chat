@@ -9,13 +9,12 @@ import {
 } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { SkipThrottle } from '@nestjs/throttler';
-
-import { Routes, Services } from '../utils/constants';
 import { AuthenticationGuard } from '../auth/utils/Guards';
-import { IConversationsService } from './conversations';
-import { CreateConversationDto } from './dtos/createConversation.dto';
+import { Routes, Services } from '../utils/constants';
 import { AuthUser } from '../utils/decorators';
 import { User } from '../utils/typeorm';
+import { IConversationsService } from './conversations';
+import { CreateConversationDto } from './dtos/CreateConversation.dto';
 
 @SkipThrottle()
 @Controller(Routes.CONVERSATIONS)
@@ -26,14 +25,20 @@ export class ConversationsController {
     private readonly conversationsService: IConversationsService,
     private readonly events: EventEmitter2,
   ) {}
+  @Get('test/endpoint/check')
+  test() {
+    return;
+  }
+
   @Post()
   async createConversation(
     @AuthUser() user: User,
-    @Body() createConversationDto: CreateConversationDto,
+    @Body() createConversationPayload: CreateConversationDto,
   ) {
+    console.log('createConversation');
     const conversation = await this.conversationsService.createConversation(
       user,
-      createConversationDto,
+      createConversationPayload,
     );
     this.events.emit('conversation.create', conversation);
     return conversation;
@@ -45,7 +50,7 @@ export class ConversationsController {
   }
 
   @Get(':id')
-  getConversationById(@Param('id') id: number) {
-    return this.conversationsService.findConversationById(id);
+  async getConversationById(@Param('id') id: number) {
+    return this.conversationsService.findById(id);
   }
 }

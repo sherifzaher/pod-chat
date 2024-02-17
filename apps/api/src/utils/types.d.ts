@@ -37,9 +37,9 @@ export interface AuthenticatedRequest extends Request {
 }
 
 export type CreateMessageParams = {
+  id: number;
   content?: string;
   attachments?: Attachment[];
-  conversationId: number;
   user: User;
 };
 
@@ -195,4 +195,19 @@ export interface Attachment extends Express.Multer.File {}
 
 export type UploadedFilesType = {
   attachments: Attachment[];
+};
+
+export type GetConversationMessagesParams = {
+  id: number;
+  limit: number;
+};
+
+export type UpdateConversationParams = Partial<{
+  id: number;
+  lastMessageSent: Message;
+}>;
+
+export type AccessParams = {
+  id: number;
+  userId: number;
 };
