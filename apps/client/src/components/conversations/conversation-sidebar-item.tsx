@@ -32,7 +32,15 @@ export default function ConversationSidebarItem({ conversation }: Props) {
       <ConversationSidebarItemStyle
         selected={parseInt(id!, 10) === conversation.id}
         onClick={() => navigate(`/conversations/${conversation.id}`)}>
-        <div className={styles.conversationAvatar} />
+        {recipient?.profile?.avatar ? (
+          <img
+            src={recipient.profile.avatar}
+            style={{ width: '50px', height: '50px', objectFit: 'contain', borderRadius: '50%' }}
+            alt="user profile"
+          />
+        ) : (
+          <div className={styles.conversationAvatar} />
+        )}
         <div className={styles.contentContainer}>
           <span className={styles.conversationName}>
             {`${recipient?.firstName} ${recipient?.lastName}`}
@@ -40,7 +48,6 @@ export default function ConversationSidebarItem({ conversation }: Props) {
           <span className={styles.conversationLastMessage}>{lastMessageContent()}</span>
         </div>
       </ConversationSidebarItemStyle>
-      {/* <hr className={styles.hr} /> */}
     </>
   );
 }
