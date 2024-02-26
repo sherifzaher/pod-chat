@@ -1,6 +1,6 @@
-import { useSelector } from 'react-redux';
 import { FriendListItemContainer } from '../../utils/styles/friends';
-import { RootState } from '../../store';
+import { UserAvatar } from '../messages/message-item-avatar';
+import { useAuth } from '../../hooks/useAuth';
 
 type Props = {
   friend: Friend;
@@ -8,11 +8,13 @@ type Props = {
 };
 
 function FriendListItem({ friend, onContextMenu }: Props) {
-  const { user } = useSelector((state: RootState) => state.user);
+  const { user } = useAuth();
+  const friendUserInstance = user?.id === friend.sender.id ? friend.receiver : friend.sender;
+
   return (
     <FriendListItemContainer onContextMenu={(e) => onContextMenu(e, friend)}>
-      <div className="avatar" />
-      <div>{user?.id === friend.sender.id ? friend.receiver.username : friend.sender.username}</div>
+      <UserAvatar user={friendUserInstance} />
+      <div>{friendUserInstance.username}</div>
     </FriendListItemContainer>
   );
 }
