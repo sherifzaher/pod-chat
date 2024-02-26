@@ -1,17 +1,16 @@
 import { FC } from 'react';
 import defaultAvatar from '../../__assets__/default_avatar.jpg';
-import { MessageItemAvatarStyle } from '../../utils/styles';
+import { UserAvatarContainer } from '../../utils/styles';
 
 type Props = {
-  message: Message | GroupMessageType;
+  user: User;
 };
 
-export const MessageItemAvatar: FC<Props> = ({ message }) => {
+export const UserAvatar: FC<Props> = ({ user }) => {
   const getProfilePicture = () => {
-    const { profile } = message.author;
-    // console.log(message);
+    const { profile } = user;
     return profile && profile.avatar ? profile.avatar : defaultAvatar;
   };
 
-  return <MessageItemAvatarStyle src={getProfilePicture()} alt="avatar" />;
+  return <UserAvatarContainer src={getProfilePicture()} alt="avatar" />;
 };

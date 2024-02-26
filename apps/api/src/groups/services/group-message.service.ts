@@ -36,10 +36,11 @@ export class GroupMessageService implements IGroupMessageService {
     if (!findUser)
       throw new HttpException('User not in group', HttpStatus.BAD_REQUEST);
 
-    const attachments =
-      await this.messageAttachmentsService.createGroupAttachments(
-        params.attachments,
-      );
+    const attachments = params.attachments
+      ? await this.messageAttachmentsService.createGroupAttachments(
+          params.attachments,
+        )
+      : [];
     console.log(attachments);
 
     const groupMessage = this.groupMessageRepository.create({
@@ -64,7 +65,7 @@ export class GroupMessageService implements IGroupMessageService {
   getGroupMessages(id: number): Promise<GroupMessage[]> {
     return this.groupMessageRepository.find({
       where: { group: id },
-      relations: ['author', 'attachments'],
+      relations: ['author', 'attachments', 'author.profile'],
       order: {
         createdAt: 'DESC',
       },

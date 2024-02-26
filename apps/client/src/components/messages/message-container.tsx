@@ -21,7 +21,7 @@ import {
 import { MessageItemHeader } from './attachments/message-item-header';
 import { MessageItemContainerBody } from './attachments/message-item-container-body';
 import { SelectedMessageContextMenu } from '../context-menus/selected-message-context-menu';
-import { MessageItemAvatar } from './message-item-avatar';
+import { UserAvatar } from './message-item-avatar';
 
 const MessageContainer = () => {
   const { id } = useParams();
@@ -70,7 +70,7 @@ const MessageContainer = () => {
       messages.length === index + 1 || currentMessage.author.id !== nextMessage.author.id;
     return (
       <MessageItemContainer key={message.id} onContextMenu={(e) => onContextMenu(e, message)}>
-        {showMessageHeader && <MessageItemAvatar message={message} />}
+        {showMessageHeader && <UserAvatar user={message.author} />}
         {showMessageHeader ? (
           <MessageItemDetails>
             <MessageItemHeader message={message} />
