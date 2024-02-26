@@ -250,3 +250,10 @@ type UpdateProfileParams = Partial<{
   avatar: File;
   about: string;
 }>;
+
+type FriendRequestDetailsType = {
+  status: string;
+  displayName: string;
+  user: User;
+  incoming: boolean;
+};

@@ -8,6 +8,10 @@ import {
   cancelFriendRequestThunk,
   rejectFriendRequestThunk
 } from '../../store/slices/friends-slice';
+import { UserAvatar } from '../messages/message-item-avatar';
+import { FriendRequestIcons } from './friend-request/friend-request-icons';
+import { getFriendRequestDetails } from '../../utils/helpers';
+import { FriendRequestDetails } from './friend-request/friend-request-details';
 
 type Props = {
   friendRequest: FriendRequest;
@@ -18,44 +22,29 @@ function FriendRequestListItem({ friendRequest }: Props) {
   const isIncomingRequest = user?.id !== friendRequest.sender.id;
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleFriendRequest = (type: HandleFriendRequestAction) => {
-    if (!isIncomingRequest) {
-      return dispatch(cancelFriendRequestThunk(friendRequest.id));
-    }
+  const friendRequestDetails = getFriendRequestDetails(friendRequest, user);
 
+  const handleFriendRequest = (type?: HandleFriendRequestAction) => {
+    if (!isIncomingRequest) {
+      dispatch(cancelFriendRequestThunk(friendRequest.id));
+      return;
+    }
     if (type === 'accept') {
-      return dispatch(acceptFriendRequestThunk(friendRequest.id));
+      dispatch(acceptFriendRequestThunk(friendRequest.id));
+      return;
     } else {
-      return dispatch(rejectFriendRequestThunk(friendRequest.id));
+      dispatch(rejectFriendRequestThunk(friendRequest.id));
+      return;
     }
   };
 
   return (
     <FriendRequestItemContainer>
-      <div className="avatar" />
-      <div className="requestInfo">
-        {isIncomingRequest ? (
-          <>
-            <span>{`${friendRequest.sender.firstName} ${friendRequest.sender.lastName}`}</span>
-            <span className="requestStatus">Incoming request</span>
-          </>
-        ) : (
-          <>
-            <span>{`${friendRequest.receiver.firstName} ${friendRequest.receiver.lastName}`}</span>
-            <span className="requestStatus">Outgoing Friend Request</span>
-          </>
-        )}
-      </div>
-      <div className="requestActions">
-        {isIncomingRequest && (
-          <FriendRequestActionIcon isAccept onClick={() => handleFriendRequest('accept')}>
-            <MdCheck />
-          </FriendRequestActionIcon>
-        )}
-        <FriendRequestActionIcon onClick={() => handleFriendRequest('reject')}>
-          <MdClose />
-        </FriendRequestActionIcon>
-      </div>
+      <FriendRequestDetails details={friendRequestDetails} />
+      <FriendRequestIcons
+        details={friendRequestDetails}
+        handleFriendRequest={handleFriendRequest}
+      />
     </FriendRequestItemContainer>
   );
 }

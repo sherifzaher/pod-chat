@@ -58,40 +58,37 @@ export const FriendListItemContainer = styled.div`
 `;
 
 export const FriendRequestItemContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
   padding: 10px 0;
-  border-bottom: 1px solid #181818;
-
-  &:last-child {
-    border-bottom: unset;
+  border-bottom: 1px solid #1f1f1fbf;
+  display: flex;
+  justify-content: space-between;
+  & .details {
+    display: flex;
+    align-items: center;
+    gap: 20px;
   }
 
-  & .avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #fff;
-  }
-
-  & .requestStatus {
-    font-size: 14px;
-    font-style: italic;
-    color: #8e8e8e;
-    font-weight: 500;
-  }
-
-  & .requestInfo {
-    flex: 1;
+  & .name {
     display: flex;
     flex-direction: column;
+    font-size: 20px;
   }
 
-  & .requestActions {
+  & .status {
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 600;
+    color: #626262;
+  }
+
+  & .icons {
     display: flex;
     align-items: center;
     gap: 10px;
+  }
+
+  :last-child {
+    border-bottom: unset;
   }
 `;
 
