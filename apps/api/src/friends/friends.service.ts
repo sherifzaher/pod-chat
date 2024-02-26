@@ -17,13 +17,13 @@ export class FriendsService implements IFriendsService {
   getFriends(id: number) {
     return this.friendsRepository.find({
       where: [{ sender: { id } }, { receiver: { id } }],
-      relations: ['receiver', 'sender'],
+      relations: ['receiver', 'sender', 'sender.profile', 'receiver.profile'],
     });
   }
 
   findFriendById(id: number): Promise<Friend> {
     return this.friendsRepository.findOne(id, {
-      relations: ['sender', 'receiver'],
+      relations: ['sender', 'receiver', 'sender.profile', 'receiver.profile'],
     });
   }
 

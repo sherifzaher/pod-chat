@@ -103,7 +103,7 @@ export class FriendRequestsService implements IFriendRequestsService {
           status: 'pending',
         },
       ],
-      relations: ['receiver', 'sender'],
+      relations: ['receiver', 'sender', 'receiver.profile', 'sender.profile'],
     });
   }
 
