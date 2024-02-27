@@ -9,7 +9,7 @@ export const MessageTextarea = styled.textarea`
   margin: 4px 0;
   height: 20px;
   max-height: 100px;
-  color: #ffffff;
+  color: ${({ theme }) => theme.messagePanel.inputContainer.color};
   font-family: 'Inter', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
     'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-size: 18px;

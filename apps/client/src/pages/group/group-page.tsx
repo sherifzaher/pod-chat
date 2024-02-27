@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -21,6 +21,7 @@ import { useSocketContext } from '../../context/socket-context';
 function GroupPage() {
   const { id } = useParams();
   const { user } = useSelector((state: RootState) => state.user);
+  const [showSidebar, setShowSidebar] = useState(window.innerWidth > 800);
   const dispatch = useDispatch<AppDispatch>();
   const socket = useSocketContext();
   const navigate = useNavigate();
@@ -29,6 +30,14 @@ function GroupPage() {
     dispatch(updateType('group'));
     dispatch(fetchGroupThunk());
   }, [dispatch]);
+
+  useEffect(() => {
+    const handleResize = () => setShowSidebar(window.innerWidth > 800);
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     socket.on('onGroupMessage', (payload: GroupMessageEventPayload) => {
@@ -98,8 +107,9 @@ function GroupPage() {
 
   return (
     <>
-      <ConversationSidebar />
-      {!id && <ConversationPanel />}
+      {showSidebar && <ConversationSidebar />}
+      {!id && !showSidebar && <ConversationSidebar />}
+      {!id && showSidebar && <ConversationPanel />}
       <Outlet />
     </>
   );

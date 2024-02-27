@@ -11,6 +11,7 @@ import rateLimitReducer from './slices/rate-limit-slice';
 import userReducer from './slices/user-slice';
 import messagePanelReducer from './slices/message-panel-slice';
 import systemMessageReducer from './slices/system-message-slice';
+import settingsReducer from './slices/settings-slice';
 
 export const store = configureStore({
   reducer: {
@@ -25,7 +26,8 @@ export const store = configureStore({
     rateLimit: rateLimitReducer,
     user: userReducer,
     messagePanel: messagePanelReducer,
-    systemMessages: systemMessageReducer
+    systemMessages: systemMessageReducer,
+    settings: settingsReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
 });

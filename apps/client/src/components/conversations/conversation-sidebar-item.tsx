@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import { ConversationSidebarItemStyle } from '../../utils/styles';
+import { ConversationSidebarItemDetails, ConversationSidebarItemStyle } from '../../utils/styles';
 import { getRecipientFromConversation } from '../../utils/helpers';
 import { RootState } from '../../store';
 import styles from './index.module.scss';
@@ -41,12 +41,14 @@ export default function ConversationSidebarItem({ conversation }: Props) {
         ) : (
           <div className={styles.conversationAvatar} />
         )}
-        <div className={styles.contentContainer}>
-          <span className={styles.conversationName}>
-            {`${recipient?.firstName} ${recipient?.lastName}`}
-          </span>
-          <span className={styles.conversationLastMessage}>{lastMessageContent()}</span>
-        </div>
+        <ConversationSidebarItemDetails>
+          <div className={styles.contentContainer}>
+            <span className={styles.conversationName}>
+              {`${recipient?.firstName} ${recipient?.lastName}`}
+            </span>
+            <span className={styles.conversationLastMessage}>{lastMessageContent()}</span>
+          </div>
+        </ConversationSidebarItemDetails>
       </ConversationSidebarItemStyle>
     </>
   );
