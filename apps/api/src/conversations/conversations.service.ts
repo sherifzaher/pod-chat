@@ -12,6 +12,9 @@ import {
 } from '../utils/types';
 import { IUserService } from '../users/user';
 import { ConversationNotFound } from './exceptions/conversation-not-found';
+import { UserNotFoundException } from 'src/groups/exceptions/user-not-found-exception';
+import { CreateConversationException } from './exceptions/create-conversation';
+import { ConversationExistsException } from './exceptions/conversation-exists';
 
 @Injectable()
 export class ConversationsService implements IConversationsService {
@@ -70,19 +73,15 @@ export class ConversationsService implements IConversationsService {
     const { username, message } = params;
 
     const recipient = await this.userService.findUser({ username });
-    if (!recipient)
-      throw new HttpException('Recipient not found', HttpStatus.BAD_REQUEST);
+    if (!recipient) throw new UserNotFoundException();
 
-    if (user.id === recipient.id)
-      throw new HttpException(
-        'Cannot Create Conversation',
-        HttpStatus.BAD_REQUEST,
-      );
+    if (user.id === recipient.id) {
+      const error = 'Cannot create Conversation with yourself';
+      throw new CreateConversationException(error);
+    }
 
     const existingConversation = await this.isCreated(user.id, recipient.id);
-
-    if (existingConversation)
-      throw new HttpException('Conversation exists', HttpStatus.CONFLICT);
+    if (existingConversation) throw new ConversationExistsException();
 
     const conversation = this.conversationRepository.create({
       creator: user,
