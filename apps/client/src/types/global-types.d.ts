@@ -274,3 +274,7 @@ type SystemMessageType = {
   content: string;
   level: SystemMessageLevel;
 };
+
+type UpdateStatusParams = {
+  statusMessage: string;
+};

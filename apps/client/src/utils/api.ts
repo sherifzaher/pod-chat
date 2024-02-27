@@ -138,3 +138,6 @@ export const updateUserProfile = (data: FormData) =>
       'Content-Type': 'multipart/form-data'
     }
   });
+
+export const updateStatusMessage = (data: UpdateStatusParams) =>
+  axiosClient.patch('/users/presence/status', data, config);
