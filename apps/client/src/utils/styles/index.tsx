@@ -663,19 +663,34 @@ export const GroupRecipientSidebarItemContainer = styled.div`
     display: none;
   }
 `;
-export const GroupRecipientSidebarItem = styled.div`
+
+type GroupRecipientSidebarItemProps = {
+  online: boolean;
+};
+
+export const GroupRecipientSidebarItem = styled.div<GroupRecipientSidebarItemProps>`
   display: flex;
   gap: 20px;
   align-items: center;
   font-size: 18px;
   font-weight: 500;
   margin: 10px 0;
+  & .recipientDetails {
+    display: flex;
+    flex-direction: column;
+  }
   & .left {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 14px;
   }
+  & .status {
+    font-size: 12px;
+    font-weight: 500;
+    color: #929292;
+  }
+  opacity: ${({ online }) => !online && 0.2};
 `;
 
 export const GroupHeaderIcons = styled.div`

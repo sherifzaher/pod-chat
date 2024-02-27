@@ -9,7 +9,7 @@ import MessagePanel from '../../components/messages/message-panel';
 
 import { ConversationChannelPageStyle } from '../../utils/styles';
 import { useSocketContext } from '../../context/socket-context';
-import GroupRecipientsSidebar from '../../components/sidebars/group-recipients-sidebar';
+import GroupRecipientsSidebar from '../../components/sidebars/group-recipients/group-recipients-sidebar';
 
 function GroupChannelPage() {
   const [isRecipientTyping, setIsRecipientTyping] = useState(false);

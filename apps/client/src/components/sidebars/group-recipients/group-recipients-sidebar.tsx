@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Crown } from 'akar-icons';
 import {
-  GroupRecipientSidebarItem,
   GroupRecipientSidebarItemContainer,
   GroupRecipientsSidebarHeader,
-  GroupRecipientsSidebarStyle,
-  UserAvatarContainer
-} from '../../utils/styles';
-import { AppDispatch, RootState } from '../../store';
-import { useSocketContext } from '../../context/socket-context';
+  GroupRecipientsSidebarStyle
+} from '../../../utils/styles';
+import { AppDispatch, RootState } from '../../../store';
+import { useSocketContext } from '../../../context/socket-context';
 import {
   setContextMenuPoints,
   setSelectedUser,
   toggleContextMenu
-} from '../../store/slices/group-sidebar-slice';
-import SelectedParticipantContextMenu from '../context-menus/selected-participant-context-menu';
+} from '../../../store/slices/group-sidebar-slice';
+import SelectedParticipantContextMenu from '../../context-menus/selected-participant-context-menu';
+import { OnlineGroupRecipients } from './online-group-recipients';
+import { OfflineGroupRecipients } from './offline-group-recipients';
 
 export default function GroupRecipientsSidebar() {
   const { id: groupId } = useParams();
@@ -79,31 +78,17 @@ export default function GroupRecipientsSidebar() {
       </GroupRecipientsSidebarHeader>
       <GroupRecipientSidebarItemContainer>
         <span>Online Users</span>
-        {onlineUsers.map((user) => (
-          <GroupRecipientSidebarItem
-            key={user.id}
-            onContextMenu={(e) => onUserContextMenu(e, user)}>
-            <div className="left">
-              <UserAvatarContainer src={user.profile?.avatar} />
-              <span>{user.firstName}</span>
-            </div>
-            {user.id === group?.owner.id && <Crown color="#ffbf00" />}
-          </GroupRecipientSidebarItem>
-        ))}
+        <OnlineGroupRecipients
+          users={onlineUsers}
+          group={group}
+          onUserContextMenu={onUserContextMenu}
+        />
         <span>Offline Users</span>
-        {group?.users
-          .filter((user) => !onlineUsers.find((onlineUser) => onlineUser.id === user.id))
-          .map((user) => (
-            <GroupRecipientSidebarItem
-              key={user.id}
-              onContextMenu={(e) => onUserContextMenu(e, user)}>
-              <div className="left">
-                <UserAvatarContainer src={user.profile?.avatar} />
-                <span>{user.firstName}</span>
-              </div>
-              {user.id === group?.owner.id && <Crown color="#ffbf00" />}
-            </GroupRecipientSidebarItem>
-          ))}
+        <OfflineGroupRecipients
+          onlineUsers={onlineUsers}
+          group={group}
+          onUserContextMenu={onUserContextMenu}
+        />
         {groupSidebarState.showUserContextMenu && (
           <SelectedParticipantContextMenu points={groupSidebarState.points} />
         )}
