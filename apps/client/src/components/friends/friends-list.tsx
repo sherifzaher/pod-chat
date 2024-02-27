@@ -39,7 +39,7 @@ function FriendsList() {
         </div>
       )}
       {onlineFriends.map((friend) => (
-        <FriendListItem key={friend.id} onContextMenu={onContextMenu} friend={friend} />
+        <FriendListItem key={friend.id} onContextMenu={onContextMenu} friend={friend} online />
       ))}
 
       {offlineFriends.length > 0 && (
@@ -48,7 +48,12 @@ function FriendsList() {
         </div>
       )}
       {offlineFriends.map((friend) => (
-        <FriendListItem key={friend.id} onContextMenu={onContextMenu} friend={friend} />
+        <FriendListItem
+          key={friend.id}
+          onContextMenu={onContextMenu}
+          friend={friend}
+          online={false}
+        />
       ))}
       {showFriendsContextMenu && <FriendContextMenu />}
     </FriendsListContainer>

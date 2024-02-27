@@ -40,7 +40,12 @@ export const FriendsListContainer = styled.div`
   }
 `;
 
-export const FriendListItemContainer = styled.div`
+type FriendListItemContainerProps = {
+  online: boolean;
+};
+
+export const FriendListItemContainer = styled.div<FriendListItemContainerProps>`
+  opacity: ${({ online }) => !online && '0.2'};
   display: flex;
   align-items: center;
   gap: 20px;
@@ -54,6 +59,20 @@ export const FriendListItemContainer = styled.div`
   }
   &:last-child {
     border-bottom: unset;
+  }
+
+  & .friendDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    & .username {
+      font-size: 16px;
+      font-weight: 500;
+    }
+    & .status {
+      font-size: 12px;
+      color: #00ff00;
+    }
   }
 `;
 
