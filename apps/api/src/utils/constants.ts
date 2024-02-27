@@ -1,4 +1,4 @@
-import {MulterField} from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
+import { MulterField } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 
 export enum Routes {
   AUTH = 'auth',
@@ -12,12 +12,14 @@ export enum Routes {
   EXISTS = 'exists',
   FRIENDS = 'friends',
   FRIEND_REQUESTS = 'friend-requests',
+  USER_PRESENCE = 'users/presence',
 }
 
 export enum Services {
   AUTH = 'AUTH_SERVICE',
   USERS = 'USERS_SERVICE',
   USERS_PROFILES = 'USERS_PROFILES_SERVICE',
+  USER_PRESENCE = 'USER_PRESENCE_SERVICE',
   CONVERSATIONS = 'CONVERSATIONS_SERVICE',
   MESSAGES = 'MESSAGES_SERVICE',
   MESSAGES_ATTACHMENTS = 'MESSAGES_ATTACHMENTS_SERVICE',

@@ -224,3 +224,10 @@ export type UploadGroupMessageAttachmentParams = {
   file: Attachment;
   messageAttachment: GroupMessageAttachment;
 };
+
+export type UserPresenceStatus = 'online' | 'away' | 'offline' | 'dnd';
+
+export type UpdateStatusMessageParams = {
+  user: User;
+  statusMessage: string;
+};

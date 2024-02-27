@@ -1,7 +1,7 @@
 import { Profile } from 'src/utils/typeorm/entities/Profile';
 import { User } from '../utils/typeorm';
 
-export const mockUser: User = {
+export const mockUser: Partial<User> = {
   // isOnboardingComplete: false,
   username: 'sherifzaz',
   id: 12313123123,

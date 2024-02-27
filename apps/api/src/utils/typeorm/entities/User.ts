@@ -11,6 +11,7 @@ import { Exclude } from 'class-transformer';
 import { Message } from './Message';
 import { Group } from './Group';
 import { Profile } from './Profile';
+import { UserPresence } from './UserPresence';
 
 @Entity({ name: 'users' })
 export class User {
@@ -43,4 +44,8 @@ export class User {
 
   @ManyToMany(() => Group, (groupConversation) => groupConversation.users)
   groups: Group[];
+
+  @OneToOne(() => UserPresence, { cascade: ['insert', 'update'] })
+  @JoinColumn()
+  presence: UserPresence;
 }
