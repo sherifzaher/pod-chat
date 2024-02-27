@@ -22,6 +22,7 @@ import { MessageItemHeader } from './attachments/message-item-header';
 import { MessageItemContainerBody } from './attachments/message-item-container-body';
 import { SelectedMessageContextMenu } from '../context-menus/selected-message-context-menu';
 import { UserAvatar } from './message-item-avatar';
+import { SystemMessageList } from './system/system-message-list';
 
 const MessageContainer = () => {
   const { id } = useParams();
@@ -101,6 +102,7 @@ const MessageContainer = () => {
         }
       }}>
       <>
+        <SystemMessageList />
         {selectedType === 'private'
           ? conversationMessages?.messages.map(mapMessages)
           : groupMessages?.messages.map(mapMessages)}

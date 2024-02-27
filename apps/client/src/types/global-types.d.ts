@@ -215,6 +215,8 @@ type FriendRequest = {
 
 type HandleFriendRequestAction = 'accept' | 'reject';
 
+type UserSidebarRouteType = 'conversations' | 'friends' | 'connections' | 'settings';
+
 type AcceptFriendRequestResponse = {
   friend: Friend;
   friendRequest: FriendRequest;
@@ -256,4 +258,12 @@ type FriendRequestDetailsType = {
   displayName: string;
   user: User;
   incoming: boolean;
+};
+
+type SystemMessageLevel = 'info' | 'warning' | 'error';
+
+type SystemMessageType = {
+  id: number;
+  content: string;
+  level: SystemMessageLevel;
 };

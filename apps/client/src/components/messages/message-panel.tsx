@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import {
   MessagePanelBody,
@@ -15,6 +15,7 @@ import MessageInputField from './message-input-field';
 
 import { RootState } from '../../store';
 import MessageAttachmentContainer from './attachments/message-attachment-container';
+import { clearAllMessages } from '../../store/slices/system-message-slice';
 
 type Props = {
   isRecipientTyping: boolean;
@@ -22,11 +23,19 @@ type Props = {
 
 export default function MessagePanel({ isRecipientTyping }: Props) {
   const ref = useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch();
+  const { messageCounter } = useSelector((state: RootState) => state.systemMessages);
   const { attachments } = useSelector((state: RootState) => state.messagePanel);
   const { id } = useParams();
   const { user } = useSelector((state: RootState) => state.user);
   const { conversations, loading } = useSelector((state: RootState) => state.conversations);
   const conversation = conversations.find((conv) => conv.id === Number(id!));
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearAllMessages());
+    };
+  }, [dispatch]);
 
   return (
     <MessagePanelStyle>

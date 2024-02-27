@@ -14,6 +14,7 @@ import MessageTextField from '../inputs/message-text-field';
 import { useToast } from '../../hooks/useToast';
 import MessageAttachmentActionIcon from './message-attachment-action-icon';
 import { resetAttachments } from '../../store/slices/message-panel-slice';
+import { addSystemMessage } from '../../store/slices/system-message-slice';
 
 const ICON_SIZE = 32;
 const MAX_LENGTH = 2048;
@@ -25,8 +26,9 @@ export default function MessageInputField() {
   const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
 
   const { error } = useToast({ theme: 'dark' });
-  const dispatch = useDispatch<AppDispatch>();
   const { id: routeId } = useParams();
+  const dispatch = useDispatch<AppDispatch>();
+  const { messageCounter } = useSelector((state: RootState) => state.systemMessages);
   const { user } = useSelector((state: RootState) => state.user);
   const conversationType = useSelector((state: RootState) => state.selectedConversationType.type);
   const recipient = useSelector((state: RootState) => state.conversations.conversations).find(
@@ -58,10 +60,27 @@ export default function MessageInputField() {
         setContent('');
         dispatch(resetAttachments());
       } catch (err) {
-        (err as AxiosError).response?.status === 429 && error('You are rate limited', { toastId });
+        if ((err as AxiosError).response?.status === 429) {
+          error('You are rate limited', { toastId });
+          dispatch(
+            addSystemMessage({
+              id: messageCounter,
+              level: 'error',
+              content: 'You are being rate limited. Slow down.'
+            })
+          );
+        } else if ((err as AxiosError).response?.status === 404) {
+          dispatch(
+            addSystemMessage({
+              id: messageCounter,
+              level: 'error',
+              content: 'The recipient is not in your friends list or they may have blocked you.'
+            })
+          );
+        }
       }
     },
-    [content, routeId, attachments, conversationType]
+    [content, routeId, attachments, conversationType, dispatch, error, messageCounter]
   );
 
   const handleSendTypingStatus = useCallback(
