@@ -3,12 +3,12 @@ import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { UserAvatar, UserSidebarStyle } from '../../utils/styles';
-import CreateConversationModal from '../modals/create-conversation-modal';
 import avatar from '../../__assets__/avatar_1.png';
 import styles from './index.module.scss';
 import { UserSidebarItems } from '../../utils/constants';
 import UserSidebarItem from './sidebar-items/user-sidebar-item';
 import { useAuth } from '../../hooks/useAuth';
+import { UpdatePresenceStatusModal } from '../modals/update-presence-status-modal';
 
 export default function UserSidebar() {
   const { pathname } = useLocation();
@@ -23,9 +23,14 @@ export default function UserSidebar() {
 
   return (
     <>
-      {showModal && <CreateConversationModal setShowModal={setShowModal} />}
+      {showModal && <UpdatePresenceStatusModal setShowModal={setShowModal} />}
       <UserSidebarStyle>
-        <UserAvatar src={user?.profile?.avatar ?? avatar} width="55px" alt="avatar" />
+        <UserAvatar
+          src={user?.profile?.avatar ?? avatar}
+          width="55px"
+          alt="avatar"
+          onClick={() => setShowModal(true)}
+        />
         <hr className={styles.hr} />
         {UserSidebarItems.map(({ id, href, icon }) => (
           <UserSidebarItem

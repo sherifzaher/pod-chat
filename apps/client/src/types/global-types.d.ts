@@ -16,6 +16,12 @@ type UserCredentialsParams = {
   password: string;
 };
 
+type Presence = {
+  id: number;
+  statusMessage?: string;
+  showOffline: boolean;
+};
+
 type User = {
   id: string;
   email: string;
@@ -23,6 +29,7 @@ type User = {
   lastName: string;
   username: string;
   profile?: Partial<Profile>;
+  presence?: Partial<Presence>;
 };
 
 type Profile = {
