@@ -117,10 +117,16 @@ export const ConversationSidebarItemStyle = styled.div<ConversationSidebarItemPr
   cursor: pointer;
   background-color: ${({ selected, theme }) =>
     selected && theme.conversationSidebar.conversationItem.selected};
-  transition: 200ms background-color ease-in-out;
+  transition: 100ms background-color ease;
   &:hover {
     background-color: ${({ theme }) =>
       theme.conversationSidebar.conversationItem.hover.backgroundColor};
+  }
+  & .title {
+    display: block;
+    font-weight: 600;
+    font-size: 16px;
+    color: ${({ theme }) => theme.text.primary};
   }
 `;
 
@@ -229,12 +235,12 @@ export const MessageContainerStyle = styled.div`
   }
 
   &::-webkit-scrollbar-track {
-    background-color: #0e0e0e;
+    background-color: ${({ theme }) => theme.background.primary};
   }
   &::-webkit-scrollbar-thumb {
-    background-color: #161616;
+    background-color: ${({ theme }) => theme.background.secondary};
     width: 5px;
-    border-radius: 5px;
+    border-radius: 20px;
   }
 `;
 
@@ -361,7 +367,7 @@ export const MessageTypingStatus = styled.div<MessageTypingStatusProps>`
   width: 100%;
   margin: 10px 0 10px 0;
   font-size: 14px;
-  color: #a2a2a2;
+  color: ${({ theme }) => theme.text.secondary};
   transition: all 0.5s ease-in-out;
   visibility: ${(props) => (props.isRecipientTyping ? 'visible' : 'hidden')};
 `;
@@ -618,8 +624,8 @@ export const ConversationScrollableContainer = styled.div`
 `;
 
 export const ConversationSearchbar = styled.input`
-  background-color: #1c1c1c;
-  color: #e1e1e1;
+  background-color: ${({ theme }) => theme.input.backgroundColor};
+  color: ${({ theme }) => theme.input.color};
   width: 100%;
   padding: 10px 16px;
   border: none;
@@ -672,6 +678,7 @@ export const GroupRecipientsSidebarHeader = styled.div`
   width: 100%;
   flex-shrink: 0;
   border-bottom: 1px solid #49494954;
+  color: ${({ theme }) => theme.text.primary};
   display: flex;
   align-items: center;
   gap: 20px;
@@ -685,6 +692,7 @@ export const GroupRecipientSidebarItemContainer = styled.div`
   padding: 30px 0 0 30px;
   flex: 1 1 auto;
   overflow-y: auto;
+  color: ${({ theme }) => theme.text.primary};
   min-height: 0;
   &::-webkit-scrollbar {
     display: none;
@@ -705,6 +713,7 @@ export const GroupRecipientSidebarItem = styled.div<GroupRecipientSidebarItemPro
   & .recipientDetails {
     display: flex;
     flex-direction: column;
+    color: ${({ theme }) => theme.text.secondary};
   }
   & .left {
     display: flex;

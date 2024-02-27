@@ -33,7 +33,7 @@ export default function GroupSidebarItem({ group, onContextMenu }: Props) {
       onClick={() => navigate(`/groups/${group.id}`)}>
       <div className={styles.groupAvatar} />
       <div>
-        <span className={styles.groupName}>{getTransformedTitle()}</span>
+        <span className="title">{getTransformedTitle()}</span>
         <span className={styles.groupLastMessage}>{group.lastMessageSent?.content}</span>
       </div>
     </ConversationSidebarItemStyle>
