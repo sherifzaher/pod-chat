@@ -14,7 +14,7 @@ import MessageTextField from '../inputs/message-text-field';
 import { useToast } from '../../hooks/useToast';
 import MessageAttachmentActionIcon from './message-attachment-action-icon';
 import { resetAttachments } from '../../store/slices/message-panel-slice';
-import { addSystemMessage } from '../../store/slices/system-message-slice';
+import { addSystemMessage, clearAllMessages } from '../../store/slices/system-message-slice';
 
 const ICON_SIZE = 32;
 const MAX_LENGTH = 2048;
@@ -59,6 +59,7 @@ export default function MessageInputField() {
           : await postGroupMessage(routeId, formData);
         setContent('');
         dispatch(resetAttachments());
+        dispatch(clearAllMessages());
       } catch (err) {
         if ((err as AxiosError).response?.status === 429) {
           error('You are rate limited', { toastId });
