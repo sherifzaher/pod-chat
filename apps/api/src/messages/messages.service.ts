@@ -17,6 +17,8 @@ import { ConversationNotFound } from 'src/conversations/exceptions/conversation-
 import { CannotCreateMessageException } from './exceptions/cannot-create-message-excpetion';
 import { CannotDeleteMessage } from './exceptions/cannot-delete-message';
 import { buildFindMessageParams } from 'src/utils/builders';
+import { IFriendsService } from 'src/friends/friends';
+import { FriendNotFoundException } from 'src/friends/exceptions/friend-not-found.exception';
 
 @Injectable()
 export class MessagesService implements IMessageService {
@@ -27,6 +29,8 @@ export class MessagesService implements IMessageService {
     private readonly conversationService: IConversationsService,
     @Inject(Services.MESSAGES_ATTACHMENTS)
     private readonly messageAttachmentsService: IMessageAttachments,
+    @Inject(Services.FRIENDS)
+    private readonly friendsService: IFriendsService,
   ) {}
 
   async createMessage(params: CreateMessageParams) {
@@ -34,6 +38,11 @@ export class MessagesService implements IMessageService {
     const conversation = await this.conversationService.findById(id);
     if (!conversation) throw new ConversationNotFound();
     const { creator, recipient } = conversation;
+    const isFriends = await this.friendsService.isFriends(
+      creator.id,
+      recipient.id,
+    );
+    if (!isFriends) throw new FriendNotFoundException();
     if (creator.id !== user.id && recipient.id !== user.id)
       throw new CannotCreateMessageException();
     const message = this.messageRepository.create({
