@@ -15,6 +15,8 @@ import { ConversationNotFound } from './exceptions/conversation-not-found';
 import { UserNotFoundException } from 'src/groups/exceptions/user-not-found-exception';
 import { CreateConversationException } from './exceptions/create-conversation';
 import { ConversationExistsException } from './exceptions/conversation-exists';
+import { IFriendsService } from 'src/friends/friends';
+import { FriendNotFoundException } from 'src/friends/exceptions/friend-not-found.exception';
 
 @Injectable()
 export class ConversationsService implements IConversationsService {
@@ -25,6 +27,8 @@ export class ConversationsService implements IConversationsService {
     private readonly messageRepository: Repository<Message>,
     @Inject(Services.USERS)
     private readonly userService: IUserService,
+    @Inject(Services.FRIENDS)
+    private readonly friendsService: IFriendsService,
   ) {}
 
   async getConversations(id: number): Promise<Conversation[]> {
@@ -69,38 +73,35 @@ export class ConversationsService implements IConversationsService {
     });
   }
 
-  async createConversation(user: User, params: CreateConversationParams) {
-    const { username, message } = params;
-
+  async createConversation(creator: User, params: CreateConversationParams) {
+    const { username, message: content } = params;
     const recipient = await this.userService.findUser({ username });
     if (!recipient) throw new UserNotFoundException();
-
-    if (user.id === recipient.id) {
-      const error = 'Cannot create Conversation with yourself';
-      throw new CreateConversationException(error);
-    }
-
-    const existingConversation = await this.isCreated(user.id, recipient.id);
-    if (existingConversation) throw new ConversationExistsException();
-
-    const conversation = this.conversationRepository.create({
-      creator: user,
-      recipient: recipient,
-    });
-
-    const savedConversation = await this.conversationRepository.save(
-      conversation,
+    if (creator.id === recipient.id)
+      throw new CreateConversationException(
+        'Cannot create Conversation with yourself',
+      );
+    const isFriends = await this.friendsService.isFriends(
+      creator.id,
+      recipient.id,
     );
-
-    const newMessage = this.messageRepository.create({
-      content: message,
-      conversation: savedConversation,
-      author: user,
+    if (!isFriends) throw new FriendNotFoundException();
+    const exists = await this.isCreated(creator.id, recipient.id);
+    if (exists) throw new ConversationExistsException();
+    const newConversation = this.conversationRepository.create({
+      creator,
+      recipient,
     });
-    const savedMessage = await this.messageRepository.save(newMessage);
-    savedConversation.lastMessageSent = savedMessage;
-    await this.conversationRepository.save(savedConversation);
-    return savedConversation;
+    const conversation = await this.conversationRepository.save(
+      newConversation,
+    );
+    const newMessage = this.messageRepository.create({
+      content,
+      conversation,
+      author: creator,
+    });
+    await this.messageRepository.save(newMessage);
+    return conversation;
   }
 
   async hasAccess({ id, userId }: AccessParams) {
