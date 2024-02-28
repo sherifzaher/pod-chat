@@ -34,7 +34,7 @@ import { ExistsModule } from './exists/exists.module';
     EventsModule,
     GroupModule,
     ExistsModule,
-    ConfigModule.forRoot({ envFilePath: '.env.development' }),
+    ConfigModule.forRoot({ envFilePath: ['.env.development', '.env'] }),
     PassportModule.register({ session: true }),
     TypeOrmModule.forRoot({
       type: 'mysql',
