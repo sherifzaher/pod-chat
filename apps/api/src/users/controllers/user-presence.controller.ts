@@ -3,8 +3,8 @@ import { Routes, Services } from '../../utils/constants';
 import { AuthUser } from '../../utils/decorators';
 import { User } from '../../utils/typeorm';
 import { IUserPresenceService } from '../interfaces/user-presence';
-import { AuthenticationGuard } from 'src/auth/utils/Guards';
 import { UpdatePresenceStatusDto } from '../dto/update-presence-status.dto';
+import { AuthenticationGuard } from '../../auth/utils/Guards';
 
 @UseGuards(AuthenticationGuard)
 @Controller(Routes.USER_PRESENCE)

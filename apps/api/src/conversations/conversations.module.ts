@@ -7,7 +7,7 @@ import { Conversation, Message } from '../utils/typeorm';
 import { UsersModule } from '../users/users.module';
 import { ConversationMiddleware } from './middlewares/conversation.middleware';
 import { isAuthorized } from '../utils/helpers';
-import { FriendsModule } from 'src/friends/friends.module';
+import { FriendsModule } from '../friends/friends.module';
 
 @Module({
   imports: [

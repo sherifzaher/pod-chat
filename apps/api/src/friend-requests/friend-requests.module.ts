@@ -6,7 +6,7 @@ import { FriendRequestsService } from './friend-requests.service';
 import { Friend, FriendRequest } from '../utils/typeorm';
 import { FriendRequestsController } from './friend-requests.controller';
 import { UsersModule } from '../users/users.module';
-import { FriendsModule } from 'src/friends/friends.module';
+import { FriendsModule } from '../friends/friends.module';
 
 @Module({
   imports: [

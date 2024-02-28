@@ -12,11 +12,11 @@ import {
 } from '../utils/types';
 import { IUserService } from '../users/user';
 import { ConversationNotFound } from './exceptions/conversation-not-found';
-import { UserNotFoundException } from 'src/groups/exceptions/user-not-found-exception';
 import { CreateConversationException } from './exceptions/create-conversation';
 import { ConversationExistsException } from './exceptions/conversation-exists';
-import { IFriendsService } from 'src/friends/friends';
-import { FriendNotFoundException } from 'src/friends/exceptions/friend-not-found.exception';
+import { IFriendsService } from '../friends/friends';
+import { UserNotFoundException } from '../groups/exceptions/user-not-found-exception';
+import { FriendNotFoundException } from '../friends/exceptions/friend-not-found.exception';
 
 @Injectable()
 export class ConversationsService implements IConversationsService {

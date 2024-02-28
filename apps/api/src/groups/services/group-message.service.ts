@@ -11,7 +11,7 @@ import { Services } from '../../utils/constants';
 import { IGroupMessageService } from '../interfaces/group-message';
 import { Group, GroupMessage } from '../../utils/typeorm';
 import { IGroupService } from '../interfaces/group';
-import { IMessageAttachments } from 'src/message-attachments/message-attachments';
+import { IMessageAttachments } from '../../message-attachments/message-attachments';
 
 @Injectable()
 export class GroupMessageService implements IGroupMessageService {

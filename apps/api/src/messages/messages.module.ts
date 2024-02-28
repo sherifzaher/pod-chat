@@ -7,8 +7,8 @@ import { Services } from '../utils/constants';
 import { Conversation, Message, MessageAttachment } from '../utils/typeorm';
 import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 import { MessageAttachmentsModule } from '../message-attachments/message-attachments.module';
-import { ConversationsModule } from 'src/conversations/conversations.module';
-import { FriendsModule } from 'src/friends/friends.module';
+import { ConversationsModule } from '../conversations/conversations.module';
+import { FriendsModule } from '../friends/friends.module';
 
 @Module({
   imports: [

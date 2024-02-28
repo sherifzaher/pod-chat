@@ -23,7 +23,7 @@ import {
 } from '../utils/types';
 import { IConversationsService } from '../conversations/conversations';
 import { IGroupService } from '../groups/interfaces/group';
-import { IFriendsService } from 'src/friends/friends';
+import { IFriendsService } from '../friends/friends';
 
 @WebSocketGateway({
   cors: {

@@ -32,7 +32,9 @@ export class GroupRecipientService implements IGroupRecipientService {
     if (group.owner.id !== params.userId)
       throw new HttpException('Insufficient Permissions', HttpStatus.FORBIDDEN);
 
-    const recipient = await this.userService.findUser({ username: params.username });
+    const recipient = await this.userService.findUser({
+      username: params.username,
+    });
     if (!recipient)
       throw new HttpException(
         'Cannot add user to group',

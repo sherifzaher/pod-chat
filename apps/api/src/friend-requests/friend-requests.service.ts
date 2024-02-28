@@ -16,8 +16,8 @@ import { UserNotFoundException } from '../groups/exceptions/user-not-found-excep
 import { FriendShipFoundException } from './exceptions/friendship-found.exception';
 import { CannotAcceptRequestException } from './exceptions/cannot-accept-request.exception';
 import { CannotCancelRequestException } from './exceptions/cannot-cancel-request.exception';
-import { IFriendsService } from 'src/friends/friends';
-import { FriendsAlreadyExists } from 'src/friends/exceptions/friends-already-exists';
+import { IFriendsService } from '../friends/friends';
+import { FriendsAlreadyExists } from '../friends/exceptions/friends-already-exists';
 
 @Injectable()
 export class FriendRequestsService implements IFriendRequestsService {

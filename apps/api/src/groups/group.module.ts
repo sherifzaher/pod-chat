@@ -11,7 +11,7 @@ import { GroupRecipientsController } from './controllers/group-recipients.contro
 import { GroupRecipientService } from './services/group-recipient.service';
 import { GroupMiddleware } from './middlewares/group.middleware';
 import { isAuthorized } from '../utils/helpers';
-import { MessageAttachmentsModule } from 'src/message-attachments/message-attachments.module';
+import { MessageAttachmentsModule } from '../message-attachments/message-attachments.module';
 
 @Module({
   imports: [

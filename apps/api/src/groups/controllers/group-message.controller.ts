@@ -17,11 +17,11 @@ import { IGroupMessageService } from '../interfaces/group-message';
 import { AuthUser } from '../../utils/decorators';
 import { CreateMessageDto } from '../../messages/dtos/CreateMessage.dto';
 import { EditMessageDto } from '../../messages/dtos/EditMessage.dto';
-import { User } from 'src/utils/typeorm';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { UploadedFilesType } from 'src/utils/types';
-import { EmptyMessageException } from 'src/messages/exceptions/empty-message-exception';
+import { UploadedFilesType } from '../../utils/types';
+import { EmptyMessageException } from '../../messages/exceptions/empty-message-exception';
+import { User } from '../../utils/typeorm';
 
 @Controller(Routes.GROUP_MESSAGES)
 export class GroupMessageController {

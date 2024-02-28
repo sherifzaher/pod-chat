@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { MessagingGateway } from 'src/gateway/gateway';
-import { ServerEvents, WebsocketEvents } from 'src/utils/constants';
-import { FriendRequest } from 'src/utils/typeorm';
-import { AcceptFriendRequestResponse } from 'src/utils/types';
+import { MessagingGateway } from '../gateway/gateway';
+import { FriendRequest } from '../utils/typeorm';
+import { ServerEvents, WebsocketEvents } from '../utils/constants';
+import { AcceptFriendRequestResponse } from '../utils/types';
 
 @Injectable()
 export class FriendRequestsEvents {

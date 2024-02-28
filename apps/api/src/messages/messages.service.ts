@@ -12,13 +12,13 @@ import {
 } from '../utils/types';
 import { Services } from '../utils/constants';
 import { IMessageAttachments } from '../message-attachments/message-attachments';
-import { IConversationsService } from 'src/conversations/conversations';
-import { ConversationNotFound } from 'src/conversations/exceptions/conversation-not-found';
 import { CannotCreateMessageException } from './exceptions/cannot-create-message-excpetion';
 import { CannotDeleteMessage } from './exceptions/cannot-delete-message';
-import { buildFindMessageParams } from 'src/utils/builders';
-import { IFriendsService } from 'src/friends/friends';
-import { FriendNotFoundException } from 'src/friends/exceptions/friend-not-found.exception';
+import { IConversationsService } from '../conversations/conversations';
+import { IFriendsService } from '../friends/friends';
+import { ConversationNotFound } from '../conversations/exceptions/conversation-not-found';
+import { FriendNotFoundException } from '../friends/exceptions/friend-not-found.exception';
+import { buildFindMessageParams } from '../utils/builders';
 
 @Injectable()
 export class MessagesService implements IMessageService {

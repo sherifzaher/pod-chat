@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { MessagingGateway } from 'src/gateway/gateway';
-import { ServerEvents } from 'src/utils/constants';
-import { RemoveFriendEventPayload } from 'src/utils/types';
+import { MessagingGateway } from '../gateway/gateway';
+import { RemoveFriendEventPayload } from '../utils/types';
+import { ServerEvents } from '../utils/constants';
 
 @Injectable()
 export class FriendsEvents {

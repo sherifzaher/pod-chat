@@ -1,4 +1,4 @@
-import { FriendRequest } from 'src/utils/typeorm';
+import { FriendRequest } from '../utils/typeorm';
 import {
   AcceptFriendRequestParams,
   CreateFriendRequestParams,
@@ -6,6 +6,7 @@ import {
   RejectFriendRequestParams,
   AcceptFriendRequestResponse,
 } from '../utils/types';
+
 export interface IFriendRequestsService {
   createFriendRequest(params: CreateFriendRequestParams);
   acceptFriendRequest(
