@@ -51,6 +51,7 @@ export class GroupMessageController {
     if (!attachments && !content) throw new EmptyMessageException();
     const params = { groupId: id, author: user, content, attachments };
     const response = await this.groupMessageService.createGroupMessage(params);
+    
     this.eventEmitter.emit('group.message.create', response);
     return response;
   }
