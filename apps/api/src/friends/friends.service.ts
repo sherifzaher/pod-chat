@@ -28,7 +28,7 @@ export class FriendsService implements IFriendsService {
     });
   }
 
-  findFriendById(id: number): Promise<Friend> {
+  findFriendById(id: number): Promise<Friend | undefined> {
     return this.friendsRepository.findOne(id, {
       relations: [
         'sender',

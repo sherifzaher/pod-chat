@@ -4,7 +4,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
 import * as session from 'express-session';
 import * as passport from 'passport';
-import { TypeormStore } from 'connect-typeorm';
+import { ISession, TypeormStore } from 'connect-typeorm';
 import { getRepository } from 'typeorm';
 
 import { AppModule } from './app.module';
@@ -14,7 +14,7 @@ import { WebsocketAdapter } from './gateway/gateway.adapter';
 async function bootstrap() {
   const { PORT, COOKIE_SECRET } = process.env;
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  const sessionRepository = getRepository(Session);
+  const sessionRepository = getRepository<ISession>(Session);
   const adapter = new WebsocketAdapter(app);
   app.useWebSocketAdapter(adapter);
   app.useGlobalPipes(new ValidationPipe());

@@ -106,7 +106,7 @@ export class GroupMessageService implements IGroupMessageService {
           id: group.id,
         },
         {
-          lastMessageSent: null,
+          lastMessageSent: undefined,
         },
       );
       await this.groupMessageRepository.delete({ id: message.id });

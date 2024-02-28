@@ -74,7 +74,7 @@ export class MessagesService implements IMessageService {
       console.log('Last Message Sent is deleted');
       await this.conversationService.update({
         id: conversation.id,
-        lastMessageSent: null,
+        lastMessageSent: undefined,
       });
       return this.messageRepository.delete({ id: message.id });
     } else {

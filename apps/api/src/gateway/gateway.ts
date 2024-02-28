@@ -13,7 +13,7 @@ import { AuthenticatedSocket } from '../utils/interfaces';
 import { Inject } from '@nestjs/common';
 import { Services } from '../utils/constants';
 import { IGatewaySession } from './gateway.session';
-import { Conversation, Group, GroupMessage, Message } from '../utils/typeorm';
+import { Conversation, Group, GroupMessage, Message, User } from '../utils/typeorm';
 import {
   AddGroupUserResponse,
   CreateGroupMessageResponse,
@@ -68,8 +68,8 @@ export class MessagingGateway
       parseInt(data.groupId),
     );
     if (!group) return;
-    const onlineUsers = [];
-    const offlineUsers = [];
+    const onlineUsers: User[] = [];
+    const offlineUsers: User[] = [];
     group.users.forEach((user) => {
       const socket = this.sessions.getSocketId(user.id);
       socket ? onlineUsers.push(user) : offlineUsers.push(user);
@@ -254,7 +254,7 @@ export class MessagingGateway
     const { rooms } = this.server.sockets.adapter;
     const socketsInRoom = rooms.get(ROOM_NAME);
     this.server.to(ROOM_NAME).emit('onGroupOwnerUpdate', payload);
-    if (newOwnerSocket && !socketsInRoom.has(newOwnerSocket.id)) {
+    if (newOwnerSocket && !socketsInRoom?.has(newOwnerSocket.id)) {
       newOwnerSocket.emit('onGroupOwnerUpdate', payload);
     }
   }

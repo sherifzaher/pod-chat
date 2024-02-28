@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { AuthenticatedSocket } from '../utils/interfaces';
 
 export interface IGatewaySession {
-  getSocketId(id: number): AuthenticatedSocket;
+  getSocketId(id: number): AuthenticatedSocket | undefined;
   setUserSocket(id: number, socket: AuthenticatedSocket): void;
   removeUserSocket(id: number): void;
   getSockets(): Map<number, AuthenticatedSocket>;

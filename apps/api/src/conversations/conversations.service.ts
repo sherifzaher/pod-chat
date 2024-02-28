@@ -119,7 +119,7 @@ export class ConversationsService implements IConversationsService {
   getMessages({
     id,
     limit,
-  }: GetConversationMessagesParams): Promise<Conversation> {
+  }: GetConversationMessagesParams): Promise<Conversation | undefined> {
     return this.conversationRepository
       .createQueryBuilder('conversation')
       .where('id = :id', { id })
@@ -132,6 +132,6 @@ export class ConversationsService implements IConversationsService {
   }
 
   update({ id, lastMessageSent }: UpdateConversationParams) {
-    return this.conversationRepository.update(id, { lastMessageSent });
+    return this.conversationRepository.update(id!, { lastMessageSent });
   }
 }

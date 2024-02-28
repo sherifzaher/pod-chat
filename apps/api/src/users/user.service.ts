@@ -37,7 +37,7 @@ export class UserService implements IUserService {
     return this.userRepository.save(createdUser);
   }
 
-  findUser(findUser: FindUserParams, options?: FindUserOptions): Promise<User> {
+  findUser(findUser: FindUserParams, options?: FindUserOptions): Promise<User | undefined> {
     const selection: (keyof User)[] = [
       'email',
       'firstName',
@@ -77,6 +77,6 @@ export class UserService implements IUserService {
 
   async completeOnboarding(data: CompleteOnboarding) {
     const imageUploadResponse = await this.cloudinary.uploadImage(data.file);
-    console.log(imageUploadResponse.url);
+    console.log(imageUploadResponse?.url);
   }
 }

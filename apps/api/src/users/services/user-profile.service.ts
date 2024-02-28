@@ -33,14 +33,14 @@ export class UserProfileService implements IUserProfile {
       const uploadResponse = await this.cloudinaryService.uploadImage(
         params.banner,
       );
-      user.profile.banner = uploadResponse.url;
+      user.profile.banner = uploadResponse?.url;
     }
 
     if (params.avatar) {
       const uploadResponse = await this.cloudinaryService.uploadImage(
         params.avatar,
       );
-      user.profile.avatar = uploadResponse.url;
+      user.profile.avatar = uploadResponse?.url;
     }
     if (params.about) user.profile.about = params.about;
 

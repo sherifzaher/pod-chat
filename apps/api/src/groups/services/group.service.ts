@@ -49,7 +49,7 @@ export class GroupService implements IGroupService {
       .getMany();
   }
 
-  findGroupById(id: number): Promise<Group> {
+  findGroupById(id: number): Promise<Group | undefined> {
     return this.groupRepository.findOne({
       where: { id },
       relations: [

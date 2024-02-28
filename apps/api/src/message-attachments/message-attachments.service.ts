@@ -22,7 +22,7 @@ export class MessageAttachmentsService implements IMessageAttachments {
     allFiles.forEach((attachment) =>
       Attachments.push(
         this.messageAttachmentRepository.create({
-          attachmentUrl: attachment.url,
+          attachmentUrl: attachment?.url,
         }),
       ),
     );
@@ -38,7 +38,7 @@ export class MessageAttachmentsService implements IMessageAttachments {
     allFiles.forEach((attachment) =>
       Attachments.push(
         this.groupAttachmentRepository.create({
-          attachmentUrl: attachment.url,
+          attachmentUrl: attachment?.url,
         }),
       ),
     );

@@ -6,7 +6,7 @@ import { Attachment } from '../utils/types';
 export class CloudinaryService {
   async uploadImage(
     file: Attachment,
-  ): Promise<UploadApiResponse | UploadApiErrorResponse> {
+  ): Promise<UploadApiResponse | UploadApiErrorResponse | undefined> {
     return new Promise((resolve, reject) => {
       const upload = v2.uploader.upload_stream((error, result) => {
         if (error) return reject(error);
@@ -19,7 +19,7 @@ export class CloudinaryService {
 
   async uploadImages(
     files: Attachment[],
-  ): Promise<(UploadApiResponse | UploadApiErrorResponse)[]> {
+  ): Promise<(UploadApiResponse | UploadApiErrorResponse | undefined)[]> {
     return Promise.all(
       files.map(async (file) => {
         return this.uploadImage(file);

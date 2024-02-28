@@ -8,7 +8,7 @@ import {
 
 export interface IUserService {
   createUser(userDetails: CreateUserDetails): Promise<User>;
-  findUser(findUser: FindUserParams, options?: FindUserOptions): Promise<User>;
+  findUser(findUser: FindUserParams, options?: FindUserOptions): Promise<User | undefined>;
   saveUser(user: User): Promise<User>;
   searchUsers(param: string): Promise<User[]>;
   completeOnboarding(data: CompleteOnboarding): Promise<void>;

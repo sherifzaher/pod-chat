@@ -75,7 +75,7 @@ export type FetchGroupParams = {
 export type CreateGroupMessageParams = {
   author: User;
   attachments?: Attachment[];
-  content: string;
+  content?: string;
   groupId: number;
 };
 
