@@ -14,7 +14,7 @@ import { Routes, Services } from '../utils/constants';
 import { AuthUser } from '../utils/decorators';
 import { User } from '../utils/typeorm';
 import { IConversationsService } from './conversations';
-import { CreateConversationDto } from './dtos/CreateConversation.dto';
+import { CreateConversationDto } from './dtos/createConversation.dto';
 
 @SkipThrottle()
 @Controller(Routes.CONVERSATIONS)
