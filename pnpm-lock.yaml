@@ -8,13 +8,16 @@ importers:
 
   .:
     dependencies:
+      dotenv-cli:
+        specifier: ^7.3.0
+        version: 7.3.0
       prettier:
         specifier: ^3.0.0
         version: 3.2.5
     devDependencies:
       '@turbo/gen':
         specifier: ^1.9.7
-        version: 1.12.4(@types/node@18.11.18)(typescript@4.9.5)
+        version: 1.12.4(@types/node@16.18.84)(typescript@4.9.5)
       turbo:
         specifier: ^1.10.16
         version: 1.12.4
@@ -3264,7 +3267,7 @@ packages:
   /@tsconfig/node16@1.0.4:
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
 
-  /@turbo/gen@1.12.4(@types/node@18.11.18)(typescript@4.9.5):
+  /@turbo/gen@1.12.4(@types/node@16.18.84)(typescript@4.9.5):
     resolution: {integrity: sha512-3Z8KZ6Vnc2x6rr8sNJ4QNYpkAttLBfb91uPzDlFDY7vgJg+vfXT8YWyZznVL+19ZixF2C/F4Ucp4/YjG2e1drg==}
     hasBin: true
     dependencies:
@@ -3276,7 +3279,7 @@ packages:
       minimatch: 9.0.3
       node-plop: 0.26.3
       proxy-agent: 6.4.0
-      ts-node: 10.9.2(@types/node@18.11.18)(typescript@4.9.5)
+      ts-node: 10.9.2(@types/node@16.18.84)(typescript@4.9.5)
       update-check: 1.5.4
       validate-npm-package-name: 5.0.0
     transitivePeerDependencies:
@@ -3535,7 +3538,6 @@ packages:
 
   /@types/node@16.18.84:
     resolution: {integrity: sha512-mtn6ixzrUK5IMf6gyyMVUsm0TIeF3IYpUr3i0HHTuPJVbdZ6kc93poZ+wCkFNtxXoP/tyGrdVPOL6/WqGXjfXw==}
-    dev: false
 
   /@types/node@18.11.18:
     resolution: {integrity: sha512-DHQpWGjyQKSHj3ebjFI/wRKcqQcdR+MoFBygntYOZytCqNfkd2ZC4ARDJ2DQqhjH5p85Nnd3jhUJIXrszFX/JA==}
@@ -6002,6 +6004,16 @@ packages:
     dependencies:
       no-case: 3.0.4
       tslib: 2.6.2
+    dev: false
+
+  /dotenv-cli@7.3.0:
+    resolution: {integrity: sha512-314CA4TyK34YEJ6ntBf80eUY+t1XaFLyem1k9P0sX1gn30qThZ5qZr/ZwE318gEnzyYP9yj9HJk6SqwE0upkfw==}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.3
+      dotenv: 16.4.1
+      dotenv-expand: 10.0.0
+      minimist: 1.2.8
     dev: false
 
   /dotenv-expand@10.0.0:
@@ -13239,7 +13251,6 @@ packages:
       typescript: 4.9.5
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
-    dev: false
 
   /ts-node@10.9.2(@types/node@18.11.18)(typescript@4.9.5):
     resolution: {integrity: sha512-f0FFpIdcHgn8zcPSbf1dRevwt047YMnaiJM3u2w2RewrB+fob/zePZcrOyQoLMMO7aBIddLcQIEK5dYjkLnGrQ==}

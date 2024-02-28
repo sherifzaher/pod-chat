@@ -6,8 +6,8 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "api:prod:build": "pnpm --filter=api run build",
-    "api:prod:start": "pnpm --filter=api run start:prod",
+    "api:prod:build": "dotenv -- pnpm --filter=api run build",
+    "api:prod:start": "dotenv -- pnpm --filter=api run start:prod",
     "-------- DEV ------": "",
     "dev:start": "pnpm dev:docker && pnpm dev",
     "-------- PROD -----": "",
@@ -21,6 +21,7 @@
   },
   "packageManager": "pnpm@8.15.4",
   "dependencies": {
+    "dotenv-cli": "^7.3.0",
     "prettier": "^3.0.0"
   }
 }
