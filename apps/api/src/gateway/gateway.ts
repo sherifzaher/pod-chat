@@ -27,7 +27,7 @@ import { IFriendsService } from '../friends/friends';
 
 @WebSocketGateway({
   cors: {
-    origin: ['http://localhost:3000', 'http://192.168.1.8:3000'],
+    origin: ['http://localhost:3000', 'http://192.168.1.8:3000', 'https://pod-chat-client.vercel.app'],
     credentials: true,
   },
 })
