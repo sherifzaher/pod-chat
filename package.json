@@ -6,10 +6,12 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "api:prod:build": "pnpm build --filter=api",
+    "api:prod:start": "turbo run start --filter=api",
     "-------- DEV ------": "",
     "dev:start": "pnpm dev:docker && pnpm dev",
     "-------- PROD -----": "",
-    "prod:start": "pnpm build && pnpm start",
+    "api:prod:run": "pnpm api:prod:build && pnpm api:prod:start",
     "----- DOCKER -----": "",
     "dev:docker": "docker-compose up -d --no-recreate --remove-orphans"
   },
