@@ -11,7 +11,7 @@
     "-------- DEV ------": "",
     "dev:start": "pnpm dev:docker && pnpm dev",
     "-------- PROD -----": "",
-    "api:prod:run": "pnpm api:prod:build && pnpm api:prod:start",
+    "api:prod:run": "pnpm run api:prod:build && pnpm run api:prod:start",
     "----- DOCKER -----": "",
     "dev:docker": "docker-compose up -d --no-recreate --remove-orphans"
   },
@@ -19,7 +19,7 @@
     "@turbo/gen": "^1.9.7",
     "turbo": "^1.10.16"
   },
-  "packageManager": "pnpm@7.15.0",
+  "packageManager": "pnpm@8.15.4",
   "dependencies": {
     "prettier": "^3.0.0"
   }
