@@ -12,12 +12,10 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function AppWithProviders({ children }: PropsWithChildren) {
   return (
     <ReduxProvider store={store}>
-      <ThemeProvider theme={DarkTheme}>
-        <AuthProvider>
-          <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
-        </AuthProvider>
-        <ToastContainer theme="dark" />
-      </ThemeProvider>
+      <AuthProvider>
+        <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
+      </AuthProvider>
+      <ToastContainer theme="dark" />
     </ReduxProvider>
   );
 }

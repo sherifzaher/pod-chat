@@ -18,6 +18,7 @@ import FriendRequestsPage from './pages/friends/friend-requests-page';
 import OnBoardingPage from './pages/onboarding/on-boarding-page';
 import SettingsPage from './pages/settings/settings-page';
 import SettingsProfilePage from './pages/settings/settings-profile-page';
+import { SettingsAppearancePage } from './pages/settings/settings-apperance-page';
 
 enableMapSet();
 
@@ -55,7 +56,8 @@ function App() {
             />
           </Route>
           <Route path="settings" element={<SettingsPage />}>
-            <Route path="profile" element={<SettingsProfilePage />} />
+            <Route path="profile" element={<SettingsProfilePage />} index />
+            <Route path="appearance" element={<SettingsAppearancePage />} />
           </Route>
           <Route path="friends" element={<FriendsLayoutPage />}>
             <Route path="requests" element={<FriendRequestsPage />} />
