@@ -13,7 +13,13 @@ import { AuthenticatedSocket } from '../utils/interfaces';
 import { Inject } from '@nestjs/common';
 import { Services } from '../utils/constants';
 import { IGatewaySession } from './gateway.session';
-import { Conversation, Group, GroupMessage, Message, User } from '../utils/typeorm';
+import {
+  Conversation,
+  Group,
+  GroupMessage,
+  Message,
+  User,
+} from '../utils/typeorm';
 import {
   AddGroupUserResponse,
   CreateGroupMessageResponse,
@@ -24,10 +30,15 @@ import {
 import { IConversationsService } from '../conversations/conversations';
 import { IGroupService } from '../groups/interfaces/group';
 import { IFriendsService } from '../friends/friends';
+import { CreateCallDto } from './dtos/create-call-dto';
 
 @WebSocketGateway({
   cors: {
-    origin: ['http://localhost:3000', 'http://192.168.1.8:3000', 'https://pod-chat-client.vercel.app'],
+    origin: [
+      'http://localhost:3000',
+      'http://192.168.1.8:3000',
+      'https://pod-chat-client.vercel.app',
+    ],
     credentials: true,
   },
 })
@@ -306,6 +317,37 @@ export class MessagingGateway
       // console.log(friends);
       console.log(onlineFriends);
       socket.emit('onFriendListReceive', onlineFriends);
+    }
+  }
+
+  @SubscribeMessage('onVideoCallInitiate')
+  async handleVideoCall(
+    @MessageBody() data: CreateCallDto,
+    @ConnectedSocket() socket: AuthenticatedSocket,
+  ) {
+    console.log('onVideoCallInitiate');
+    const caller = socket.user;
+    const receiverSocket = this.sessions.getSocketId(data.recipientId);
+    if (!receiverSocket) return socket.emit('onUserUnavailable');
+    receiverSocket.emit('onVideoCall', { ...data, caller });
+  }
+
+  @SubscribeMessage('videoCallAccepted')
+  async handleVideoCallAccepted(
+    @MessageBody() data,
+    @ConnectedSocket() socket: AuthenticatedSocket,
+  ) {
+    const callerSocket = this.sessions.getSocketId(data.caller.id);
+    const conversation = await this.conversationService.isCreated(
+      data.caller.id,
+      socket.user.id,
+    );
+    if (!conversation) return console.log('No conversation found');
+    if (callerSocket) {
+      console.log('Emitting onVideoCallAccept event');
+      const payload = { ...data, conversation, acceptor: socket.user };
+      callerSocket.emit('onVideoCallAccept', payload);
+      socket.emit('onVideoCallAccept', payload);
     }
   }
 }
