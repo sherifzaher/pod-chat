@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { IUserService } from './user';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../utils/typeorm';
+import { Peer, User } from '../utils/typeorm';
 import { Repository } from 'typeorm';
 import { hashPassword } from '../utils/helpers';
 import {
@@ -17,6 +17,7 @@ export class UserService implements IUserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
     private cloudinary: CloudinaryService,
+    @InjectRepository(Peer) private readonly peerRepository: Repository<Peer>,
   ) {}
   async createUser(userDetails: CreateUserDetails) {
     const findUser = await this.userRepository.findOne({
@@ -29,15 +30,20 @@ export class UserService implements IUserService {
       throw new HttpException('User already exist.', HttpStatus.CONFLICT);
     }
 
+    const peer = this.peerRepository.create();
     const hashedPassword = await hashPassword(userDetails.password);
     const createdUser = this.userRepository.create({
       ...userDetails,
       password: hashedPassword,
+      peer,
     });
     return this.userRepository.save(createdUser);
   }
 
-  findUser(findUser: FindUserParams, options?: FindUserOptions): Promise<User | undefined> {
+  findUser(
+    findUser: FindUserParams,
+    options?: FindUserOptions,
+  ): Promise<User | undefined> {
     const selection: (keyof User)[] = [
       'email',
       'firstName',
@@ -48,7 +54,7 @@ export class UserService implements IUserService {
     const selectionWithPassword: (keyof User)[] = [...selection, 'password'];
     return this.userRepository.findOne(findUser, {
       select: options?.selectAll ? selectionWithPassword : selection,
-      relations: ['profile', 'presence'],
+      relations: ['profile', 'presence', 'peer'],
     });
   }
 
