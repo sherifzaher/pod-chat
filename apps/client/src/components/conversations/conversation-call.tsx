@@ -18,7 +18,7 @@ const ConversationCall = () => {
   const { localStream, remoteStream, call, caller, receiver } = useSelector(
     (state: RootState) => state.call
   );
-  const [microphoneEnabled, setMicrophoneEnabled] = useState(false);
+  const [microphoneEnabled, setMicrophoneEnabled] = useState(true);
 
   const toggleMicrophone = () =>
     localStream &&
@@ -37,7 +37,7 @@ const ConversationCall = () => {
     if (localVideoRef.current && localStream) {
       console.log('updating local video ref');
       localVideoRef.current.srcObject = localStream;
-      localVideoRef.current.muted = true;
+      // localVideoRef.current.muted = true;
       localVideoRef.current.play();
     }
   }, [localStream]);
