@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { BiMicrophone, BiMicrophoneOff, BiVideo } from 'react-icons/bi';
+import { useSelector } from 'react-redux';
+import { BiMicrophone, BiMicrophoneOff, BiVideo, BiVideoOff } from 'react-icons/bi';
 import { ImPhoneHangUp } from 'react-icons/im';
-import { AppDispatch, RootState } from '../../store';
+import { RootState } from '../../store';
 import {
   ConversationCallContainer,
   VideoContainer,
@@ -18,6 +18,7 @@ const ConversationCall = () => {
   const { localStream, remoteStream, call, caller, receiver } = useSelector(
     (state: RootState) => state.call
   );
+  const [videoEnabled, setVideoEnabled] = useState(true);
   const [microphoneEnabled, setMicrophoneEnabled] = useState(true);
 
   const toggleMicrophone = () =>
@@ -28,6 +29,14 @@ const ConversationCall = () => {
       return !prev;
     });
 
+  const toggleVideo = () => {
+    localStream &&
+      setVideoEnabled((prev) => {
+        localStream.getVideoTracks()[0].enabled = !prev;
+        return !prev;
+      });
+  };
+
   const closeCall = () => {
     socket.emit('videoCallHangUp', { caller, receiver });
   };
@@ -37,7 +46,7 @@ const ConversationCall = () => {
     if (localVideoRef.current && localStream) {
       console.log('updating local video ref');
       localVideoRef.current.srcObject = localStream;
-      // localVideoRef.current.muted = true;
+      localVideoRef.current.muted = true;
       localVideoRef.current.play();
     }
   }, [localStream]);
@@ -66,7 +75,7 @@ const ConversationCall = () => {
       </VideoContainer>
       <VideoContainerActionButtons>
         <div>
-          <BiVideo />
+          {videoEnabled ? <BiVideo onClick={toggleVideo} /> : <BiVideoOff onClick={toggleVideo} />}
         </div>
         <div>
           {microphoneEnabled ? (
