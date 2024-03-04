@@ -24,7 +24,7 @@ const ConversationCall = () => {
     localStream &&
     setMicrophoneEnabled((prev) => {
       console.log('setting audio to ', prev);
-      localStream.getTracks()[0].enabled = !prev;
+      localStream.getAudioTracks()[0].enabled = !prev;
       return !prev;
     });
 

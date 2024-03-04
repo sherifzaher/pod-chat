@@ -7,18 +7,21 @@ import { resetState } from '../../store/slices/call-slice';
 export function useVideoCallHangUp() {
   const socket = useSocketContext();
   const dispatch = useDispatch<AppDispatch>();
-  const { call, localStream, remoteStream } = useSelector((state: RootState) => state.call);
+  const { call, localStream, remoteStream, connection } = useSelector(
+    (state: RootState) => state.call
+  );
   useEffect(() => {
     socket.on('onVideoCallHangUp', () => {
       console.log('received onVideoCallHangUp');
       localStream && localStream.getTracks().forEach((track) => track.stop());
       remoteStream && remoteStream.getTracks().forEach((track) => track.stop());
       call && call.close();
+      connection && connection.close();
       dispatch(resetState());
     });
 
     return () => {
       socket.off('onVideoCallHangUp');
     };
-  }, [call]);
+  }, [call, localStream, remoteStream, dispatch, socket, connection]);
 }

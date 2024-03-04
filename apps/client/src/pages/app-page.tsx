@@ -108,6 +108,7 @@ export default function AppPage() {
         console.log(peer.id);
         const newConnection = peer.connect(data.acceptor.peer?.id || data.acceptor.username);
         dispatch(setConnection(newConnection));
+        if (!newConnection) return console.log('No connection');
         if (localStream) {
           const newCall = peer.call(data.acceptor.peer?.id || data.acceptor.username, localStream);
           dispatch(setCall(newCall));
