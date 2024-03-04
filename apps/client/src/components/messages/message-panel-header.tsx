@@ -1,19 +1,25 @@
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { PeopleGroup, PersonAdd } from 'akar-icons';
+import { BsFillCameraVideoFill } from 'react-icons/bs';
 
 import { GroupHeaderIcons, MessagePanelHeaderStyle } from '../../utils/styles';
 import { AppDispatch, RootState } from '../../store';
 import AddGroupRecipientModal from '../modals/add-group-recipient-modal';
 import { toggleSidebar } from '../../store/slices/group-sidebar-slice';
+import { getRecipientFromConversation, getUserMediaStream } from '../../utils/helpers';
+import { setLocalStream } from '../../store/slices/call-slice';
+import { useAuth } from '../../hooks/useAuth';
+import { useSocketContext } from '../../context/socket-context';
 
 export default function MessagePanelHeader() {
   const { id } = useParams();
-  const { user } = useSelector((state: RootState) => state.user);
+  const { user } = useAuth();
   const [showModal, setShowModal] = useState(false);
-  const dispatch = useDispatch<AppDispatch>();
 
+  const dispatch = useDispatch<AppDispatch>();
+  const socket = useSocketContext();
   const selectedType = useSelector((state: RootState) => state.selectedConversationType.type);
   const conversation = useSelector((state: RootState) => state.conversations.conversations).find(
     (conv) => conv.id.toString() === id!
@@ -42,6 +48,20 @@ export default function MessagePanelHeader() {
     [getDisplayName, group?.title, selectedType]
   );
 
+  const handleVideoCall = async () => {
+    const recipient = getRecipientFromConversation(conversation!, user!);
+    if (!user) return console.log('User undefined');
+    if (!recipient) return console.log('Recipient undefined');
+
+    const stream = await getUserMediaStream({ video: true, audio: true });
+    dispatch(setLocalStream(stream));
+
+    socket.emit('onVideoCallInitiate', {
+      conversationId: conversation?.id,
+      recipientId: recipient.id
+    });
+  };
+
   return (
     <>
       {showModal && (
@@ -52,6 +72,9 @@ export default function MessagePanelHeader() {
           <span>{headerTitle()}</span>
         </div>
         <GroupHeaderIcons>
+          {selectedType === 'private' && (
+            <BsFillCameraVideoFill size={30} cursor="pointer" onClick={handleVideoCall} />
+          )}
           {selectedType === 'group' && user?.id === group?.owner?.id && (
             <PersonAdd cursor="pointer" onClick={() => setShowModal(true)} size={30} />
           )}

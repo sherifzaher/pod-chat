@@ -16,6 +16,7 @@ import MessageInputField from './message-input-field';
 import { RootState } from '../../store';
 import MessageAttachmentContainer from './attachments/message-attachment-container';
 import { clearAllMessages } from '../../store/slices/system-message-slice';
+import ConversationCall from '../conversations/conversation-call';
 
 type Props = {
   isRecipientTyping: boolean;
@@ -40,6 +41,7 @@ export default function MessagePanel({ isRecipientTyping }: Props) {
   return (
     <MessagePanelStyle>
       <MessagePanelHeader />
+      <ConversationCall />
       <MessagePanelBody ref={ref}>
         <MessageContainer />
       </MessagePanelBody>

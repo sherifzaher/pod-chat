@@ -1,4 +1,4 @@
-import { ChatDots, Person, ArrowCycle, Gear } from 'akar-icons';
+import { ChatDots, Person, ArrowCycle, Gear, Phone } from 'akar-icons';
 import { IconType } from 'react-icons';
 import {
   IoIosLock,
@@ -78,6 +78,11 @@ export const UserSidebarItems = [
     id: 'settings',
     href: '/settings',
     icon: Gear
+  },
+  {
+    id: 'calls',
+    href: '/calls',
+    icon: Phone
   }
 ];
 

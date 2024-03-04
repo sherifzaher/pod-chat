@@ -19,6 +19,8 @@ import OnBoardingPage from './pages/onboarding/on-boarding-page';
 import SettingsPage from './pages/settings/settings-page';
 import SettingsProfilePage from './pages/settings/settings-profile-page';
 import { SettingsAppearancePage } from './pages/settings/settings-apperance-page';
+import CallsPage from './pages/calls/calls-page';
+import CurrentCallPage from './pages/calls/current-call-page';
 
 enableMapSet();
 
@@ -62,6 +64,9 @@ function App() {
           <Route path="friends" element={<FriendsLayoutPage />}>
             <Route path="requests" element={<FriendRequestsPage />} />
             <Route path="blocked" element={<div>Blocked</div>} />
+          </Route>
+          <Route path="calls" element={<CallsPage />}>
+            <Route path="current" element={<CurrentCallPage />} />
           </Route>
         </Route>
       </Routes>

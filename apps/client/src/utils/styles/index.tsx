@@ -130,6 +130,8 @@ export const ConversationSidebarItemStyle = styled.div<ConversationSidebarItemPr
   }
 `;
 
+export const CallSidebarItemContainer = styled.div``;
+
 export const ConversationSidebarItemDetails = styled.div`
   word-break: break-all;
   display: flex;
@@ -192,7 +194,7 @@ export const ModalContentBodyStyle = styled.div`
 `;
 
 export const TextField = styled.textarea`
-  border-sizing: border-box;
+  box-sizing: border-box;
   font-family: 'Inter';
   width: 100%;
   outline: none;
@@ -222,6 +224,7 @@ export const MessagePanelBody = styled.div`
   flex-direction: column;
   flex: 1 1 auto;
   padding: 0 24px 0;
+  height: calc(100% - 600px);
 `;
 
 export const MessageContainerStyle = styled.div`
@@ -595,7 +598,7 @@ export const UserSidebarStyle = styled.div`
   }
 `;
 
-export const ConversationSidebarStyle = styled.div`
+export const SidebarStyles = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -604,7 +607,7 @@ export const ConversationSidebarStyle = styled.div`
   flex: 0 0 auto;
 `;
 
-export const ConversationSidebarHeader = styled.div`
+export const SidebarHeader = styled.div`
   padding: 10px 30px;
   height: 90px;
   flex-shrink: 0;
@@ -614,7 +617,7 @@ export const ConversationSidebarHeader = styled.div`
   gap: 10px;
 `;
 
-export const ConversationScrollableContainer = styled.div`
+export const ScrollableContainer = styled.div`
   flex: 1 1 auto;
   overflow-y: auto;
   min-height: 0;
@@ -795,5 +798,62 @@ export const SystemMessageContainer = styled.div`
     font-style: italic;
     padding-left: 28px;
     color: #656565;
+  }
+`;
+
+export const ConversationCallContainer = styled.div`
+  height: 600px;
+  background-color: #0e0e0e;
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+`;
+
+export const CallReceiveDialogContainer = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 325px;
+  background-color: #1f1f1f;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  z-index: 999999999;
+  border-radius: 10px;
+  padding: 32px 0;
+
+  & .content {
+    text-align: center;
+  }
+
+  & .icons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    & div {
+      height: 50px;
+      width: 50px;
+      background-color: #151515;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+  }
+
+  & .accept {
+    color: #00ff0a;
+    font-size: 30px;
+  }
+
+  & .reject {
+    color: #ff0000;
+    font-size: 30px;
   }
 `;

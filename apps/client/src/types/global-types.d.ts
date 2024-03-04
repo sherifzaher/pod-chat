@@ -22,6 +22,11 @@ type Presence = {
   showOffline: boolean;
 };
 
+type UserPeer = {
+  id: string;
+  user: User;
+};
+
 type User = {
   id: string;
   email: string;
@@ -30,6 +35,7 @@ type User = {
   username: string;
   profile?: Partial<Profile>;
   presence?: Partial<Presence>;
+  peer?: UserPeer;
 };
 
 type Profile = {
@@ -277,4 +283,23 @@ type SystemMessageType = {
 
 type UpdateStatusParams = {
   statusMessage: string;
+};
+
+type OnVideoCallPayload = {
+  recipientId: number;
+  conversationId: number;
+  caller: User;
+};
+
+type HandleCallType = 'accept' | 'reject';
+
+type AcceptedVideoCallPayload = {
+  acceptor: User;
+  caller: User;
+  conversation: Conversation;
+};
+
+type SetVideoRefPayload = {
+  localVideoRef?: React.RefObject<HTMLVideoElement>;
+  remoteVideoRef?: React.RefObject<HTMLVideoElement>;
 };

@@ -4,11 +4,11 @@ import { ChatAdd } from 'akar-icons';
 import { AiOutlineUsergroupAdd } from 'react-icons/ai';
 
 import {
-  ConversationScrollableContainer,
+  ScrollableContainer,
   ConversationSearchbar,
-  ConversationSidebarHeader,
-  ConversationSidebarStyle,
-  ConversationSidebarContainer
+  SidebarStyles,
+  ConversationSidebarContainer,
+  SidebarHeader
 } from '../../utils/styles';
 
 import CreateConversationModal from '../modals/create-conversation-modal';
@@ -66,17 +66,17 @@ export default function ConversationSidebar() {
       {showModal && conversationType === 'group' && (
         <CreateGroupModal setShowModal={setShowModal} />
       )}
-      <ConversationSidebarStyle>
-        <ConversationSidebarHeader>
+      <SidebarStyles>
+        <SidebarHeader>
           <ConversationSearchbar placeholder="Search for Conversations" />
           {conversationType === 'private' ? (
             <ChatAdd cursor="pointer" size={30} onClick={openModal} strokeWidth={2} />
           ) : (
             <AiOutlineUsergroupAdd cursor="pointer" onClick={openModal} size={30} strokeWidth={2} />
           )}
-        </ConversationSidebarHeader>
+        </SidebarHeader>
         <ConversationTab />
-        <ConversationScrollableContainer>
+        <ScrollableContainer>
           <ConversationSidebarContainer>
             {conversationType === 'private'
               ? conversations.map((conversation) => (
@@ -87,8 +87,8 @@ export default function ConversationSidebar() {
                 ))}
             {showGroupContextMenu && <GroupSidebarContextMenu />}
           </ConversationSidebarContainer>
-        </ConversationScrollableContainer>
-      </ConversationSidebarStyle>
+        </ScrollableContainer>
+      </SidebarStyles>
     </>
   );
 }

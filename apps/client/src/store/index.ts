@@ -12,6 +12,7 @@ import userReducer from './slices/user-slice';
 import messagePanelReducer from './slices/message-panel-slice';
 import systemMessageReducer from './slices/system-message-slice';
 import settingsReducer from './slices/settings-slice';
+import callReducer from './slices/call-slice';
 
 export const store = configureStore({
   reducer: {
@@ -27,7 +28,8 @@ export const store = configureStore({
     user: userReducer,
     messagePanel: messagePanelReducer,
     systemMessages: systemMessageReducer,
-    settings: settingsReducer
+    settings: settingsReducer,
+    call: callReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
 });

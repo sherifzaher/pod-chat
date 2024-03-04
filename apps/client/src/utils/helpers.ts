@@ -33,3 +33,16 @@ export const getFriendRequestDetails = (
         user: receiver,
         incoming: false
       };
+
+export const getUserFriendInstance = (authenticatedUser: User, selectedFriend: Friend) =>
+  authenticatedUser.id === selectedFriend.sender.id
+    ? selectedFriend.receiver
+    : selectedFriend.sender;
+
+export const getUserMediaStream = async (constraints: { video: boolean; audio: boolean }) => {
+  return navigator.mediaDevices.getUserMedia(constraints);
+};
+
+export const getDisplayMediaStream = async (constraints: { video: boolean; audio: boolean }) => {
+  return navigator.mediaDevices.getDisplayMedia(constraints);
+};
