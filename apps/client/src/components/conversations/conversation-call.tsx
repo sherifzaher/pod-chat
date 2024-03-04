@@ -1,7 +1,14 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { BiMicrophone, BiVideo } from 'react-icons/bi';
+import { ImPhoneHangUp } from 'react-icons/im';
 import { AppDispatch, RootState } from '../../store';
-import { ConversationCallContainer } from '../../utils/styles';
+import {
+  ConversationCallContainer,
+  VideoContainer,
+  VideoContainerActionButtons,
+  VideoContainerItem
+} from '../../utils/styles';
 
 const ConversationCall = () => {
   const localVideoRef = useRef<HTMLVideoElement>(null);
@@ -27,18 +34,29 @@ const ConversationCall = () => {
 
   return (
     <ConversationCallContainer>
-      <div>
+      <VideoContainer>
+        {localStream && (
+          <VideoContainerItem>
+            <video ref={localVideoRef} playsInline autoPlay />
+          </VideoContainerItem>
+        )}
+        {remoteStream && (
+          <VideoContainerItem>
+            <video ref={remoteVideoRef} playsInline autoPlay />
+          </VideoContainerItem>
+        )}
+      </VideoContainer>
+      <VideoContainerActionButtons>
         <div>
-          <span>You</span>
+          <BiVideo />
         </div>
-        <video ref={localVideoRef} width={400} height={400} />
-      </div>
-      <div>
         <div>
-          <span>Recipient</span>
+          <BiMicrophone />
         </div>
-        <video ref={remoteVideoRef} width={400} height={400} />
-      </div>
+        <div>
+          <ImPhoneHangUp />
+        </div>
+      </VideoContainerActionButtons>
     </ConversationCallContainer>
   );
 };
