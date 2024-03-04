@@ -26,6 +26,7 @@ import {
   CreateMessageResponse,
   DeleteMessageParams,
   RemoveGroupUserResponse,
+  VideoCallHangupPayload,
 } from '../utils/types';
 import { IConversationsService } from '../conversations/conversations';
 import { IGroupService } from '../groups/interfaces/group';
@@ -361,5 +362,21 @@ export class MessagingGateway
     const callerSocket = this.sessions.getSocketId(data.caller.id);
     callerSocket && callerSocket.emit('onVideoCallRejected', { receiver });
     socket.emit('onVideoCallRejected', { receiver });
+  }
+
+  @SubscribeMessage('videoCallHangUp')
+  async handleVideoCallHangUp(
+    @MessageBody() { caller, receiver }: VideoCallHangupPayload,
+    @ConnectedSocket() socket: AuthenticatedSocket,
+  ) {
+    console.log('inside videoCallHangup event');
+    if (socket.user.id === caller.id) {
+      const receiverSocket = this.sessions.getSocketId(receiver.id);
+      socket.emit('onVideoCallHangUp');
+      return receiverSocket && receiverSocket.emit('onVideoCallHangUp');
+    }
+    socket.emit('onVideoCallHangUp');
+    const callerSocket = this.sessions.getSocketId(caller.id);
+    callerSocket && callerSocket.emit('onVideoCallHangUp');
   }
 }
