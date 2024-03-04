@@ -26,12 +26,14 @@ import {
   setIsReceivingCall,
   setLocalStream,
   setPeer,
+  setReceiver,
   setRemoteStream
 } from '../store/slices/call-slice';
 import { useAuth } from '../hooks/useAuth';
 import CallReceiveDialog from '../components/calls/call-receive';
 import { getUserMediaStream } from '../utils/helpers';
 import { useVideoCallRejected } from '../hooks/sockets/use-video-call-rejected';
+import { useVideoCallHangUp } from '../hooks/sockets/use-video-call-hang-up';
 
 export default function AppPage() {
   const navigate = useNavigate();
@@ -40,7 +42,7 @@ export default function AppPage() {
   const toast = useToast({ theme: 'dark' });
   const storageTheme = localStorage.getItem('theme') as SelectableTheme;
   const { theme } = useSelector((state: RootState) => state.settings);
-  const { peer, call, isReceivingCall, caller, connection } = useSelector(
+  const { peer, call, isReceivingCall, caller, connection, localStream } = useSelector(
     (state: RootState) => state.call
   );
   const { user } = useAuth();
@@ -82,6 +84,7 @@ export default function AppPage() {
       console.log(data);
       if (isReceivingCall) return;
       dispatch(setCaller(data.caller));
+      dispatch(setReceiver(user!));
       dispatch(setIsReceivingCall(true));
     });
 
@@ -92,7 +95,7 @@ export default function AppPage() {
       socket.off('onFriendRequestRejected');
       socket.off('onVideoCall');
     };
-  }, [socket, dispatch, toast, navigate, isReceivingCall]);
+  }, [socket, dispatch, toast, navigate, isReceivingCall, user]);
 
   useEffect(() => {
     socket.on('onVideoCallAccept', (data: AcceptedVideoCallPayload) => {
@@ -105,27 +108,20 @@ export default function AppPage() {
         console.log(peer.id);
         const newConnection = peer.connect(data.acceptor.peer?.id || data.acceptor.username);
         dispatch(setConnection(newConnection));
-        navigator.mediaDevices
-          .getUserMedia({
-            video: true,
-            audio: true
-          })
-          .then((stream) => {
-            const newCall = peer.call(data.acceptor.peer?.id || data.acceptor.username, stream);
-            dispatch(setCall(newCall));
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        if (localStream) {
+          const newCall = peer.call(data.acceptor.peer?.id || data.acceptor.username, localStream);
+          dispatch(setCall(newCall));
+        }
       }
     });
 
     return () => {
       socket.off('onVideoCallAccept');
     };
-  }, [peer, dispatch, socket, user]);
+  }, [peer, dispatch, socket, user, localStream]);
 
   useVideoCallRejected();
+  useVideoCallHangUp();
 
   useEffect(() => {
     if (!peer) return;

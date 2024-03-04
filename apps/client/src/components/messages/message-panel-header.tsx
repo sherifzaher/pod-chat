@@ -11,8 +11,10 @@ import { toggleSidebar } from '../../store/slices/group-sidebar-slice';
 import { getRecipientFromConversation, getUserMediaStream } from '../../utils/helpers';
 import {
   setActiveConversationId,
+  setCaller,
   setIsCalling,
-  setLocalStream
+  setLocalStream,
+  setReceiver
 } from '../../store/slices/call-slice';
 import { useAuth } from '../../hooks/useAuth';
 import { useSocketContext } from '../../context/socket-context';
@@ -65,6 +67,8 @@ export default function MessagePanelHeader() {
     dispatch(setLocalStream(stream));
     dispatch(setIsCalling(true));
     dispatch(setActiveConversationId(conversation!.id));
+    dispatch(setCaller(user));
+    dispatch(setReceiver(recipient));
   };
 
   return (

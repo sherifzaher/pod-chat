@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { BiMicrophone, BiVideo } from 'react-icons/bi';
+import { BiMicrophone, BiMicrophoneOff, BiVideo } from 'react-icons/bi';
 import { ImPhoneHangUp } from 'react-icons/im';
 import { AppDispatch, RootState } from '../../store';
 import {
@@ -9,11 +9,28 @@ import {
   VideoContainerActionButtons,
   VideoContainerItem
 } from '../../utils/styles';
+import { useSocketContext } from '../../context/socket-context';
 
 const ConversationCall = () => {
+  const socket = useSocketContext();
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
-  const { localStream, remoteStream } = useSelector((state: RootState) => state.call);
+  const { localStream, remoteStream, call, caller, receiver } = useSelector(
+    (state: RootState) => state.call
+  );
+  const [microphoneEnabled, setMicrophoneEnabled] = useState(false);
+
+  const toggleMicrophone = () =>
+    localStream &&
+    setMicrophoneEnabled((prev) => {
+      console.log('setting audio to ', prev);
+      localStream.getTracks()[0].enabled = !prev;
+      return !prev;
+    });
+
+  const closeCall = () => {
+    socket.emit('videoCallHangUp', { caller, receiver });
+  };
 
   useEffect(() => {
     console.log('local stream was updated...');
@@ -21,7 +38,7 @@ const ConversationCall = () => {
       console.log('updating local video ref');
       localVideoRef.current.srcObject = localStream;
       localVideoRef.current.muted = true;
-      // localVideoRef.current.play();
+      localVideoRef.current.play();
     }
   }, [localStream]);
   useEffect(() => {
@@ -29,7 +46,7 @@ const ConversationCall = () => {
     if (remoteVideoRef.current && remoteStream) {
       console.log('updating remote video ref');
       remoteVideoRef.current.srcObject = remoteStream;
-      // remoteVideoRef.current.play();
+      remoteVideoRef.current.play();
     }
   }, [remoteStream]);
 
@@ -52,10 +69,14 @@ const ConversationCall = () => {
           <BiVideo />
         </div>
         <div>
-          <BiMicrophone />
+          {microphoneEnabled ? (
+            <BiMicrophone onClick={toggleMicrophone} />
+          ) : (
+            <BiMicrophoneOff onClick={toggleMicrophone} />
+          )}
         </div>
         <div>
-          <ImPhoneHangUp />
+          <ImPhoneHangUp onClick={closeCall} />
         </div>
       </VideoContainerActionButtons>
     </ConversationCallContainer>
