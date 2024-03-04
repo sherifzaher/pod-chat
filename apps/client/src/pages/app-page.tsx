@@ -99,6 +99,7 @@ export default function AppPage() {
       console.log('video call was accepted!');
       console.log(data);
       dispatch(setIsCallInProgress(true));
+      dispatch(setIsReceivingCall(false));
       if (!peer) return console.log('No peer....');
       if (data.caller.id === user!.id) {
         console.log(peer.id);
