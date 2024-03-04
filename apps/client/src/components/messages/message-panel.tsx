@@ -41,7 +41,8 @@ export default function MessagePanel({ isRecipientTyping }: Props) {
 
   return (
     <MessagePanelStyle>
-      {callState.isCalling || callState.isCallInProgress ? (
+      {(callState.isCalling || callState.isCallInProgress) &&
+      callState.activeConversationId === parseInt(id!, 10) ? (
         <ConversationCall />
       ) : (
         <MessagePanelHeader />

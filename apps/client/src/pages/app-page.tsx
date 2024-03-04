@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { IoMdPersonAdd } from 'react-icons/io';
@@ -19,6 +19,7 @@ import {
 import { useToast } from '../hooks/useToast';
 import { DarkTheme, LightTheme, SelectableTheme } from '../utils/themes';
 import {
+  setActiveConversationId,
   setCall,
   setCaller,
   setConnection,
@@ -42,6 +43,7 @@ export default function AppPage() {
   const toast = useToast({ theme: 'dark' });
   const storageTheme = localStorage.getItem('theme') as SelectableTheme;
   const { theme } = useSelector((state: RootState) => state.settings);
+  const remoteVideoRef = useRef<HTMLVideoElement>(null);
   const { peer, call, isReceivingCall, caller, connection, localStream } = useSelector(
     (state: RootState) => state.call
   );
@@ -113,6 +115,8 @@ export default function AppPage() {
           const newCall = peer.call(data.acceptor.peer?.id || data.acceptor.username, localStream);
           dispatch(setCall(newCall));
         }
+      } else {
+        dispatch(setActiveConversationId(data.conversation.id));
       }
     });
 
@@ -156,6 +160,10 @@ export default function AppPage() {
       console.log('received remotestream');
       console.log('dispatching setRemoteStream action...');
       dispatch(setRemoteStream(remoteStream));
+      if (remoteVideoRef.current && remoteStream) {
+        remoteVideoRef.current.srcObject = remoteStream;
+        remoteVideoRef.current.play();
+      }
     });
   }, [call, dispatch]);
 
@@ -165,7 +173,18 @@ export default function AppPage() {
 
   useEffect(() => {
     if (!user) return;
-    const newPeer = new Peer(user.peer?.id || user.username);
+    const newPeer = new Peer(user.peer?.id || user.username, {
+      config: {
+        iceServers: [
+          {
+            url: 'stun:stun.l.google.com:19302'
+          },
+          {
+            url: 'stun:stun1.l.google.com:19302'
+          }
+        ]
+      }
+    });
     dispatch(setPeer(newPeer));
   }, [user, dispatch]);
 
