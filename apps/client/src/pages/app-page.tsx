@@ -22,6 +22,7 @@ import {
   setCall,
   setCaller,
   setConnection,
+  setIsCallInProgress,
   setIsReceivingCall,
   setLocalStream,
   setPeer,
@@ -30,6 +31,7 @@ import {
 import { useAuth } from '../hooks/useAuth';
 import CallReceiveDialog from '../components/calls/call-receive';
 import { getUserMediaStream } from '../utils/helpers';
+import { useVideoCallRejected } from '../hooks/sockets/use-video-call-rejected';
 
 export default function AppPage() {
   const navigate = useNavigate();
@@ -96,6 +98,7 @@ export default function AppPage() {
     socket.on('onVideoCallAccept', (data: AcceptedVideoCallPayload) => {
       console.log('video call was accepted!');
       console.log(data);
+      dispatch(setIsCallInProgress(true));
       if (!peer) return console.log('No peer....');
       if (data.caller.id === user!.id) {
         console.log(peer.id);
@@ -120,6 +123,8 @@ export default function AppPage() {
       socket.off('onVideoCallAccept');
     };
   }, [peer, dispatch, socket, user]);
+
+  useVideoCallRejected();
 
   useEffect(() => {
     if (!peer) return;

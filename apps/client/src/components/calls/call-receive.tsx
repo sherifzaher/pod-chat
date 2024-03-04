@@ -20,7 +20,7 @@ export default function CallReceiveDialog() {
         socket.emit('videoCallAccepted', { caller });
         return;
       case 'reject':
-        return;
+        return socket.emit('videoCallRejected', { caller });
       default:
         return;
     }

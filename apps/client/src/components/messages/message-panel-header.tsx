@@ -9,7 +9,11 @@ import { AppDispatch, RootState } from '../../store';
 import AddGroupRecipientModal from '../modals/add-group-recipient-modal';
 import { toggleSidebar } from '../../store/slices/group-sidebar-slice';
 import { getRecipientFromConversation, getUserMediaStream } from '../../utils/helpers';
-import { setLocalStream } from '../../store/slices/call-slice';
+import {
+  setActiveConversationId,
+  setIsCalling,
+  setLocalStream
+} from '../../store/slices/call-slice';
 import { useAuth } from '../../hooks/useAuth';
 import { useSocketContext } from '../../context/socket-context';
 
@@ -48,18 +52,19 @@ export default function MessagePanelHeader() {
     [getDisplayName, group?.title, selectedType]
   );
 
-  const handleVideoCall = async () => {
+  const callUser = async () => {
     const recipient = getRecipientFromConversation(conversation!, user!);
     if (!user) return console.log('User undefined');
     if (!recipient) return console.log('Recipient undefined');
-
-    const stream = await getUserMediaStream({ video: true, audio: true });
-    dispatch(setLocalStream(stream));
-
     socket.emit('onVideoCallInitiate', {
       conversationId: conversation?.id,
       recipientId: recipient.id
     });
+
+    const stream = await getUserMediaStream({ video: true, audio: true });
+    dispatch(setLocalStream(stream));
+    dispatch(setIsCalling(true));
+    dispatch(setActiveConversationId(conversation!.id));
   };
 
   return (
@@ -73,7 +78,7 @@ export default function MessagePanelHeader() {
         </div>
         <GroupHeaderIcons>
           {selectedType === 'private' && (
-            <BsFillCameraVideoFill size={30} cursor="pointer" onClick={handleVideoCall} />
+            <BsFillCameraVideoFill size={30} cursor="pointer" onClick={callUser} />
           )}
           {selectedType === 'group' && user?.id === group?.owner?.id && (
             <PersonAdd cursor="pointer" onClick={() => setShowModal(true)} size={30} />

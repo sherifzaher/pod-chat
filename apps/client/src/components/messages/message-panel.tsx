@@ -27,6 +27,7 @@ export default function MessagePanel({ isRecipientTyping }: Props) {
   const dispatch = useDispatch();
   const { messageCounter } = useSelector((state: RootState) => state.systemMessages);
   const { attachments } = useSelector((state: RootState) => state.messagePanel);
+  const callState = useSelector((state: RootState) => state.call);
   const { id } = useParams();
   const { user } = useSelector((state: RootState) => state.user);
   const { conversations, loading } = useSelector((state: RootState) => state.conversations);
@@ -40,8 +41,11 @@ export default function MessagePanel({ isRecipientTyping }: Props) {
 
   return (
     <MessagePanelStyle>
-      <MessagePanelHeader />
-      <ConversationCall />
+      {callState.isCalling || callState.isCallInProgress ? (
+        <ConversationCall />
+      ) : (
+        <MessagePanelHeader />
+      )}
       <MessagePanelBody ref={ref}>
         <MessageContainer />
       </MessagePanelBody>
